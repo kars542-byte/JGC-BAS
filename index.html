@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JGC BAS SAC · Catálogo Jul-Ago 2026</title>
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
+        /* ----- RESET & GLOBAL ----- */
         * {
             margin: 0;
             padding: 0;
@@ -17,132 +17,185 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #f4f7fc;
             color: #1a2634;
-            padding: 2rem 1.5rem;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 28px;
-            box-shadow: 0 20px 50px rgba(0, 20, 40, 0.12);
-            overflow: hidden;
-            padding: 2.5rem 2.8rem;
-        }
-
-        /* Header */
-        .header {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #eaf0f6;
-            padding-bottom: 1.8rem;
+            min-height: 100vh;
+        }
+
+        /* ----- SIDEBAR (IZQUIERDA) ----- */
+        .sidebar {
+            width: 270px;
+            background: #003057;
+            color: #fff;
+            padding: 2rem 1.5rem;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            border-right: 4px solid #b31b1b;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+        .sidebar .logo h1 span {
+            color: #f6c45e;
+        }
+        .sidebar .logo .sub {
+            font-size: 0.85rem;
+            color: #a0b8d4;
+            font-weight: 300;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #1f4a6e;
+            padding-bottom: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .brand h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: #003057;
-            letter-spacing: -0.5px;
+        .sidebar nav ul {
+            list-style: none;
+            flex: 1;
         }
-        .brand h1 span {
-            color: #b31b1b;
+        .sidebar nav ul li {
+            margin-bottom: 0.6rem;
         }
-        .brand .tagline {
-            font-size: 1.1rem;
-            color: #3f5a78;
-            font-weight: 400;
-            margin-top: 4px;
-        }
-
-        .contact-info {
-            text-align: right;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: #1f3a57;
-        }
-        .contact-info i {
-            color: #b31b1b;
-            width: 20px;
-        }
-        .contact-info a {
-            color: #003057;
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0.8rem 1.2rem;
+            color: #cbdae9;
             text-decoration: none;
+            border-radius: 12px;
             font-weight: 500;
+            font-size: 1.05rem;
+            transition: 0.2s;
         }
-        .contact-info a:hover {
-            text-decoration: underline;
+        .sidebar nav ul li a i {
+            width: 24px;
+            font-size: 1.2rem;
+            color: #6f93b5;
+        }
+        .sidebar nav ul li a:hover {
+            background: #124a72;
+            color: #fff;
+        }
+        .sidebar nav ul li a:hover i {
+            color: #f6c45e;
+        }
+        .sidebar nav ul li a.active {
+            background: #b31b1b;
+            color: #fff;
+            box-shadow: 0 6px 14px rgba(179, 27, 27, 0.4);
+        }
+        .sidebar nav ul li a.active i {
+            color: #fff;
         }
 
-        /* Distributor badges */
+        .sidebar .footer-side {
+            margin-top: auto;
+            font-size: 0.75rem;
+            color: #5f83a5;
+            border-top: 1px solid #1f4a6e;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+
+        /* ----- CONTENIDO PRINCIPAL ----- */
+        .main-content {
+            flex: 1;
+            padding: 2rem 2.5rem 3rem 2.5rem;
+            max-width: calc(100% - 270px);
+        }
+
+        /* Secciones */
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            color: #003057;
+            font-weight: 600;
+            border-left: 6px solid #b31b1b;
+            padding-left: 1.2rem;
+            margin-bottom: 1.8rem;
+        }
+
+        /* ----- ELEMENTOS REUTILIZABLES ----- */
+        .card-white {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.8rem 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+            border: 1px solid #eaf0f6;
+            margin-bottom: 2rem;
+        }
+
         .distributor-brands {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem 2.5rem;
-            justify-content: center;
-            margin: 1.5rem 0 2rem 0;
-            padding: 0.8rem 0;
-            border-top: 1px solid #eaf0f6;
-            border-bottom: 1px solid #eaf0f6;
+            gap: 1rem 2.5rem;
+            margin-bottom: 1.5rem;
         }
         .distributor-brands span {
             font-weight: 600;
             color: #003057;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
+            font-size: 1rem;
         }
         .distributor-brands i {
             color: #b31b1b;
             margin-right: 6px;
         }
 
-        /* Social (optional – keep or delete) */
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin: 0.5rem 0 1.5rem 0;
-        }
-        .social-links a {
-            color: #3f5a78;
-            font-size: 1.5rem;
-            transition: 0.2s;
-        }
-        .social-links a:hover {
-            color: #003057;
-            transform: scale(1.1);
-        }
-
-        /* PDF viewer */
         .pdf-viewer {
-            margin: 2rem 0 1.5rem 0;
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
             border: 1px solid #dce3ec;
+            margin: 1.2rem 0 1.5rem 0;
         }
         .pdf-viewer iframe {
             width: 100%;
-            height: 750px;
+            height: 700px;
             display: block;
             border: none;
         }
 
-        /* Buttons */
-        .action-row {
+        .btn-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem;
+            gap: 1rem;
             justify-content: center;
-            margin: 1.8rem 0 2.5rem 0;
+            margin: 1.5rem 0 0.5rem 0;
         }
         .btn {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 0.9rem 2.4rem;
+            padding: 0.8rem 2.2rem;
             border-radius: 60px;
             font-weight: 600;
             font-size: 1rem;
@@ -159,16 +212,6 @@
         .btn-primary:hover {
             background: #002244;
             transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(0, 48, 87, 0.35);
-        }
-        .btn-outline {
-            background: transparent;
-            color: #003057;
-            border: 2px solid #003057;
-        }
-        .btn-outline:hover {
-            background: #003057;
-            color: #fff;
         }
         .btn-download {
             background: #b31b1b;
@@ -178,60 +221,49 @@
         .btn-download:hover {
             background: #8f1515;
             transform: translateY(-2px);
-            box-shadow: 0 10px 22px rgba(179, 27, 27, 0.35);
         }
 
-        /* Product highlights */
-        .highlights {
-            margin: 2.5rem 0 0.5rem 0;
-        }
-        .highlights h2 {
-            font-size: 1.6rem;
-            color: #003057;
-            font-weight: 600;
-            border-left: 5px solid #b31b1b;
-            padding-left: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .highlight-grid {
+        /* Grid de ofertas */
+        .grid-ofertas {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
             gap: 1.5rem;
+            margin-top: 0.5rem;
         }
-        .highlight-item {
+        .item-oferta {
             background: #f8faff;
             border-radius: 16px;
             padding: 1.2rem 1rem;
             border: 1px solid #e6edf5;
             transition: 0.2s;
         }
-        .highlight-item:hover {
+        .item-oferta:hover {
             border-color: #b31b1b;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
         }
-        .highlight-item .brand {
+        .item-oferta .marca {
             font-weight: 700;
             color: #003057;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .highlight-item .product {
+        .item-oferta .producto {
             font-weight: 600;
             font-size: 1rem;
             margin: 6px 0;
         }
-        .highlight-item .code {
+        .item-oferta .codigo {
             color: #5a6e87;
             font-size: 0.85rem;
         }
-        .highlight-item .price {
+        .item-oferta .precio {
             color: #b31b1b;
             font-weight: 700;
             font-size: 1.05rem;
             margin-top: 4px;
         }
-        .highlight-item .discount {
+        .item-oferta .descuento {
             background: #b31b1b20;
             color: #b31b1b;
             border-radius: 30px;
@@ -242,131 +274,407 @@
             margin-bottom: 4px;
         }
 
-        .footer {
-            margin-top: 3rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #5f7390;
-            border-top: 1px solid #eaf0f6;
-            padding-top: 1.8rem;
+        .contacto-info {
+            font-size: 1.1rem;
+            line-height: 2;
+        }
+        .contacto-info i {
+            color: #b31b1b;
+            width: 30px;
+        }
+        .contacto-info a {
+            color: #003057;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .contacto-info a:hover {
+            text-decoration: underline;
         }
 
-        @media (max-width: 720px) {
-            .container { padding: 1.5rem; }
-            .header { flex-direction: column; align-items: flex-start; }
-            .contact-info { text-align: left; margin-top: 10px; }
-            .pdf-viewer iframe { height: 450px; }
-            .brand h1 { font-size: 1.8rem; }
-            .highlight-grid { grid-template-columns: 1fr 1fr; }
+        /* ----- MOBILE HEADER (se muestra solo en móvil) ----- */
+        .mobile-header {
+            display: none;
+            background: #003057;
+            padding: 1rem 1.5rem;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom: 3px solid #b31b1b;
         }
+        .mobile-header .logo-small {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .mobile-header .logo-small span {
+            color: #f6c45e;
+        }
+        .mobile-header .hamburger {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            display: none;
+            background: #003057;
+            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+            border-bottom: 2px solid #1f4a6e;
+        }
+        .mobile-nav.open {
+            display: block;
+        }
+        .mobile-nav a {
+            display: block;
+            color: #cbdae9;
+            text-decoration: none;
+            padding: 0.7rem 0;
+            border-bottom: 1px solid #1f4a6e;
+            font-weight: 500;
+        }
+        .mobile-nav a i {
+            width: 28px;
+            color: #6f93b5;
+        }
+        .mobile-nav a:last-child {
+            border-bottom: none;
+        }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 820px) {
+            .sidebar {
+                display: none;
+            }
+            .mobile-header {
+                display: flex;
+            }
+            .main-content {
+                max-width: 100%;
+                padding: 1.5rem 1.2rem;
+            }
+            .pdf-viewer iframe {
+                height: 450px;
+            }
+            .grid-ofertas {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         @media (max-width: 480px) {
-            .highlight-grid { grid-template-columns: 1fr; }
-            .btn { width: 100%; justify-content: center; }
+            .grid-ofertas {
+                grid-template-columns: 1fr;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .section h2 {
+                font-size: 1.5rem;
+                padding-left: 0.8rem;
+            }
+            .card-white {
+                padding: 1.2rem;
+            }
+            .pdf-viewer iframe {
+                height: 350px;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-
-    <!-- Header -->
-    <div class="header">
-        <div class="brand">
-            <h1>JGC <span>BAS</span> SAC</h1>
-            <div class="tagline">Building Automation Supplies</div>
+    <!-- ===== SIDEBAR (ESCRITORIO) ===== -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>JGC <span>BAS</span></h1>
+            <div class="sub">Building Automation Supplies</div>
         </div>
-        <div class="contact-info">
-            <div><i class="fas fa-user-tie"></i> Joel Saldarriaga – Jefe Técnico Comercial</div>
-            <div><i class="fas fa-phone-alt"></i> <a href="tel:+51953299953">+51 953 299 953</a></div>
-            <div><i class="fas fa-envelope"></i> <a href="mailto:jsaldarriaga@jgcbas.com">jsaldarriaga@jgcbas.com</a></div>
+        <nav>
+            <ul>
+                <li><a href="#inicio" class="active" data-section="inicio"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="#ofertas" data-section="ofertas"><i class="fas fa-tags"></i> Ofertas</a></li>
+                <li><a href="#contactanos" data-section="contactanos"><i class="fas fa-envelope"></i> Contáctanos</a></li>
+                <li><a href="#historia" data-section="historia"><i class="fas fa-building"></i> Historia</a></li>
+                <li><a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a></li>
+            </ul>
+        </nav>
+        <div class="footer-side">
+            <i class="fas fa-shield-alt"></i> Representante Oficial<br>
+            Greystone Energy Systems
+        </div>
+    </aside>
+
+    <!-- ===== MOBILE HEADER ===== -->
+    <div style="display:contents;">
+        <div class="mobile-header">
+            <div class="logo-small">JGC <span>BAS</span></div>
+            <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="#inicio" data-section="inicio"><i class="fas fa-home"></i> Inicio</a>
+            <a href="#ofertas" data-section="ofertas"><i class="fas fa-tags"></i> Ofertas</a>
+            <a href="#contactanos" data-section="contactanos"><i class="fas fa-envelope"></i> Contáctanos</a>
+            <a href="#historia" data-section="historia"><i class="fas fa-building"></i> Historia</a>
+            <a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a>
         </div>
     </div>
 
-    <!-- Distributor Brands -->
-    <div class="distributor-brands">
-        <span><i class="fas fa-check-circle"></i> Greystone</span>
-        <span><i class="fas fa-check-circle"></i> Dwyer</span>
-        <span><i class="fas fa-check-circle"></i> APC</span>
-        <span><i class="fas fa-check-circle"></i> Danfoss</span>
-        <span><i class="fas fa-check-circle"></i> Winters Instruments</span>
-    </div>
+    <!-- ===== CONTENIDO PRINCIPAL ===== -->
+    <main class="main-content">
 
-    <!-- Optional Social (if you want to keep them – otherwise delete this block) -->
-    <div class="social-links">
-        <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com/jgc.bas" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@jgc.bas" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-    </div>
+        <!-- SECCIÓN: INICIO -->
+        <section id="inicio" class="section active">
+            <h2><i class="fas fa-home" style="color:#b31b1b; margin-right:12px;"></i>Inicio</h2>
+            <div class="card-white">
+                <p style="font-size:1.1rem; margin-bottom:0.5rem;">
+                    <strong>Bienvenido a JGC Building Automation Supplies SAC</strong> — su socio estratégico en automatización para edificios e industrias.
+                </p>
+                <div class="distributor-brands">
+                    <span><i class="fas fa-check-circle"></i> Greystone</span>
+                    <span><i class="fas fa-check-circle"></i> Dwyer</span>
+                    <span><i class="fas fa-check-circle"></i> APC</span>
+                    <span><i class="fas fa-check-circle"></i> Danfoss</span>
+                    <span><i class="fas fa-check-circle"></i> Winters Instruments</span>
+                </div>
+                <p style="color:#3f5a78; margin-bottom:0.5rem;">
+                    <i class="fas fa-arrow-right" style="color:#b31b1b;"></i> 
+                    Revise nuestro catálogo completo a continuación. Puede visualizarlo en línea o descargarlo.
+                </p>
+            </div>
 
-    <!-- PDF Viewer (embedded) -->
-    <div class="pdf-viewer">
-        <!-- Browser native PDF viewer via <iframe> – works in Chrome, Edge, Firefox, Safari -->
-        <iframe src="jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC Jul-Ago 2026"></iframe>
-    </div>
+            <!-- VISOR DEL PDF -->
+            <div class="pdf-viewer">
+                <iframe src="JGC%20BAS%20SAC%20-%20CAT%C3%81LOGO%20JUL-AGO%202026.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC Jul-Ago 2026"></iframe>
+            </div>
 
-    <!-- Action Buttons -->
-    <div class="action-row">
-        <a href="jgc.pdf" target="_blank" class="btn btn-primary">
-            <i class="fas fa-eye"></i> Abrir en ventana completa
-        </a>
-        <a href="jgc.pdf" download="JGC_BAS_Catalogo_Jul-Ago2026.pdf" class="btn btn-download">
-            <i class="fas fa-download"></i> Descargar PDF
-        </a>
-    </div>
+            <div class="btn-group">
+                <a href="JGC%20BAS%20SAC%20-%20CAT%C3%81LOGO%20JUL-AGO%202026.pdf" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-external-link-alt"></i> Abrir en pantalla completa
+                </a>
+                <a href="JGC%20BAS%20SAC%20-%20CAT%C3%81LOGO%20JUL-AGO%202026.pdf" download="JGC BAS SAC - CATÁLOGO JUL-AGO 2026.pdf" class="btn btn-download">
+                    <i class="fas fa-download"></i> Descargar PDF
+                </a>
+            </div>
+        </section>
 
-    <!-- Product Highlights (based on your catalog) -->
-    <div class="highlights">
-        <h2><i class="fas fa-tags" style="color: #b31b1b; margin-right: 10px;"></i> Destacados del catálogo</h2>
-        <div class="highlight-grid">
-            <div class="highlight-item">
-                <div class="discount">25% Dto.</div>
-                <div class="brand">Dwyer</div>
-                <div class="product">Manómetro diferencial</div>
-                <div class="code">Código: 2003</div>
-                <div class="price">USD 89 + IGV</div>
+        <!-- SECCIÓN: OFERTAS -->
+        <section id="ofertas" class="section">
+            <h2><i class="fas fa-tags" style="color:#b31b1b; margin-right:12px;"></i>Ofertas destacadas</h2>
+            <div class="card-white">
+                <p style="margin-bottom:1.2rem; color:#3f5a78;">
+                    Aproveche estos precios especiales en productos seleccionados. Consulte el PDF para más detalles.
+                </p>
+                <div class="grid-ofertas">
+                    <div class="item-oferta">
+                        <div class="descuento">25% Dto.</div>
+                        <div class="marca">Dwyer</div>
+                        <div class="producto">Manómetro diferencial</div>
+                        <div class="codigo">Código: 2003</div>
+                        <div class="precio">USD 89 + IGV</div>
+                    </div>
+                    <div class="item-oferta">
+                        <div class="descuento">15% Dto.</div>
+                        <div class="marca">APC</div>
+                        <div class="producto">Detector de humo para ducto</div>
+                        <div class="codigo">Código: SL‑2000‑P</div>
+                        <div class="precio">USD 135 + IGV</div>
+                    </div>
+                    <div class="item-oferta">
+                        <div class="descuento">10% Dto.</div>
+                        <div class="marca">Greystone</div>
+                        <div class="producto">Detector de CO</div>
+                        <div class="codigo">CMD5B1100</div>
+                        <div class="precio">USD 122 + IGV</div>
+                    </div>
+                    <div class="item-oferta">
+                        <div class="marca">Danfoss</div>
+                        <div class="producto">Variador FC‑101</div>
+                        <div class="codigo">VLT® HVAC Basic Drive</div>
+                        <div class="precio">Desde USD 159 + IGV</div>
+                    </div>
+                    <div class="item-oferta">
+                        <div class="marca">Greystone</div>
+                        <div class="producto">Sensor velocidad aire</div>
+                        <div class="codigo">AVDTMR</div>
+                        <div class="precio">USD 264 + IGV</div>
+                    </div>
+                    <div class="item-oferta">
+                        <div class="marca">Dwyer</div>
+                        <div class="producto">Transmisor presión diferencial</div>
+                        <div class="codigo">MSX‑W10‑IN‑LCD</div>
+                        <div class="precio">USD 1,000 (aprox.)</div>
+                    </div>
+                </div>
             </div>
-            <div class="highlight-item">
-                <div class="discount">15% Dto.</div>
-                <div class="brand">APC</div>
-                <div class="product">Detector de humo para ducto</div>
-                <div class="code">Código: SL‑2000‑P</div>
-                <div class="price">USD 135 + IGV</div>
+        </section>
+
+        <!-- SECCIÓN: CONTÁCTANOS -->
+        <section id="contactanos" class="section">
+            <h2><i class="fas fa-envelope" style="color:#b31b1b; margin-right:12px;"></i>Contáctanos</h2>
+            <div class="card-white">
+                <div class="contacto-info">
+                    <p><i class="fas fa-user-tie"></i> <strong>Joel Saldarriaga</strong> – Jefe Técnico Comercial</p>
+                    <p><i class="fas fa-phone-alt"></i> <a href="tel:+51953299953">+51 953 299 953</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:jsaldarriaga@jgcbas.com">jsaldarriaga@jgcbas.com</a></p>
+                    <p style="margin-top:1rem; border-top:1px solid #eaf0f6; padding-top:1rem;">
+                        <i class="fas fa-map-marker-alt"></i> Lima, Perú · 
+                        <span style="color:#003057;">Atención personalizada de lunes a viernes</span>
+                    </p>
+                </div>
+                <div style="margin-top:1.5rem; background:#f8faff; border-radius:16px; padding:1.5rem; border:1px dashed #b31b1b;">
+                    <p style="font-weight:600; color:#003057;"><i class="fas fa-paper-plane" style="color:#b31b1b;"></i> ¿Necesita cotización o soporte técnico?</p>
+                    <p style="color:#3f5a78; font-size:0.95rem;">Escríbanos directamente al correo o WhatsApp y le atenderemos a la brevedad.</p>
+                </div>
             </div>
-            <div class="highlight-item">
-                <div class="discount">10% Dto.</div>
-                <div class="brand">Greystone</div>
-                <div class="product">Detector de CO</div>
-                <div class="code">CMD5B1100</div>
-                <div class="price">USD 122 + IGV</div>
+        </section>
+
+        <!-- SECCIÓN: HISTORIA -->
+        <section id="historia" class="section">
+            <h2><i class="fas fa-building" style="color:#b31b1b; margin-right:12px;"></i>Historia</h2>
+            <div class="card-white">
+                <p style="font-size:1.05rem; line-height:1.7;">
+                    <strong>JGC Building Automation Supplies SAC</strong> nace con la misión de proveer soluciones integrales en 
+                    automatización y control para edificios, HVAC e industria en el mercado peruano.
+                </p>
+                <p style="margin-top:1rem; line-height:1.7;">
+                    Somos <strong>representantes oficiales de Greystone Energy Systems</strong> en Perú, y distribuimos marcas de 
+                    primer nivel como <strong>Dwyer, APC, Danfoss y Winters Instruments</strong>. Nuestro compromiso es ofrecer 
+                    equipos de alta precisión, respaldo técnico y asesoría personalizada para cada proyecto.
+                </p>
+                <p style="margin-top:1rem; line-height:1.7; color:#003057; font-weight:500;">
+                    <i class="fas fa-medal" style="color:#b31b1b;"></i> Más de 10 años de trayectoria en el sector construcción 
+                    y automatización industrial.
+                </p>
             </div>
-            <div class="highlight-item">
-                <div class="brand">Danfoss</div>
-                <div class="product">Variador FC‑101</div>
-                <div class="code">VLT® HVAC Basic Drive</div>
-                <div class="price">Desde USD 159 + IGV</div>
+        </section>
+
+        <!-- SECCIÓN: APLICACIONES -->
+        <section id="aplicaciones" class="section">
+            <h2><i class="fas fa-microchip" style="color:#b31b1b; margin-right:12px;"></i>Aplicaciones</h2>
+            <div class="card-white">
+                <p style="font-weight:600; color:#003057; font-size:1.1rem;">Nuestros productos son utilizados en:</p>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:1.2rem;">
+                    <div style="background:#f8faff; padding:1rem; border-radius:14px; border-left:4px solid #b31b1b;">
+                        <i class="fas fa-snowflake" style="color:#003057;"></i>
+                        <strong> HVAC y Climatización</strong>
+                        <p style="font-size:0.9rem; color:#3f5a78; margin-top:4px;">Sensores de presión, temperatura y flujo para sistemas de aire acondicionado.</p>
+                    </div>
+                    <div style="background:#f8faff; padding:1rem; border-radius:14px; border-left:4px solid #b31b1b;">
+                        <i class="fas fa-industry" style="color:#003057;"></i>
+                        <strong> Control de procesos</strong>
+                        <p style="font-size:0.9rem; color:#3f5a78; margin-top:4px;">Variadores de frecuencia y transmisores para líneas de producción.</p>
+                    </div>
+                    <div style="background:#f8faff; padding:1rem; border-radius:14px; border-left:4px solid #b31b1b;">
+                        <i class="fas fa-building" style="color:#003057;"></i>
+                        <strong> Edificios inteligentes</strong>
+                        <p style="font-size:0.9rem; color:#3f5a78; margin-top:4px;">Detección de humo, monóxido y control de presión diferencial en escaleras.</p>
+                    </div>
+                    <div style="background:#f8faff; padding:1rem; border-radius:14px; border-left:4px solid #b31b1b;">
+                        <i class="fas fa-water" style="color:#003057;"></i>
+                        <strong> Tratamiento de agua y líquidos</strong>
+                        <p style="font-size:0.9rem; color:#3f5a78; margin-top:4px;">Switches de flujo y medidores para sistemas de bombeo y purificación.</p>
+                    </div>
+                </div>
+                <p style="margin-top:1.5rem; font-size:0.95rem; color:#5a6e87;">
+                    <i class="fas fa-arrow-right" style="color:#b31b1b;"></i> ¿Tiene un proyecto específico? 
+                    <a href="#contactanos" style="color:#003057; font-weight:600;">Contáctenos</a> y le brindaremos la mejor solución.
+                </p>
             </div>
-            <div class="highlight-item">
-                <div class="brand">Greystone</div>
-                <div class="product">Sensor velocidad aire</div>
-                <div class="code">AVDTMR</div>
-                <div class="price">USD 264 + IGV</div>
-            </div>
-            <div class="highlight-item">
-                <div class="brand">Dwyer</div>
-                <div class="product">Transmisor presión diferencial</div>
-                <div class="code">MSX‑W10‑IN‑LCD</div>
-                <div class="price">USD 1,000 (aprox.)</div>
-            </div>
+        </section>
+
+        <div style="margin-top:2rem; text-align:center; font-size:0.85rem; color:#7a8ea8; border-top:1px solid #eaf0f6; padding-top:1.5rem;">
+            &copy; 2026 JGC Building Automation Supplies SAC · Todos los derechos reservados
         </div>
-        <p style="margin-top: 1rem; color: #5a6e87; font-size: 0.9rem; text-align: center;">
-            <i class="fas fa-arrow-right"></i> Consulte el PDF completo para precios y condiciones.
-        </p>
-    </div>
+    </main>
 
-    <div class="footer">
-        &copy; 2026 JGC Building Automation Supplies SAC · Todos los derechos reservados
-    </div>
-</div>
+    <!-- ===== JAVASCRIPT (Navegación y menú móvil) ===== -->
+    <script>
+        (function() {
+            // ----- Cambio de secciones (Sidebar + Mobile) -----
+            const navLinks = document.querySelectorAll('a[data-section]');
+            const sections = {
+                inicio: document.getElementById('inicio'),
+                ofertas: document.getElementById('ofertas'),
+                contactanos: document.getElementById('contactanos'),
+                historia: document.getElementById('historia'),
+                aplicaciones: document.getElementById('aplicaciones')
+            };
+
+            function activateSection(sectionId) {
+                // Ocultar todas
+                Object.values(sections).forEach(sec => sec.classList.remove('active'));
+                // Mostrar la seleccionada
+                if (sections[sectionId]) {
+                    sections[sectionId].classList.add('active');
+                }
+                // Actualizar clase 'active' en links del sidebar
+                document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
+                    link.classList.toggle('active', link.dataset.section === sectionId);
+                });
+                // Cerrar menú móvil al hacer clic
+                document.getElementById('mobileNav').classList.remove('open');
+            }
+
+            // Event listeners para todos los links (sidebar + mobile)
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.dataset.section;
+                    // Cambiar hash en la URL (opcional, para navegación)
+                    history.pushState(null, null, '#' + sectionId);
+                    activateSection(sectionId);
+                });
+            });
+
+            // ----- Menú móvil (hamburguesa) -----
+            const hamburger = document.getElementById('hamburgerBtn');
+            const mobileNav = document.getElementById('mobileNav');
+
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileNav.classList.toggle('open');
+                // Cambiar ícono
+                const icon = this.querySelector('i');
+                if (mobileNav.classList.contains('open')) {
+                    icon.className = 'fas fa-times';
+                } else {
+                    icon.className = 'fas fa-bars';
+                }
+            });
+
+            // Cerrar menú al hacer clic fuera (opcional)
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.mobile-header') && !e.target.closest('.mobile-nav')) {
+                    mobileNav.classList.remove('open');
+                    const icon = hamburger.querySelector('i');
+                    if (icon) icon.className = 'fas fa-bars';
+                }
+            });
+
+            // ----- Cargar la sección según el hash de la URL al inicio -----
+            const hash = window.location.hash.replace('#', '');
+            if (hash && sections[hash]) {
+                activateSection(hash);
+            } else {
+                activateSection('inicio');
+            }
+
+            // Si el usuario usa el botón "atrás/adelante" del navegador
+            window.addEventListener('hashchange', function() {
+                const h = window.location.hash.replace('#', '');
+                if (h && sections[h]) {
+                    activateSection(h);
+                }
+            });
+
+        })();
+    </script>
 
 </body>
 </html>
