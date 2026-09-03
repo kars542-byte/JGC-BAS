@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JGC BAS SAC · Catálogo Jul-Ago 2026</title>
+    <title>JGC BAS SAC · Catálogo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
         /* ----- RESET & GLOBAL ----- */
@@ -21,9 +21,9 @@
             min-height: 100vh;
         }
 
-        /* ----- SIDEBAR (IZQUIERDA) ----- */
+        /* ===== SIDEBAR (ESCRITORIO) ===== */
         .sidebar {
-            width: 280px;
+            width: 270px;
             background: #003057;
             color: #fff;
             padding: 2rem 1.5rem;
@@ -35,7 +35,6 @@
             flex-direction: column;
             flex-shrink: 0;
             border-right: 4px solid #b31b1b;
-            transition: transform 0.3s ease;
             z-index: 1000;
         }
 
@@ -99,7 +98,6 @@
             color: #fff;
         }
 
-        /* Redes sociales en el SIDEBAR (más grandes) */
         .sidebar .social-side {
             margin-top: 1.5rem;
             border-top: 1px solid #1f4a6e;
@@ -127,7 +125,6 @@
             color: #ffffff;
             text-shadow: 0 0 12px #ffffff80;
         }
-
         .sidebar .footer-side {
             margin-top: 0.8rem;
             font-size: 0.75rem;
@@ -135,14 +132,13 @@
             text-align: center;
         }
 
-        /* ----- CONTENIDO PRINCIPAL ----- */
+        /* ===== CONTENIDO PRINCIPAL ===== */
         .main-content {
             flex: 1;
             padding: 2rem 2.5rem 3rem 2.5rem;
-            max-width: calc(100% - 280px);
+            max-width: calc(100% - 270px);
         }
 
-        /* Secciones */
         .section {
             display: none;
             animation: fadeIn 0.4s ease;
@@ -150,7 +146,6 @@
         .section.active {
             display: block;
         }
-
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -171,7 +166,6 @@
             margin-bottom: 1.8rem;
         }
 
-        /* ----- ELEMENTOS REUTILIZABLES ----- */
         .card-white {
             background: #ffffff;
             border-radius: 20px;
@@ -197,6 +191,7 @@
             margin-right: 6px;
         }
 
+        /* VISOR PDF */
         .pdf-viewer {
             border-radius: 16px;
             overflow: hidden;
@@ -257,7 +252,7 @@
             background: #1a8045;
         }
 
-        /* Grid de ofertas */
+        /* Ofertas */
         .grid-ofertas {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
@@ -308,7 +303,7 @@
             margin-bottom: 4px;
         }
 
-        /* Contacto info + Form */
+        /* Contacto */
         .contacto-info {
             font-size: 1.1rem;
             line-height: 2;
@@ -326,7 +321,6 @@
             text-decoration: underline;
         }
 
-        /* Formulario */
         .form-cotizacion label {
             display: block;
             font-weight: 600;
@@ -357,7 +351,6 @@
             min-height: 100px;
         }
 
-        /* Redes sociales GRANDES en sección contacto */
         .social-big {
             display: flex;
             justify-content: center;
@@ -389,7 +382,7 @@
             margin-top: 4px;
         }
 
-        /* ----- WHATSAPP FLOTANTE ----- */
+        /* ===== WHATSAPP FLOTANTE ===== */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -426,70 +419,108 @@
             }
         }
 
-        /* ----- MOBILE HEADER ----- */
-        .mobile-header {
+        /* ===== MENÚ MÓVIL (HAMBURGUESA FLOTANTE) ===== */
+        .mobile-menu-toggle {
             display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9998;
             background: #003057;
-            padding: 1rem 1.5rem;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            border-bottom: 3px solid #b31b1b;
-        }
-        .mobile-header .logo-small {
             color: #fff;
-            font-weight: 700;
-            font-size: 1.4rem;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            transition: 0.2s;
+            border: 2px solid #fff;
         }
-        .mobile-header .logo-small span {
+        .mobile-menu-toggle:hover {
+            background: #124a72;
+            transform: scale(1.05);
+        }
+
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 48, 87, 0.95);
+            z-index: 9997;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 2rem;
+        }
+        .mobile-overlay.open {
+            display: flex;
+        }
+        .mobile-overlay a {
+            color: #fff;
+            font-size: 1.8rem;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            margin: 0.3rem 0;
+            border-radius: 16px;
+            transition: 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .mobile-overlay a i {
+            width: 36px;
             color: #f6c45e;
         }
-        .mobile-header .hamburger {
+        .mobile-overlay a:hover {
+            background: #124a72;
+        }
+        .mobile-overlay .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
             background: none;
             border: none;
             color: #fff;
-            font-size: 2rem;
+            font-size: 2.8rem;
             cursor: pointer;
         }
-
-        .mobile-nav {
-            display: none;
-            background: #003057;
-            padding: 0.5rem 1.5rem 1.5rem 1.5rem;
-            border-bottom: 2px solid #1f4a6e;
+        .mobile-overlay .social-mobile {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #1f4a6e;
+            padding-top: 2rem;
         }
-        .mobile-nav.open {
-            display: block;
+        .mobile-overlay .social-mobile a {
+            font-size: 2.8rem;
+            padding: 0;
+            margin: 0;
         }
-        .mobile-nav a {
-            display: block;
-            color: #cbdae9;
-            text-decoration: none;
-            padding: 0.7rem 0;
-            border-bottom: 1px solid #1f4a6e;
-            font-weight: 500;
-        }
-        .mobile-nav a i {
-            width: 28px;
-            color: #6f93b5;
-        }
-        .mobile-nav a:last-child {
-            border-bottom: none;
+        .mobile-overlay .social-mobile a:hover {
+            background: none;
+            transform: scale(1.2);
         }
 
-        /* ----- RESPONSIVE ----- */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 820px) {
             .sidebar {
                 display: none;
             }
-            .mobile-header {
+            .mobile-menu-toggle {
                 display: flex;
+                align-items: center;
+                justify-content: center;
             }
             .main-content {
                 max-width: 100%;
                 padding: 1.5rem 1.2rem;
+                margin-top: 0;
             }
             .pdf-viewer iframe {
                 height: 450px;
@@ -507,6 +538,9 @@
             .social-big a {
                 font-size: 2.5rem;
             }
+            .section h2 {
+                font-size: 1.6rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -518,7 +552,7 @@
                 justify-content: center;
             }
             .section h2 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
                 padding-left: 0.8rem;
             }
             .card-white {
@@ -529,7 +563,6 @@
             }
             .social-big a {
                 font-size: 2rem;
-                margin: 0 5px;
             }
             .whatsapp-float {
                 width: 55px;
@@ -537,6 +570,13 @@
                 font-size: 2.2rem;
                 bottom: 15px;
                 right: 15px;
+            }
+            .mobile-overlay a {
+                font-size: 1.4rem;
+                padding: 0.6rem 1rem;
+            }
+            .mobile-overlay .social-mobile a {
+                font-size: 2.2rem;
             }
         }
     </style>
@@ -558,8 +598,6 @@
                 <li><a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a></li>
             </ul>
         </nav>
-
-        <!-- REDES SOCIALES EN SIDEBAR (grandes) -->
         <div class="social-side">
             <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
             <a href="https://www.instagram.com/jgc.bas" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -571,26 +609,23 @@
         </div>
     </aside>
 
-    <!-- ===== MOBILE HEADER ===== -->
-    <div style="display:contents;">
-        <div class="mobile-header">
-            <div class="logo-small">JGC <span>BAS</span></div>
-            <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-        <div class="mobile-nav" id="mobileNav">
-            <a href="#inicio" data-section="inicio"><i class="fas fa-home"></i> Inicio</a>
-            <a href="#ofertas" data-section="ofertas"><i class="fas fa-tags"></i> Ofertas</a>
-            <a href="#contactanos" data-section="contactanos"><i class="fas fa-envelope"></i> Contáctanos</a>
-            <a href="#historia" data-section="historia"><i class="fas fa-building"></i> Historia</a>
-            <a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a>
-            <!-- Redes en móvil -->
-            <div style="display:flex; gap:1.5rem; justify-content:center; margin-top:1rem; padding-top:0.8rem; border-top:1px solid #1f4a6e;">
-                <a href="https://www.facebook.com/JGCBASSAC" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-facebook"></i></a>
-                <a href="https://www.instagram.com/jgc.bas" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.tiktok.com/@jgc.bas" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-tiktok"></i></a>
-            </div>
+    <!-- ===== MENÚ MÓVIL (BOTÓN HAMBURGUESA FLOTANTE) ===== -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Abrir menú">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- ===== OVERLAY MÓVIL ===== -->
+    <div class="mobile-overlay" id="mobileOverlay">
+        <button class="close-btn" id="mobileCloseBtn">&times;</button>
+        <a href="#inicio" data-section="inicio"><i class="fas fa-home"></i> Inicio</a>
+        <a href="#ofertas" data-section="ofertas"><i class="fas fa-tags"></i> Ofertas</a>
+        <a href="#contactanos" data-section="contactanos"><i class="fas fa-envelope"></i> Contáctanos</a>
+        <a href="#historia" data-section="historia"><i class="fas fa-building"></i> Historia</a>
+        <a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a>
+        <div class="social-mobile">
+            <a href="https://www.facebook.com/JGCBASSAC" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/jgc.bas" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@jgc.bas" target="_blank"><i class="fab fa-tiktok"></i></a>
         </div>
     </div>
 
@@ -617,16 +652,16 @@
                 </p>
             </div>
 
-            <!-- VISOR DEL PDF -->
+            <!-- VISOR DEL PDF (usando jgc.pdf) -->
             <div class="pdf-viewer">
-                <iframe src="jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC Jul-Ago 2026"></iframe>
+                <iframe src="jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC"></iframe>
             </div>
 
             <div class="btn-group">
-                <a href="JGC%20BAS%20SAC%20-%20CAT%C3%81LOGO%20JUL-AGO%202026.pdf" target="_blank" class="btn btn-primary">
+                <a href="jgc.pdf" target="_blank" class="btn btn-primary">
                     <i class="fas fa-external-link-alt"></i> Abrir en pantalla completa
                 </a>
-                <a href="JGC%20BAS%20SAC%20-%20CAT%C3%81LOGO%20JUL-AGO%202026.pdf" download="JGC BAS SAC - CATÁLOGO JUL-AGO 2026.pdf" class="btn btn-download">
+                <a href="jgc.pdf" download="JGC_BAS_Catalogo.pdf" class="btn btn-download">
                     <i class="fas fa-download"></i> Descargar PDF
                 </a>
             </div>
@@ -683,7 +718,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN: CONTÁCTANOS (con Formulario + Redes grandes) -->
+        <!-- SECCIÓN: CONTÁCTANOS -->
         <section id="contactanos" class="section">
             <h2><i class="fas fa-envelope" style="color:#b31b1b; margin-right:12px;"></i>Contáctanos</h2>
             <div class="card-white">
@@ -696,7 +731,7 @@
                     </p>
                 </div>
 
-                <!-- FORMULARIO DE COTIZACIÓN -->
+                <!-- FORMULARIO -->
                 <div style="margin-top:2rem; background:#f8faff; border-radius:20px; padding:1.8rem; border:1px solid #e0e8f0;">
                     <h3 style="color:#003057; margin-bottom:0.5rem;"><i class="fas fa-paper-plane" style="color:#b31b1b;"></i> Solicite su cotización</h3>
                     <p style="color:#3f5a78; font-size:0.95rem; margin-bottom:1.2rem;">Complete el formulario y se abrirá su correo con los datos precargados.</p>
@@ -825,10 +860,10 @@
         <i class="fab fa-whatsapp"></i>
     </a>
 
-    <!-- ===== JAVASCRIPT (Navegación, menú móvil y formulario) ===== -->
+    <!-- ===== JAVASCRIPT ===== -->
     <script>
         (function() {
-            // ----- 1. Navegación entre secciones -----
+            // ----- 1. Navegación entre secciones (sidebar + overlay) -----
             const navLinks = document.querySelectorAll('a[data-section]');
             const sections = {
                 inicio: document.getElementById('inicio'),
@@ -843,12 +878,12 @@
                 if (sections[sectionId]) {
                     sections[sectionId].classList.add('active');
                 }
+                // Sidebar active class
                 document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
                     link.classList.toggle('active', link.dataset.section === sectionId);
                 });
-                document.getElementById('mobileNav').classList.remove('open');
-                const icon = document.querySelector('#hamburgerBtn i');
-                if (icon) icon.className = 'fas fa-bars';
+                // Cerrar overlay móvil
+                closeMobile();
             }
 
             navLinks.forEach(link => {
@@ -860,37 +895,38 @@
                 });
             });
 
-            // ----- 2. Menú móvil hamburguesa -----
-            const hamburger = document.getElementById('hamburgerBtn');
-            const mobileNav = document.getElementById('mobileNav');
+            // ----- 2. Menú móvil (overlay) -----
+            const toggleBtn = document.getElementById('mobileMenuToggle');
+            const overlay = document.getElementById('mobileOverlay');
+            const closeBtn = document.getElementById('mobileCloseBtn');
 
-            hamburger.addEventListener('click', function(e) {
-                e.stopPropagation();
-                mobileNav.classList.toggle('open');
-                const icon = this.querySelector('i');
-                if (mobileNav.classList.contains('open')) {
-                    icon.className = 'fas fa-times';
-                } else {
-                    icon.className = 'fas fa-bars';
-                }
+            function openMobile() {
+                overlay.classList.add('open');
+                toggleBtn.style.display = 'none';
+            }
+            function closeMobile() {
+                overlay.classList.remove('open');
+                toggleBtn.style.display = 'flex';
+            }
+
+            toggleBtn.addEventListener('click', openMobile);
+            closeBtn.addEventListener('click', closeMobile);
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) closeMobile();
             });
 
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.mobile-header') && !e.target.closest('.mobile-nav')) {
-                    mobileNav.classList.remove('open');
-                    const icon = hamburger.querySelector('i');
-                    if (icon) icon.className = 'fas fa-bars';
-                }
+            // Al hacer clic en un enlace del overlay, cerrar
+            overlay.querySelectorAll('a[data-section]').forEach(link => {
+                link.addEventListener('click', closeMobile);
             });
 
-            // ----- 3. Cargar sección por hash -----
+            // ----- 3. Hash inicial -----
             const hash = window.location.hash.replace('#', '');
             if (hash && sections[hash]) {
                 activateSection(hash);
             } else {
                 activateSection('inicio');
             }
-
             window.addEventListener('hashchange', function() {
                 const h = window.location.hash.replace('#', '');
                 if (h && sections[h]) {
@@ -898,7 +934,7 @@
                 }
             });
 
-            // ----- 4. Formulario de cotización (abre mailto) -----
+            // ----- 4. Formulario de cotización (mailto) -----
             const form = document.getElementById('quoteForm');
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -914,7 +950,6 @@
                     return;
                 }
 
-                // Construir cuerpo del correo
                 let body = 'Solicitud de cotización - JGC BAS SAC\n\n';
                 body += `Nombre: ${nombre}\n`;
                 body += `Correo: ${email}\n`;
