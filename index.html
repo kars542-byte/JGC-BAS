@@ -23,7 +23,7 @@
 
         /* ----- SIDEBAR (IZQUIERDA) ----- */
         .sidebar {
-            width: 270px;
+            width: 280px;
             background: #003057;
             color: #fff;
             padding: 2rem 1.5rem;
@@ -56,7 +56,7 @@
             letter-spacing: 2px;
             border-bottom: 1px solid #1f4a6e;
             padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .sidebar nav ul {
@@ -64,7 +64,7 @@
             flex: 1;
         }
         .sidebar nav ul li {
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.4rem;
         }
         .sidebar nav ul li a {
             display: flex;
@@ -99,12 +99,39 @@
             color: #fff;
         }
 
-        .sidebar .footer-side {
-            margin-top: auto;
-            font-size: 0.75rem;
-            color: #5f83a5;
+        /* Redes sociales en el SIDEBAR (más grandes) */
+        .sidebar .social-side {
+            margin-top: 1.5rem;
             border-top: 1px solid #1f4a6e;
             padding-top: 1.5rem;
+            text-align: center;
+        }
+        .sidebar .social-side a {
+            color: #a0b8d4;
+            font-size: 2rem;
+            margin: 0 10px;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .sidebar .social-side a:hover {
+            color: #fff;
+            transform: scale(1.15);
+        }
+        .sidebar .social-side a .fa-facebook:hover {
+            color: #1877f2;
+        }
+        .sidebar .social-side a .fa-instagram:hover {
+            color: #e4405f;
+        }
+        .sidebar .social-side a .fa-tiktok:hover {
+            color: #ffffff;
+            text-shadow: 0 0 12px #ffffff80;
+        }
+
+        .sidebar .footer-side {
+            margin-top: 0.8rem;
+            font-size: 0.75rem;
+            color: #5f83a5;
             text-align: center;
         }
 
@@ -112,7 +139,7 @@
         .main-content {
             flex: 1;
             padding: 2rem 2.5rem 3rem 2.5rem;
-            max-width: calc(100% - 270px);
+            max-width: calc(100% - 280px);
         }
 
         /* Secciones */
@@ -222,6 +249,13 @@
             background: #8f1515;
             transform: translateY(-2px);
         }
+        .btn-success {
+            background: #25a35a;
+            color: #fff;
+        }
+        .btn-success:hover {
+            background: #1a8045;
+        }
 
         /* Grid de ofertas */
         .grid-ofertas {
@@ -274,6 +308,7 @@
             margin-bottom: 4px;
         }
 
+        /* Contacto info + Form */
         .contacto-info {
             font-size: 1.1rem;
             line-height: 2;
@@ -291,7 +326,107 @@
             text-decoration: underline;
         }
 
-        /* ----- MOBILE HEADER (se muestra solo en móvil) ----- */
+        /* Formulario */
+        .form-cotizacion label {
+            display: block;
+            font-weight: 600;
+            color: #003057;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        .form-cotizacion input,
+        .form-cotizacion select,
+        .form-cotizacion textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #d0d9e6;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #fafcff;
+            transition: 0.2s;
+        }
+        .form-cotizacion input:focus,
+        .form-cotizacion select:focus,
+        .form-cotizacion textarea:focus {
+            border-color: #003057;
+            outline: none;
+            box-shadow: 0 0 0 3px #00305720;
+        }
+        .form-cotizacion textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Redes sociales GRANDES en sección contacto */
+        .social-big {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        .social-big a {
+            font-size: 3rem;
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .social-big a .fa-facebook {
+            color: #1877f2;
+        }
+        .social-big a .fa-instagram {
+            color: #e4405f;
+        }
+        .social-big a .fa-tiktok {
+            color: #000;
+        }
+        .social-big a:hover {
+            transform: scale(1.2) translateY(-5px);
+        }
+        .social-big span {
+            display: block;
+            font-size: 0.8rem;
+            color: #5f7390;
+            margin-top: 4px;
+        }
+
+        /* ----- WHATSAPP FLOTANTE ----- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            background: #25d366;
+            color: #fff;
+            border-radius: 60px;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.2rem;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.45);
+            transition: 0.3s;
+            text-decoration: none;
+            border: 3px solid #fff;
+            animation: pulse 2s infinite;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.65);
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.5);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* ----- MOBILE HEADER ----- */
         .mobile-header {
             display: none;
             background: #003057;
@@ -362,6 +497,16 @@
             .grid-ofertas {
                 grid-template-columns: 1fr 1fr;
             }
+            .whatsapp-float {
+                width: 60px;
+                height: 60px;
+                font-size: 2.5rem;
+                bottom: 20px;
+                right: 20px;
+            }
+            .social-big a {
+                font-size: 2.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -381,6 +526,17 @@
             }
             .pdf-viewer iframe {
                 height: 350px;
+            }
+            .social-big a {
+                font-size: 2rem;
+                margin: 0 5px;
+            }
+            .whatsapp-float {
+                width: 55px;
+                height: 55px;
+                font-size: 2.2rem;
+                bottom: 15px;
+                right: 15px;
             }
         }
     </style>
@@ -402,6 +558,13 @@
                 <li><a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a></li>
             </ul>
         </nav>
+
+        <!-- REDES SOCIALES EN SIDEBAR (grandes) -->
+        <div class="social-side">
+            <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="https://www.instagram.com/jgc.bas" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.tiktok.com/@jgc.bas" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
         <div class="footer-side">
             <i class="fas fa-shield-alt"></i> Representante Oficial<br>
             Greystone Energy Systems
@@ -422,6 +585,12 @@
             <a href="#contactanos" data-section="contactanos"><i class="fas fa-envelope"></i> Contáctanos</a>
             <a href="#historia" data-section="historia"><i class="fas fa-building"></i> Historia</a>
             <a href="#aplicaciones" data-section="aplicaciones"><i class="fas fa-microchip"></i> Aplicaciones</a>
+            <!-- Redes en móvil -->
+            <div style="display:flex; gap:1.5rem; justify-content:center; margin-top:1rem; padding-top:0.8rem; border-top:1px solid #1f4a6e;">
+                <a href="https://www.facebook.com/JGCBASSAC" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/jgc.bas" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@jgc.bas" target="_blank" style="font-size:1.8rem; border:none; padding:0; color:#fff;"><i class="fab fa-tiktok"></i></a>
+            </div>
         </div>
     </div>
 
@@ -450,7 +619,7 @@
 
             <!-- VISOR DEL PDF -->
             <div class="pdf-viewer">
-                <iframe src:"jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC Jul-Ago 2026"></iframe>
+                <iframe src="jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC Jul-Ago 2026"></iframe>
             </div>
 
             <div class="btn-group">
@@ -514,7 +683,7 @@
             </div>
         </section>
 
-        <!-- SECCIÓN: CONTÁCTANOS -->
+        <!-- SECCIÓN: CONTÁCTANOS (con Formulario + Redes grandes) -->
         <section id="contactanos" class="section">
             <h2><i class="fas fa-envelope" style="color:#b31b1b; margin-right:12px;"></i>Contáctanos</h2>
             <div class="card-white">
@@ -522,14 +691,70 @@
                     <p><i class="fas fa-user-tie"></i> <strong>Joel Saldarriaga</strong> – Jefe Técnico Comercial</p>
                     <p><i class="fas fa-phone-alt"></i> <a href="tel:+51953299953">+51 953 299 953</a></p>
                     <p><i class="fas fa-envelope"></i> <a href="mailto:jsaldarriaga@jgcbas.com">jsaldarriaga@jgcbas.com</a></p>
-                    <p style="margin-top:1rem; border-top:1px solid #eaf0f6; padding-top:1rem;">
-                        <i class="fas fa-map-marker-alt"></i> Lima, Perú · 
-                        <span style="color:#003057;">Atención personalizada de lunes a viernes</span>
+                    <p style="margin-top:0.5rem; border-top:1px solid #eaf0f6; padding-top:0.8rem;">
+                        <i class="fas fa-map-marker-alt"></i> Lima, Perú · Atención personalizada de lunes a viernes
                     </p>
                 </div>
-                <div style="margin-top:1.5rem; background:#f8faff; border-radius:16px; padding:1.5rem; border:1px dashed #b31b1b;">
-                    <p style="font-weight:600; color:#003057;"><i class="fas fa-paper-plane" style="color:#b31b1b;"></i> ¿Necesita cotización o soporte técnico?</p>
-                    <p style="color:#3f5a78; font-size:0.95rem;">Escríbanos directamente al correo o WhatsApp y le atenderemos a la brevedad.</p>
+
+                <!-- FORMULARIO DE COTIZACIÓN -->
+                <div style="margin-top:2rem; background:#f8faff; border-radius:20px; padding:1.8rem; border:1px solid #e0e8f0;">
+                    <h3 style="color:#003057; margin-bottom:0.5rem;"><i class="fas fa-paper-plane" style="color:#b31b1b;"></i> Solicite su cotización</h3>
+                    <p style="color:#3f5a78; font-size:0.95rem; margin-bottom:1.2rem;">Complete el formulario y se abrirá su correo con los datos precargados.</p>
+
+                    <form class="form-cotizacion" id="quoteForm">
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                            <div>
+                                <label for="nombre">Nombre completo *</label>
+                                <input type="text" id="nombre" name="nombre" required placeholder="Ej: Carlos Pérez">
+                            </div>
+                            <div>
+                                <label for="email">Correo electrónico *</label>
+                                <input type="email" id="email" name="email" required placeholder="Ej: carlos@empresa.com">
+                            </div>
+                        </div>
+                        <label for="telefono">Teléfono / WhatsApp</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="Ej: 947 361 059">
+
+                        <label for="producto">Producto de interés</label>
+                        <select id="producto" name="producto">
+                            <option value="General">General / No específico</option>
+                            <option value="Variador de frecuencia Danfoss">Variador de frecuencia Danfoss</option>
+                            <option value="Sensor Greystone">Sensor Greystone</option>
+                            <option value="Transmisor Dwyer">Transmisor Dwyer</option>
+                            <option value="Detector de humo APC">Detector de humo APC</option>
+                            <option value="Manómetro Winters">Manómetro Winters</option>
+                            <option value="Otro">Otro (especificar en mensaje)</option>
+                        </select>
+
+                        <label for="mensaje">Mensaje o requerimiento técnico</label>
+                        <textarea id="mensaje" name="mensaje" placeholder="Describa qué necesita, cantidades, plazos, etc."></textarea>
+
+                        <button type="submit" class="btn btn-success" style="margin-top:1.2rem; width:100%; justify-content:center;">
+                            <i class="fas fa-envelope"></i> Enviar cotización por correo
+                        </button>
+                        <p style="font-size:0.8rem; color:#5f7390; margin-top:0.5rem; text-align:center;">
+                            <i class="fas fa-info-circle"></i> Al enviar, se abrirá su cliente de correo predeterminado.
+                        </p>
+                    </form>
+                </div>
+
+                <!-- REDES SOCIALES GRANDES -->
+                <div style="margin-top:2.5rem; text-align:center;">
+                    <p style="font-weight:600; color:#003057; font-size:1.1rem;">Síguenos en nuestras redes</p>
+                    <div class="social-big">
+                        <div>
+                            <a href="https://www.facebook.com/JGCBASSAC" target="_blank"><i class="fab fa-facebook"></i></a>
+                            <span>Facebook</span>
+                        </div>
+                        <div>
+                            <a href="https://www.instagram.com/jgc.bas" target="_blank"><i class="fab fa-instagram"></i></a>
+                            <span>Instagram</span>
+                        </div>
+                        <div>
+                            <a href="https://www.tiktok.com/@jgc.bas" target="_blank"><i class="fab fa-tiktok"></i></a>
+                            <span>TikTok</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -593,10 +818,17 @@
         </div>
     </main>
 
-    <!-- ===== JAVASCRIPT (Navegación y menú móvil) ===== -->
+    <!-- ===== WHATSAPP FLOTANTE ===== -->
+    <a href="https://wa.me/51947361059?text=Hola%20JGC%20BAS%2C%20vi%20su%20cat%C3%A1logo%20y%20quisiera%20solicitar%20informaci%C3%B3n." 
+       class="whatsapp-float" target="_blank" 
+       title="Escríbenos por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- ===== JAVASCRIPT (Navegación, menú móvil y formulario) ===== -->
     <script>
         (function() {
-            // ----- Cambio de secciones (Sidebar + Mobile) -----
+            // ----- 1. Navegación entre secciones -----
             const navLinks = document.querySelectorAll('a[data-section]');
             const sections = {
                 inicio: document.getElementById('inicio'),
@@ -607,39 +839,34 @@
             };
 
             function activateSection(sectionId) {
-                // Ocultar todas
                 Object.values(sections).forEach(sec => sec.classList.remove('active'));
-                // Mostrar la seleccionada
                 if (sections[sectionId]) {
                     sections[sectionId].classList.add('active');
                 }
-                // Actualizar clase 'active' en links del sidebar
                 document.querySelectorAll('.sidebar a[data-section]').forEach(link => {
                     link.classList.toggle('active', link.dataset.section === sectionId);
                 });
-                // Cerrar menú móvil al hacer clic
                 document.getElementById('mobileNav').classList.remove('open');
+                const icon = document.querySelector('#hamburgerBtn i');
+                if (icon) icon.className = 'fas fa-bars';
             }
 
-            // Event listeners para todos los links (sidebar + mobile)
             navLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const sectionId = this.dataset.section;
-                    // Cambiar hash en la URL (opcional, para navegación)
                     history.pushState(null, null, '#' + sectionId);
                     activateSection(sectionId);
                 });
             });
 
-            // ----- Menú móvil (hamburguesa) -----
+            // ----- 2. Menú móvil hamburguesa -----
             const hamburger = document.getElementById('hamburgerBtn');
             const mobileNav = document.getElementById('mobileNav');
 
             hamburger.addEventListener('click', function(e) {
                 e.stopPropagation();
                 mobileNav.classList.toggle('open');
-                // Cambiar ícono
                 const icon = this.querySelector('i');
                 if (mobileNav.classList.contains('open')) {
                     icon.className = 'fas fa-times';
@@ -648,7 +875,6 @@
                 }
             });
 
-            // Cerrar menú al hacer clic fuera (opcional)
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('.mobile-header') && !e.target.closest('.mobile-nav')) {
                     mobileNav.classList.remove('open');
@@ -657,7 +883,7 @@
                 }
             });
 
-            // ----- Cargar la sección según el hash de la URL al inicio -----
+            // ----- 3. Cargar sección por hash -----
             const hash = window.location.hash.replace('#', '');
             if (hash && sections[hash]) {
                 activateSection(hash);
@@ -665,12 +891,42 @@
                 activateSection('inicio');
             }
 
-            // Si el usuario usa el botón "atrás/adelante" del navegador
             window.addEventListener('hashchange', function() {
                 const h = window.location.hash.replace('#', '');
                 if (h && sections[h]) {
                     activateSection(h);
                 }
+            });
+
+            // ----- 4. Formulario de cotización (abre mailto) -----
+            const form = document.getElementById('quoteForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const nombre = document.getElementById('nombre').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const telefono = document.getElementById('telefono').value.trim();
+                const producto = document.getElementById('producto').value;
+                const mensaje = document.getElementById('mensaje').value.trim();
+
+                if (!nombre || !email) {
+                    alert('Por favor, complete su nombre y correo electrónico.');
+                    return;
+                }
+
+                // Construir cuerpo del correo
+                let body = 'Solicitud de cotización - JGC BAS SAC\n\n';
+                body += `Nombre: ${nombre}\n`;
+                body += `Correo: ${email}\n`;
+                if (telefono) body += `Teléfono: ${telefono}\n`;
+                body += `Producto de interés: ${producto}\n\n`;
+                body += `Mensaje:\n${mensaje || 'Sin mensaje adicional'}\n\n`;
+                body += '---\nEste mensaje fue enviado desde el sitio web JGC BAS SAC.';
+
+                const subject = encodeURIComponent('Cotización JGC BAS - ' + producto);
+                const mailtoLink = `mailto:jsaldarriaga@jgcbas.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+
+                window.location.href = mailtoLink;
             });
 
         })();
