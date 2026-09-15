@@ -20,66 +20,69 @@ a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 ul{list-style:none;}
 
-/* ============ PALETA JGC ============ */
+/* ============ PALETA ============ */
 :root{
   --verde:#017464;
   --celeste-medio:#BEDDB8;
   --celeste-claro:#E4F0EE;
   --azul-oscuro:#244061;
   --gris-texto:#3d4f5e;
-  --blanco:#ffffff;
 }
-
 .container{
   max-width:1280px;
   margin:0 auto;
   padding:0 1.5rem;
 }
 
-/* ============ HEADER ============ */
+/* ============ HEADER DIVIDIDO ============ */
 .header{
-  background:var(--azul-oscuro);
-  color:#fff;
   position:sticky;
   top:0;
   z-index:1000;
   box-shadow:0 2px 10px rgba(0,0,0,.15);
+  background:var(--azul-oscuro);
 }
-
 .header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:.9rem 0;
-  gap:1rem;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:stretch;
+  min-height:90px;
 }
-
-.header-logo img{
-  height:70px;
+.header-left{
+  background:#ffffff;
+  display:flex;
+  align-items:center;
+  padding:.8rem 1.5rem;
+}
+.header-left img{
+  height:65px;
   width:auto;
 }
-
-.header-contact{
+.header-right{
+  background:var(--azul-oscuro);
+  color:#fff;
   display:flex;
   align-items:center;
-  gap:1.5rem;
-  font-size:.9rem;
-  text-align:right;
+  justify-content:flex-end;
+  gap:2rem;
+  padding:.8rem 1.5rem;
 }
-.header-contact .info-line{
-  line-height:1.3;
+.header-contact{
+  display:flex;
+  gap:1.8rem;
+  text-align:right;
 }
 .header-contact .info-line strong{
   color:var(--celeste-medio);
   display:block;
-  font-size:.75rem;
+  font-size:.72rem;
   letter-spacing:1px;
   text-transform:uppercase;
+  margin-bottom:.1rem;
 }
 .header-contact .info-line span{
   color:#fff;
-  font-weight:600;
+  font-weight:700;
   font-size:1rem;
 }
 .header-social{
@@ -89,25 +92,34 @@ ul{list-style:none;}
 }
 .header-social a{
   color:#fff;
-  font-size:1.5rem;
+  font-size:1.4rem;
   transition:.2s;
 }
 .header-social a:hover{
   color:var(--celeste-medio);
   transform:scale(1.15);
 }
+.menu-toggle{
+  display:none;
+  background:transparent;
+  border:none;
+  color:#fff;
+  font-size:1.8rem;
+  cursor:pointer;
+  padding:.4rem .6rem;
+}
 
 /* ============ NAV ============ */
 .nav{
-  border-top:1px solid rgba(255,255,255,.1);
   background:var(--azul-oscuro);
+  border-top:1px solid rgba(255,255,255,.1);
 }
 .nav ul{
   display:flex;
   gap:2.5rem;
   padding:.8rem 0;
-  justify-content:flex-start;
   align-items:center;
+  justify-content:center;
 }
 .nav a{
   color:#e6edf5;
@@ -124,16 +136,25 @@ ul{list-style:none;}
   border-bottom-color:var(--celeste-medio);
 }
 
-/* Botón hamburguesa móvil */
-.menu-toggle{
-  display:none;
-  background:transparent;
-  border:none;
-  color:#fff;
-  font-size:1.8rem;
-  cursor:pointer;
-  padding:.5rem;
+/* ============ SECCIONES ============ */
+.section{padding:4.5rem 0;display:none;}
+.section.active{display:block;animation:fadeIn .5s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.section-title{
+  font-size:2.4rem;
+  font-weight:800;
+  color:var(--azul-oscuro);
+  margin-bottom:.6rem;
+  letter-spacing:-.5px;
 }
+.section-title span{color:var(--verde);}
+.section-subtitle{
+  color:var(--gris-texto);
+  font-size:1.1rem;
+  margin-bottom:2.5rem;
+  max-width:760px;
+}
+.bg-light{background:var(--celeste-claro);}
 
 /* ============ HERO ============ */
 .hero{
@@ -142,29 +163,23 @@ ul{list-style:none;}
   display:flex;
   align-items:center;
   background:
-    linear-gradient(120deg, rgba(36,64,97,.85) 0%, rgba(36,64,97,.4) 60%, rgba(36,64,97,.7) 100%),
-    url('assets/hero-bg.jpg') center/cover no-repeat;
+    linear-gradient(120deg, rgba(36,64,97,.88) 0%, rgba(36,64,97,.5) 60%, rgba(36,64,97,.75) 100%),
+    url('assets/hero-bg.jpg') center/cover no-repeat,
+    linear-gradient(135deg, #244061 0%, #017464 100%);
   color:#fff;
   overflow:hidden;
-}
-.hero::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg, rgba(36,64,97,.2) 0%, rgba(36,64,97,.6) 100%);
-  pointer-events:none;
 }
 .hero-content{
   position:relative;
   z-index:2;
-  max-width:700px;
+  max-width:720px;
   padding:4rem 0;
 }
 .hero-eyebrow{
   color:var(--celeste-medio);
   font-weight:700;
   letter-spacing:3px;
-  font-size:1rem;
+  font-size:.95rem;
   text-transform:uppercase;
   margin-bottom:1rem;
   display:inline-block;
@@ -172,20 +187,18 @@ ul{list-style:none;}
   padding-bottom:.3rem;
 }
 .hero-title{
-  font-size:3.5rem;
+  font-size:3.4rem;
   font-weight:800;
   line-height:1.1;
   margin-bottom:1.2rem;
   letter-spacing:-1px;
 }
-.hero-title .highlight{
-  color:var(--celeste-medio);
-}
+.hero-title .highlight{color:var(--celeste-medio);}
 .hero-subtitle{
-  font-size:1.2rem;
+  font-size:1.15rem;
   margin-bottom:2rem;
   opacity:.95;
-  max-width:560px;
+  max-width:580px;
 }
 .hero-cta{
   display:inline-flex;
@@ -206,7 +219,7 @@ ul{list-style:none;}
   box-shadow:0 12px 32px rgba(1,116,100,.6);
 }
 
-/* ============ BANDA AZUL — CONTACTO ============ */
+/* ============ BANDA CONTACTO AZUL ============ */
 .banda-contacto{
   background:var(--azul-oscuro);
   color:#fff;
@@ -221,13 +234,11 @@ ul{list-style:none;}
   gap:2rem;
 }
 .banda-contacto h3{
-  font-size:2rem;
+  font-size:1.9rem;
   font-weight:700;
   margin-bottom:.8rem;
 }
-.banda-contacto h3 span{
-  color:var(--celeste-medio);
-}
+.banda-contacto h3 span{color:var(--celeste-medio);}
 .banda-tels{
   display:flex;
   flex-direction:column;
@@ -236,13 +247,10 @@ ul{list-style:none;}
 .banda-tels a{
   color:var(--celeste-medio);
   font-weight:700;
-  font-size:1.4rem;
-  letter-spacing:.5px;
+  font-size:1.3rem;
   transition:.2s;
 }
-.banda-tels a:hover{
-  color:#fff;
-}
+.banda-tels a:hover{color:#fff;}
 .banda-tels .ciudad{
   color:#cbdae9;
   font-size:1rem;
@@ -270,40 +278,10 @@ ul{list-style:none;}
   transform:scale(1.1);
 }
 
-/* ============ SECCIONES ============ */
-.section{
-  padding:5rem 0;
-  display:none;
-}
-.section.active{
-  display:block;
-  animation:fadeIn .5s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
-}
-.section-title{
-  font-size:2.4rem;
-  font-weight:800;
-  color:var(--azul-oscuro);
-  margin-bottom:.6rem;
-  letter-spacing:-.5px;
-}
-.section-title span{
-  color:var(--verde);
-}
-.section-subtitle{
-  color:var(--gris-texto);
-  font-size:1.1rem;
-  margin-bottom:2.5rem;
-  max-width:720px;
-}
-
-/* ============ GRID SERVICIOS (con logos marcas) ============ */
+/* ============ SERVICIOS (con imágenes de assets/servicios/) ============ */
 .servicios-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:1.5rem;
 }
 .servicio-card{
@@ -311,87 +289,63 @@ ul{list-style:none;}
   border-radius:16px;
   overflow:hidden;
   aspect-ratio:4/5;
-  background:#f0f5f9;
-  box-shadow:0 8px 24px rgba(0,0,0,.08);
+  background:linear-gradient(135deg,var(--azul-oscuro),var(--verde));
+  box-shadow:0 8px 24px rgba(0,0,0,.1);
   transition:.3s;
-  cursor:pointer;
 }
 .servicio-card:hover{
   transform:translateY(-6px);
-  box-shadow:0 16px 40px rgba(0,0,0,.15);
+  box-shadow:0 16px 40px rgba(0,0,0,.18);
 }
 .servicio-card img{
   width:100%;
   height:100%;
   object-fit:cover;
+  position:absolute;
+  inset:0;
+  transition:.4s;
 }
+.servicio-card:hover img{transform:scale(1.08);}
 .servicio-card .overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(36,64,97,0) 40%, rgba(36,64,97,.95) 100%);
+  background:linear-gradient(180deg, rgba(36,64,97,0) 30%, rgba(36,64,97,.95) 100%);
   display:flex;
-  align-items:flex-end;
+  flex-direction:column;
+  justify-content:flex-end;
   padding:1.5rem;
   color:#fff;
+  z-index:2;
 }
 .servicio-card .overlay h4{
   font-size:1.4rem;
-  font-weight:700;
+  font-weight:800;
   color:#fff;
+  margin-bottom:.3rem;
 }
 .servicio-card .overlay p{
   font-size:.9rem;
-  opacity:.85;
-  margin-top:.3rem;
+  opacity:.9;
+  line-height:1.4;
 }
-.servicio-card.brand-card{
-  background:#fff;
+/* Fallback si la imagen no existe: solo se ve el degradado + ícono */
+.servicio-card .fallback-icon{
+  position:absolute;
+  inset:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:2rem;
-  aspect-ratio:1/1;
-}
-.servicio-card.brand-card img{
-  max-height:80%;
-  max-width:80%;
-  object-fit:contain;
-  filter:grayscale(0%);
-  transition:.3s;
-}
-.servicio-card.brand-card:hover img{
-  transform:scale(1.08);
-}
-.servicio-card.brand-card .brand-name{
-  position:absolute;
-  bottom:1rem;
-  left:0;
-  right:0;
-  text-align:center;
-  font-size:.9rem;
-  color:var(--azul-oscuro);
-  font-weight:700;
-  letter-spacing:.5px;
+  font-size:5rem;
+  color:rgba(255,255,255,.25);
+  z-index:1;
 }
 
-/* Layout especial con tarjeta grande a la izquierda */
-.servicios-layout{
-  display:grid;
-  grid-template-columns:1.2fr 1fr 1fr;
-  grid-template-rows:auto auto;
-  gap:1.5rem;
-}
-.servicios-layout .servicio-card:nth-child(1){
-  grid-row:span 2;
-  aspect-ratio:auto;
-}
-
-/* ============ MARCAS ============ */
+/* ============ MARCAS (logos) ============ */
 .marcas-logos{
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:2rem;
-  align-items:center;
+  gap:1.5rem;
+  align-items:stretch;
   margin-top:2rem;
 }
 .marca-logo{
@@ -402,6 +356,11 @@ ul{list-style:none;}
   box-shadow:0 4px 12px rgba(0,0,0,.06);
   transition:.3s;
   border:1px solid #e0e8ef;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:130px;
 }
 .marca-logo:hover{
   transform:translateY(-4px);
@@ -410,8 +369,16 @@ ul{list-style:none;}
 }
 .marca-logo img{
   max-height:60px;
-  margin:0 auto;
+  max-width:90%;
   object-fit:contain;
+  margin:0 auto;
+}
+.marca-logo .brand-name{
+  font-size:.75rem;
+  color:var(--azul-oscuro);
+  font-weight:700;
+  letter-spacing:.5px;
+  margin-top:.8rem;
 }
 
 /* ============ CATÁLOGO PDF ============ */
@@ -448,21 +415,60 @@ ul{list-style:none;}
   border:none;
   cursor:pointer;
 }
-.btn-primary{
-  background:var(--azul-oscuro);
-  color:#fff;
+.btn-primary{background:var(--azul-oscuro);color:#fff;}
+.btn-primary:hover{background:#1a3150;transform:translateY(-2px);}
+.btn-download{background:var(--verde);color:#fff;}
+.btn-download:hover{background:#005a4d;transform:translateY(-2px);}
+
+/* ============ NOSOTROS ============ */
+.nosotros-grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr;
+  gap:3rem;
+  align-items:start;
 }
-.btn-primary:hover{
-  background:#1a3150;
-  transform:translateY(-2px);
+.nosotros-grid p{
+  font-size:1.05rem;
+  color:var(--gris-texto);
+  margin-bottom:1rem;
 }
-.btn-download{
-  background:var(--verde);
-  color:#fff;
+.nosotros-panel{
+  background:var(--celeste-claro);
+  border-radius:20px;
+  padding:2rem;
+  border-left:6px solid var(--verde);
 }
-.btn-download:hover{
-  background:#005a4d;
-  transform:translateY(-2px);
+.nosotros-panel h4{
+  color:var(--azul-oscuro);
+  margin-bottom:.5rem;
+  font-size:1.15rem;
+}
+.nosotros-panel h4:not(:first-child){margin-top:1.5rem;}
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+  margin-top:2rem;
+}
+.stat-item{
+  background:#fff;
+  border-radius:16px;
+  padding:1.5rem;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  border-bottom:4px solid var(--verde);
+}
+.stat-item .num{
+  font-size:2.4rem;
+  font-weight:800;
+  color:var(--verde);
+  line-height:1;
+}
+.stat-item .lbl{
+  color:var(--gris-texto);
+  font-size:.9rem;
+  margin-top:.5rem;
+  font-weight:600;
 }
 
 /* ============ CONTACTO ============ */
@@ -486,17 +492,12 @@ ul{list-style:none;}
   flex-shrink:0;
   margin-top:.2rem;
 }
-.contacto-info p strong{
-  color:var(--azul-oscuro);
-}
+.contacto-info p strong{color:var(--azul-oscuro);}
 .contacto-info a{
   color:var(--azul-oscuro);
   font-weight:600;
 }
-.contacto-info a:hover{
-  color:var(--verde);
-}
-
+.contacto-info a:hover{color:var(--verde);}
 .form-contacto{
   background:var(--celeste-claro);
   border-radius:20px;
@@ -529,63 +530,7 @@ ul{list-style:none;}
   outline:none;
   box-shadow:0 0 0 3px rgba(1,116,100,.15);
 }
-.form-contacto textarea{
-  resize:vertical;
-  min-height:120px;
-}
-
-/* ============ NOSOTROS ============ */
-.nosotros-grid{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:3rem;
-  align-items:start;
-}
-.nosotros-grid p{
-  font-size:1.05rem;
-  color:var(--gris-texto);
-  margin-bottom:1rem;
-}
-.nosotros-panel{
-  background:var(--celeste-claro);
-  border-radius:20px;
-  padding:2rem;
-  border-left:6px solid var(--verde);
-}
-.nosotros-panel h4{
-  color:var(--azul-oscuro);
-  margin-bottom:.5rem;
-  font-size:1.15rem;
-}
-.nosotros-panel h4:not(:first-child){
-  margin-top:1.5rem;
-}
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:1.5rem;
-  margin-top:2rem;
-}
-.stat-item{
-  background:#fff;
-  border-radius:16px;
-  padding:1.5rem;
-  text-align:center;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
-  border-bottom:4px solid var(--verde);
-}
-.stat-item .num{
-  font-size:2.4rem;
-  font-weight:800;
-  color:var(--verde);
-  line-height:1;
-}
-.stat-item .lbl{
-  color:var(--gris-texto);
-  font-size:.9rem;
-  margin-top:.5rem;
-  font-weight:600;
-}
+.form-contacto textarea{resize:vertical;min-height:120px;}
 
 /* ============ FOOTER ============ */
 .footer{
@@ -615,9 +560,7 @@ ul{list-style:none;}
   line-height:1.8;
   display:block;
 }
-.footer-col a:hover{
-  color:var(--celeste-medio);
-}
+.footer-col a:hover{color:var(--celeste-medio);}
 .footer-col i{
   color:var(--celeste-medio);
   margin-right:.5rem;
@@ -679,38 +622,33 @@ ul{list-style:none;}
 /* ============ RESPONSIVE ============ */
 @media (max-width:1024px){
   .hero-title{font-size:2.8rem;}
-  .servicios-layout{
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:auto auto auto;
-  }
-  .servicios-layout .servicio-card:nth-child(1){
-    grid-row:span 1;
-    grid-column:span 2;
-    aspect-ratio:16/9;
-  }
+  .servicios-grid{grid-template-columns:repeat(2,1fr);}
   .marcas-logos{grid-template-columns:repeat(3,1fr);}
 }
-
 @media (max-width:820px){
-  .menu-toggle{display:block;order:2;}
-  .header-top{flex-wrap:wrap;position:relative;}
-  .header-contact{display:none;}
-  .nav{
-    display:none;
-    border-top:1px solid rgba(255,255,255,.1);
+  .header-top{
+    grid-template-columns:auto 1fr;
+    min-height:70px;
   }
+  .header-left{padding:.5rem 1rem;}
+  .header-left img{height:50px;}
+  .header-right{padding:.5rem 1rem;gap:.8rem;}
+  .header-contact{display:none;}
+  .menu-toggle{display:block;}
+  .nav{display:none;}
   .nav.open{display:block;}
   .nav ul{
     flex-direction:column;
     gap:0;
     padding:.5rem 0;
+    justify-content:flex-start;
   }
   .nav ul li{
-    border-bottom:1px solid rgba(255,255,255,.08);
     width:100%;
+    border-bottom:1px solid rgba(255,255,255,.08);
   }
   .nav ul li a{
-    padding:1rem 0;
+    padding:1rem 1.5rem;
     display:block;
     border:none;
   }
@@ -727,44 +665,38 @@ ul{list-style:none;}
   .banda-tels{align-items:center;}
   .section{padding:3rem 0;}
   .section-title{font-size:1.8rem;}
-  .servicios-layout,
-  .servicios-grid{
-    grid-template-columns:1fr;
-  }
-  .servicios-layout .servicio-card:nth-child(1){
-    grid-column:span 1;
-  }
+  .servicios-grid{grid-template-columns:1fr 1fr;}
   .marcas-logos{grid-template-columns:repeat(2,1fr);}
   .pdf-viewer iframe{height:450px;}
   .contacto-grid,
-  .nosotros-grid{
-    grid-template-columns:1fr;
-  }
+  .nosotros-grid{grid-template-columns:1fr;}
   .stats-grid{grid-template-columns:1fr;}
   .footer-grid{grid-template-columns:1fr;gap:1.5rem;}
   .whatsapp-float{width:56px;height:56px;font-size:1.8rem;bottom:20px;right:20px;}
 }
-
 @media (max-width:480px){
   .hero-title{font-size:1.8rem;}
-  .hero-eyebrow{font-size:.8rem;letter-spacing:2px;}
+  .hero-eyebrow{font-size:.75rem;letter-spacing:2px;}
   .section-title{font-size:1.5rem;}
   .pdf-viewer iframe{height:350px;}
   .btn{width:100%;justify-content:center;}
+  .servicios-grid{grid-template-columns:1fr;}
   .marcas-logos{grid-template-columns:1fr 1fr;gap:1rem;}
 }
 </style>
 </head>
 <body>
 
-<!-- ============ HEADER ============ -->
+<!-- ============ HEADER DIVIDIDO ============ -->
 <header class="header">
-  <div class="container">
-    <div class="header-top">
-      <a href="#inicio" class="header-logo" data-section="inicio">
-        <img src="assets/logo-jgc.png" alt="JGC Building Automation Supplies SAC">
-      </a>
+  <div class="header-top">
+    <!-- MITAD IZQUIERDA: BLANCA con logo -->
+    <a href="#inicio" class="header-left" data-section="inicio">
+      <img src="assets/logo-jgc.png" alt="JGC Building Automation Supplies SAC">
+    </a>
 
+    <!-- MITAD DERECHA: AZUL con contacto, redes y menú móvil -->
+    <div class="header-right">
       <div class="header-contact">
         <div class="info-line">
           <strong>Central</strong>
@@ -786,20 +718,21 @@ ul{list-style:none;}
         <i class="fas fa-bars"></i>
       </button>
     </div>
-
-    <nav class="nav" id="navMenu">
-      <ul>
-        <li><a href="#inicio" class="active" data-section="inicio">Inicio</a></li>
-        <li><a href="#nosotros" data-section="nosotros">Nosotros</a></li>
-        <li><a href="#marcas" data-section="marcas">Marcas</a></li>
-        <li><a href="#catalogo" data-section="catalogo">Catálogo</a></li>
-        <li><a href="#contacto" data-section="contacto">Contacto</a></li>
-      </ul>
-    </nav>
   </div>
+
+  <nav class="nav" id="navMenu">
+    <ul>
+      <li><a href="#inicio" class="active" data-section="inicio">Inicio</a></li>
+      <li><a href="#nosotros" data-section="nosotros">Nosotros</a></li>
+      <li><a href="#servicios" data-section="servicios">Servicios</a></li>
+      <li><a href="#marcas" data-section="marcas">Marcas</a></li>
+      <li><a href="#catalogo" data-section="catalogo">Catálogo</a></li>
+      <li><a href="#contacto" data-section="contacto">Contacto</a></li>
+    </ul>
+  </nav>
 </header>
 
-<!-- ============ HERO (Inicio) ============ -->
+<!-- ============ INICIO ============ -->
 <section id="inicio" class="section active">
   <div class="hero">
     <div class="container">
@@ -817,7 +750,6 @@ ul{list-style:none;}
     </div>
   </div>
 
-  <!-- Banda azul de contacto -->
   <div class="banda-contacto">
     <div class="container">
       <div>
@@ -892,7 +824,59 @@ ul{list-style:none;}
   </div>
 </section>
 
-<!-- ============ MARCAS ============ -->
+<!-- ============ SERVICIOS (usa assets/servicios/) ============ -->
+<section id="servicios" class="section bg-light">
+  <div class="container">
+    <h2 class="section-title">Nuestros <span>servicios</span></h2>
+    <p class="section-subtitle">
+      Soluciones especializadas para cada etapa de tu proyecto, desde la selección técnica hasta la puesta en marcha.
+    </p>
+
+    <div class="servicios-grid">
+      <!-- HVAC -->
+      <article class="servicio-card">
+        <span class="fallback-icon"><i class="fas fa-snowflake"></i></span>
+        <img src="assets/servicios/hvac.jpg" alt="HVAC" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>HVAC</h4>
+          <p>Climatización y ventilación</p>
+        </div>
+      </article>
+
+      <!-- Automatización -->
+      <article class="servicio-card">
+        <span class="fallback-icon"><i class="fas fa-microchip"></i></span>
+        <img src="assets/servicios/automatizacion.jpg" alt="Automatización" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Automatización</h4>
+          <p>Control y monitoreo</p>
+        </div>
+      </article>
+
+      <!-- Sensores -->
+      <article class="servicio-card">
+        <span class="fallback-icon"><i class="fas fa-tachometer-alt"></i></span>
+        <img src="assets/servicios/sensores.jpg" alt="Sensores" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Sensores</h4>
+          <p>Medición y precisión</p>
+        </div>
+      </article>
+
+      <!-- Asesoría -->
+      <article class="servicio-card">
+        <span class="fallback-icon"><i class="fas fa-user-cog"></i></span>
+        <img src="assets/servicios/asesoria.jpg" alt="Asesoría" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Asesoría</h4>
+          <p>Soporte técnico especializado</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARCAS (logos) ============ -->
 <section id="marcas" class="section">
   <div class="container">
     <h2 class="section-title">Nuestras <span>marcas</span></h2>
@@ -903,48 +887,30 @@ ul{list-style:none;}
     <div class="marcas-logos">
       <a class="marca-logo" href="https://greystoneenergy.com/" target="_blank">
         <img src="assets/marcas/greystone.png" alt="Greystone Energy Systems">
+        <span class="brand-name">Representante Exclusivo</span>
       </a>
       <a class="marca-logo" href="https://www.danfoss.com/" target="_blank">
         <img src="assets/marcas/danfoss.png" alt="Danfoss">
+        <span class="brand-name">Variadores de frecuencia</span>
       </a>
       <a class="marca-logo" href="https://www.dwyeromega.com/" target="_blank">
         <img src="assets/marcas/dwyer.png" alt="Dwyer Omega">
+        <span class="brand-name">Instrumentación</span>
       </a>
       <a class="marca-logo" href="https://apcfire.com/" target="_blank">
         <img src="assets/marcas/apc.png" alt="Air Products & Controls">
+        <span class="brand-name">Detección y control</span>
       </a>
       <a class="marca-logo" href="https://winters.com/" target="_blank">
         <img src="assets/marcas/winters.png" alt="Winters Instruments">
-      </a>
-    </div>
-
-    <div class="servicios-layout" style="margin-top:3rem;">
-      <div class="servicio-card brand-card">
-        <img src="assets/marcas/greystone.png" alt="Greystone">
-        <span class="brand-name">Representante Exclusivo en Perú</span>
-      </div>
-      <div class="servicio-card brand-card">
-        <img src="assets/marcas/danfoss.png" alt="Danfoss">
-        <span class="brand-name">Variadores de frecuencia</span>
-      </div>
-      <div class="servicio-card brand-card">
-        <img src="assets/marcas/apc.png" alt="APC">
-        <span class="brand-name">Detección y control</span>
-      </div>
-      <div class="servicio-card brand-card">
-        <img src="assets/marcas/dwyer.png" alt="Dwyer Omega">
-        <span class="brand-name">Instrumentación</span>
-      </div>
-      <div class="servicio-card brand-card">
-        <img src="assets/marcas/winters.png" alt="Winters">
         <span class="brand-name">Manómetros y presión</span>
-      </div>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ============ CATÁLOGO ============ -->
-<section id="catalogo" class="section">
+<section id="catalogo" class="section bg-light">
   <div class="container">
     <h2 class="section-title">Catálogo <span>de productos</span></h2>
     <p class="section-subtitle">
@@ -1079,11 +1045,11 @@ ul{list-style:none;}
 <!-- ============ JAVASCRIPT ============ -->
 <script>
 (function(){
-  // ---- Navegación entre secciones ----
   const navLinks = document.querySelectorAll('a[data-section]');
   const sections = {
     inicio: document.getElementById('inicio'),
     nosotros: document.getElementById('nosotros'),
+    servicios: document.getElementById('servicios'),
     marcas: document.getElementById('marcas'),
     catalogo: document.getElementById('catalogo'),
     contacto: document.getElementById('contacto')
@@ -1092,11 +1058,9 @@ ul{list-style:none;}
   function activateSection(id){
     Object.values(sections).forEach(s => s && s.classList.remove('active'));
     if(sections[id]) sections[id].classList.add('active');
-
     document.querySelectorAll('.nav a[data-section]').forEach(a => {
       a.classList.toggle('active', a.dataset.section === id);
     });
-
     document.getElementById('navMenu').classList.remove('open');
     document.getElementById('menuToggle').innerHTML = '<i class="fas fa-bars"></i>';
     window.scrollTo({top:0,behavior:'smooth'});
@@ -1111,7 +1075,6 @@ ul{list-style:none;}
     });
   });
 
-  // ---- Menú móvil ----
   const toggle = document.getElementById('menuToggle');
   const nav = document.getElementById('navMenu');
   toggle.addEventListener('click', e => {
@@ -1127,7 +1090,6 @@ ul{list-style:none;}
     }
   });
 
-  // ---- Hash inicial ----
   const hash = location.hash.replace('#','');
   if(hash && sections[hash]) activateSection(hash);
 
@@ -1136,7 +1098,6 @@ ul{list-style:none;}
     if(h && sections[h]) activateSection(h);
   });
 
-  // ---- Formulario (mailto) ----
   document.getElementById('contactForm').addEventListener('submit', function(e){
     e.preventDefault();
     const nombre = document.getElementById('nombre').value.trim();
@@ -1150,7 +1111,7 @@ ul{list-style:none;}
       return;
     }
 
-    let body = 'Solicitud desde jgcbas.com\n\n';
+    let body = 'Solicitud desde la web JGC BAS\n\n';
     body += `Nombre: ${nombre}\n`;
     body += `Email: ${email}\n`;
     if(tel) body += `Teléfono: ${tel}\n`;
