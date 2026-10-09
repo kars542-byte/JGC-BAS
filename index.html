@@ -6,7 +6,6 @@
 <title>JGC BAS SAC · Building Automation Supplies</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <style>
-/* ============ RESET ============ */
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{
@@ -20,7 +19,6 @@ a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 ul{list-style:none;}
 
-/* ============ PALETA ============ */
 :root{
   --verde:#017464;
   --celeste-medio:#BEDDB8;
@@ -34,7 +32,7 @@ ul{list-style:none;}
   padding:0 1.5rem;
 }
 
-/* ============ HEADER DIVIDIDO ============ */
+/* ============ HEADER ============ */
 .header{
   position:sticky;
   top:0;
@@ -44,9 +42,9 @@ ul{list-style:none;}
 }
 .header-top{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:1.3fr 1fr;
   align-items:stretch;
-  min-height:90px;
+  min-height:100px;
 }
 .header-left{
   background:#ffffff;
@@ -55,8 +53,9 @@ ul{list-style:none;}
   padding:.8rem 1.5rem;
 }
 .header-left img{
-  height:65px;
+  height:80px;
   width:auto;
+  max-width:100%;
 }
 .header-right{
   background:var(--azul-oscuro);
@@ -64,18 +63,18 @@ ul{list-style:none;}
   display:flex;
   align-items:center;
   justify-content:flex-end;
-  gap:2rem;
+  gap:1.8rem;
   padding:.8rem 1.5rem;
 }
 .header-contact{
   display:flex;
-  gap:1.8rem;
+  gap:1.5rem;
   text-align:right;
 }
 .header-contact .info-line strong{
   color:var(--celeste-medio);
   display:block;
-  font-size:.72rem;
+  font-size:.7rem;
   letter-spacing:1px;
   text-transform:uppercase;
   margin-bottom:.1rem;
@@ -83,21 +82,28 @@ ul{list-style:none;}
 .header-contact .info-line span{
   color:#fff;
   font-weight:700;
-  font-size:1rem;
+  font-size:.95rem;
 }
 .header-social{
   display:flex;
-  gap:.8rem;
+  gap:.7rem;
   align-items:center;
 }
 .header-social a{
   color:#fff;
-  font-size:1.4rem;
+  font-size:1.3rem;
   transition:.2s;
+  width:34px;
+  height:34px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
 }
 .header-social a:hover{
-  color:var(--celeste-medio);
-  transform:scale(1.15);
+  background:var(--verde);
+  transform:scale(1.1);
 }
 .menu-toggle{
   display:none;
@@ -136,8 +142,42 @@ ul{list-style:none;}
   border-bottom-color:var(--celeste-medio);
 }
 
+/* ============ PASARELA DE MARCAS ============ */
+.brand-strip{
+  background:#fff;
+  border-bottom:1px solid #e4ebf2;
+  padding:1rem 0;
+  overflow:hidden;
+}
+.brand-strip .container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
+  flex-wrap:nowrap;
+}
+.brand-strip a{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:.5rem;
+  transition:.3s;
+  opacity:.85;
+}
+.brand-strip a:hover{
+  opacity:1;
+  transform:translateY(-2px);
+}
+.brand-strip img{
+  max-height:55px;
+  max-width:100%;
+  object-fit:contain;
+  margin:0 auto;
+}
+
 /* ============ SECCIONES ============ */
-.section{padding:4.5rem 0;display:none;}
+.section{padding:3.5rem 0;display:none;}
 .section.active{display:block;animation:fadeIn .5s ease;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 .section-title{
@@ -146,40 +186,43 @@ ul{list-style:none;}
   color:var(--azul-oscuro);
   margin-bottom:.6rem;
   letter-spacing:-.5px;
+  text-align:center;
 }
-.section-title span{color:var(--verde);}
+.section-title .azul{color:var(--azul-oscuro);}
+.section-title .verde{color:var(--verde);}
 .section-subtitle{
   color:var(--gris-texto);
-  font-size:1.1rem;
+  font-size:1.05rem;
   margin-bottom:2.5rem;
-  max-width:760px;
+  max-width:100%;
+  text-align:center;
+  padding:0 1rem;
 }
 .bg-light{background:var(--celeste-claro);}
 
 /* ============ HERO ============ */
 .hero{
   position:relative;
-  min-height:560px;
+  min-height:520px;
   display:flex;
   align-items:center;
   background:
-    linear-gradient(120deg, rgba(36,64,97,.88) 0%, rgba(36,64,97,.5) 60%, rgba(36,64,97,.75) 100%),
+    linear-gradient(120deg, rgba(36,64,97,.9) 0%, rgba(36,64,97,.55) 60%, rgba(36,64,97,.8) 100%),
     url('assets/hero-bg.jpg') center/cover no-repeat,
     linear-gradient(135deg, #244061 0%, #017464 100%);
   color:#fff;
-  overflow:hidden;
 }
 .hero-content{
   position:relative;
   z-index:2;
-  max-width:720px;
+  max-width:760px;
   padding:4rem 0;
 }
 .hero-eyebrow{
   color:var(--celeste-medio);
   font-weight:700;
   letter-spacing:3px;
-  font-size:.95rem;
+  font-size:.9rem;
   text-transform:uppercase;
   margin-bottom:1rem;
   display:inline-block;
@@ -187,7 +230,7 @@ ul{list-style:none;}
   padding-bottom:.3rem;
 }
 .hero-title{
-  font-size:3.4rem;
+  font-size:3rem;
   font-weight:800;
   line-height:1.1;
   margin-bottom:1.2rem;
@@ -195,10 +238,10 @@ ul{list-style:none;}
 }
 .hero-title .highlight{color:var(--celeste-medio);}
 .hero-subtitle{
-  font-size:1.15rem;
+  font-size:1.1rem;
   margin-bottom:2rem;
   opacity:.95;
-  max-width:580px;
+  max-width:640px;
 }
 .hero-cta{
   display:inline-flex;
@@ -216,10 +259,9 @@ ul{list-style:none;}
 .hero-cta:hover{
   background:#005a4d;
   transform:translateY(-3px);
-  box-shadow:0 12px 32px rgba(1,116,100,.6);
 }
 
-/* ============ BANDA CONTACTO AZUL ============ */
+/* ============ BANDA CONTACTO ============ */
 .banda-contacto{
   background:var(--azul-oscuro);
   color:#fff;
@@ -242,49 +284,32 @@ ul{list-style:none;}
 .banda-tels{
   display:flex;
   flex-direction:column;
-  gap:.4rem;
+  gap:.5rem;
 }
 .banda-tels a{
   color:var(--celeste-medio);
   font-weight:700;
-  font-size:1.3rem;
+  font-size:1.25rem;
   transition:.2s;
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
 }
-.banda-tels a:hover{color:#fff;}
+.banda-tels a:hover{color:#fff;transform:translateX(4px);}
 .banda-tels .ciudad{
   color:#cbdae9;
-  font-size:1rem;
+  font-size:.95rem;
   font-weight:400;
-}
-.banda-social{
-  display:flex;
-  gap:1rem;
-  align-items:center;
-}
-.banda-social a{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  background:rgba(255,255,255,.1);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:1.6rem;
-  color:#fff;
-  transition:.3s;
-}
-.banda-social a:hover{
-  background:var(--verde);
-  transform:scale(1.1);
+  margin-top:.3rem;
 }
 
-/* ============ SERVICIOS (con imágenes de assets/servicios/) ============ */
-.servicios-grid{
+/* ============ PRODUCTOS (grid principal) ============ */
+.productos-grid{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:1.5rem;
 }
-.servicio-card{
+.producto-card{
   position:relative;
   border-radius:16px;
   overflow:hidden;
@@ -293,11 +318,11 @@ ul{list-style:none;}
   box-shadow:0 8px 24px rgba(0,0,0,.1);
   transition:.3s;
 }
-.servicio-card:hover{
+.producto-card:hover{
   transform:translateY(-6px);
   box-shadow:0 16px 40px rgba(0,0,0,.18);
 }
-.servicio-card img{
+.producto-card img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -305,31 +330,30 @@ ul{list-style:none;}
   inset:0;
   transition:.4s;
 }
-.servicio-card:hover img{transform:scale(1.08);}
-.servicio-card .overlay{
+.producto-card:hover img{transform:scale(1.08);}
+.producto-card .overlay{
   position:absolute;
   inset:0;
   background:linear-gradient(180deg, rgba(36,64,97,0) 30%, rgba(36,64,97,.95) 100%);
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
-  padding:1.5rem;
+  padding:1.4rem;
   color:#fff;
   z-index:2;
 }
-.servicio-card .overlay h4{
-  font-size:1.4rem;
+.producto-card .overlay h4{
+  font-size:1.25rem;
   font-weight:800;
   color:#fff;
   margin-bottom:.3rem;
 }
-.servicio-card .overlay p{
-  font-size:.9rem;
+.producto-card .overlay p{
+  font-size:.85rem;
   opacity:.9;
   line-height:1.4;
 }
-/* Fallback si la imagen no existe: solo se ve el degradado + ícono */
-.servicio-card .fallback-icon{
+.producto-card .fallback-icon{
   position:absolute;
   inset:0;
   display:flex;
@@ -340,7 +364,7 @@ ul{list-style:none;}
   z-index:1;
 }
 
-/* ============ MARCAS (logos) ============ */
+/* ============ MARCAS (grid logos) ============ */
 .marcas-logos{
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -351,16 +375,15 @@ ul{list-style:none;}
 .marca-logo{
   background:#fff;
   border-radius:14px;
-  padding:1.5rem 1rem;
+  padding:1.8rem 1rem;
   text-align:center;
   box-shadow:0 4px 12px rgba(0,0,0,.06);
   transition:.3s;
   border:1px solid #e0e8ef;
   display:flex;
-  flex-direction:column;
-  justify-content:center;
   align-items:center;
-  min-height:130px;
+  justify-content:center;
+  min-height:140px;
 }
 .marca-logo:hover{
   transform:translateY(-4px);
@@ -368,31 +391,123 @@ ul{list-style:none;}
   border-color:var(--verde);
 }
 .marca-logo img{
-  max-height:60px;
-  max-width:90%;
+  max-height:80px;
+  max-width:95%;
   object-fit:contain;
   margin:0 auto;
 }
-.marca-logo .brand-name{
+
+/* ============ CATÁLOGO (grid productos) ============ */
+.catalogo-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+  margin-top:1.5rem;
+}
+.catalogo-item{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 4px 12px rgba(0,0,0,.06);
+  border:1px solid #e0e8ef;
+  transition:.3s;
+  display:flex;
+  flex-direction:column;
+}
+.catalogo-item:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 24px rgba(0,0,0,.12);
+  border-color:var(--verde);
+}
+.catalogo-item .item-img{
+  width:100%;
+  height:180px;
+  background:#f6f9fc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:1rem;
+  border-bottom:1px solid #eaf0f6;
+}
+.catalogo-item .item-img img{
+  max-height:100%;
+  max-width:100%;
+  object-fit:contain;
+}
+.catalogo-item .item-img .placeholder{
+  font-size:3rem;
+  color:#cdd8e3;
+}
+.catalogo-item .item-info{
+  padding:1rem;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+.catalogo-item .item-brand{
   font-size:.75rem;
-  color:var(--azul-oscuro);
   font-weight:700;
+  color:var(--verde);
+  text-transform:uppercase;
   letter-spacing:.5px;
-  margin-top:.8rem;
+  margin-bottom:.2rem;
+}
+.catalogo-item .item-name{
+  font-size:.95rem;
+  font-weight:700;
+  color:var(--azul-oscuro);
+  margin-bottom:.3rem;
+  line-height:1.3;
+  min-height:2.6em;
+}
+.catalogo-item .item-code{
+  font-size:.8rem;
+  color:#6b7a8c;
+  margin-bottom:.5rem;
+}
+.catalogo-item .item-footer{
+  margin-top:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:.6rem;
+  border-top:1px solid #eaf0f6;
+}
+.catalogo-item .item-price{
+  font-size:1rem;
+  font-weight:800;
+  color:var(--verde);
+}
+.catalogo-item .item-btn{
+  background:var(--azul-oscuro);
+  color:#fff;
+  border:none;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  transition:.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:.9rem;
+}
+.catalogo-item .item-btn:hover{
+  background:var(--verde);
+  transform:scale(1.1);
 }
 
-/* ============ CATÁLOGO PDF ============ */
-.pdf-viewer{
+.catalogo-pdf{
   border-radius:16px;
   overflow:hidden;
   box-shadow:0 8px 32px rgba(0,0,0,.1);
   border:1px solid #dce3ec;
-  margin:1.5rem 0;
+  margin:2rem 0 0 0;
   background:#fff;
 }
-.pdf-viewer iframe{
+.catalogo-pdf iframe{
   width:100%;
-  height:720px;
+  height:600px;
   display:block;
   border:none;
 }
@@ -421,116 +536,225 @@ ul{list-style:none;}
 .btn-download:hover{background:#005a4d;transform:translateY(-2px);}
 
 /* ============ NOSOTROS ============ */
-.nosotros-grid{
-  display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:3rem;
-  align-items:start;
+.nosotros-block{
+  max-width:960px;
+  margin:0 auto;
 }
-.nosotros-grid p{
+.nosotros-block p{
   font-size:1.05rem;
   color:var(--gris-texto);
-  margin-bottom:1rem;
+  margin-bottom:1.2rem;
+  text-align:justify;
 }
-.nosotros-panel{
-  background:var(--celeste-claro);
-  border-radius:20px;
-  padding:2rem;
-  border-left:6px solid var(--verde);
-}
-.nosotros-panel h4{
-  color:var(--azul-oscuro);
-  margin-bottom:.5rem;
-  font-size:1.15rem;
-}
-.nosotros-panel h4:not(:first-child){margin-top:1.5rem;}
-.stats-grid{
+.nosotros-cards{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:1.5rem;
-  margin-top:2rem;
+  margin-top:2.5rem;
 }
-.stat-item{
+.nosotros-card{
   background:#fff;
   border-radius:16px;
-  padding:1.5rem;
-  text-align:center;
-  box-shadow:0 4px 12px rgba(0,0,0,.06);
-  border-bottom:4px solid var(--verde);
+  padding:2rem 1.5rem;
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  border-top:4px solid var(--verde);
 }
-.stat-item .num{
-  font-size:2.4rem;
-  font-weight:800;
+.nosotros-card h4{
+  color:var(--azul-oscuro);
+  font-size:1.15rem;
+  margin-bottom:.8rem;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+.nosotros-card h4 i{
   color:var(--verde);
-  line-height:1;
+  font-size:1.3rem;
 }
-.stat-item .lbl{
+.nosotros-card p{
+  font-size:.95rem;
   color:var(--gris-texto);
-  font-size:.9rem;
-  margin-top:.5rem;
-  font-weight:600;
+  text-align:left;
+  margin:0;
+  line-height:1.6;
 }
 
 /* ============ CONTACTO ============ */
+.contacto-wrapper{
+  background:var(--azul-oscuro);
+  border-radius:20px;
+  padding:3rem;
+  color:#fff;
+  max-width:1200px;
+  margin:0 auto;
+}
+.contacto-wrapper .section-title{
+  color:#fff;
+  text-align:center;
+  margin-bottom:.5rem;
+}
+.contacto-wrapper .section-subtitle{
+  color:#BEDDB8;
+  text-align:center;
+  margin-bottom:2.5rem;
+}
 .contacto-grid{
   display:grid;
-  grid-template-columns:1fr 1.2fr;
+  grid-template-columns:1fr 1fr;
   gap:3rem;
 }
-.contacto-info p{
-  margin-bottom:1rem;
-  font-size:1.05rem;
-  color:var(--gris-texto);
-  display:flex;
-  align-items:flex-start;
-  gap:.8rem;
+.contacto-col-title{
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--celeste-medio);
+  margin-bottom:1.2rem;
+  padding-bottom:.5rem;
+  border-bottom:2px solid var(--verde);
+  display:inline-block;
 }
-.contacto-info p i{
-  color:var(--verde);
-  font-size:1.3rem;
-  width:26px;
+.contacto-persona{
+  display:flex;
+  gap:.8rem;
+  margin-bottom:1.2rem;
+  align-items:flex-start;
+}
+.contacto-persona .icon-circle{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
   flex-shrink:0;
+  color:var(--celeste-medio);
+}
+.contacto-persona .datos{
+  flex:1;
+}
+.contacto-persona .nombre{
+  font-weight:700;
+  color:#fff;
+  font-size:1rem;
+}
+.contacto-persona .cargo{
+  font-size:.85rem;
+  color:#BEDDB8;
+  margin-bottom:.3rem;
+}
+.contacto-persona .linea{
+  font-size:.9rem;
+  color:#cbdae9;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
   margin-top:.2rem;
 }
-.contacto-info p strong{color:var(--azul-oscuro);}
-.contacto-info a{
-  color:var(--azul-oscuro);
+.contacto-persona .linea i{
+  color:var(--celeste-medio);
+  width:14px;
+}
+.contacto-persona .linea a{
+  color:#fff;
+}
+.contacto-persona .linea a:hover{
+  color:var(--celeste-medio);
+}
+
+.contacto-empresa{
+  margin-top:1.5rem;
+  padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,.15);
+}
+.contacto-empresa p{
+  font-size:.9rem;
+  color:#cbdae9;
+  margin-bottom:.5rem;
+  line-height:1.6;
+}
+.contacto-empresa strong{
+  color:#fff;
+  display:inline-block;
+  margin-bottom:.2rem;
+}
+.contacto-empresa a{
+  color:var(--celeste-medio);
+  text-decoration:underline;
+}
+.contacto-empresa a:hover{
+  color:#fff;
+}
+.horario{
+  background:rgba(255,255,255,.05);
+  border-radius:10px;
+  padding:1rem 1.2rem;
+  margin-top:1.2rem;
+  border-left:3px solid var(--verde);
+}
+.horario .label{
+  font-size:.8rem;
+  color:var(--celeste-medio);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:.3rem;
+}
+.horario .valor{
+  font-size:.95rem;
+  color:#fff;
   font-weight:600;
 }
-.contacto-info a:hover{color:var(--verde);}
+
+/* Formulario dentro de contacto */
 .form-contacto{
-  background:var(--celeste-claro);
-  border-radius:20px;
-  padding:2rem;
+  background:rgba(255,255,255,.06);
+  border-radius:16px;
+  padding:1.8rem;
+}
+.form-contacto h3{
+  color:#fff;
+  font-size:1.2rem;
+  margin-bottom:.3rem;
+}
+.form-contacto .desc{
+  color:#BEDDB8;
+  font-size:.9rem;
+  margin-bottom:1.2rem;
 }
 .form-contacto label{
   display:block;
   font-weight:700;
-  color:var(--azul-oscuro);
+  color:var(--celeste-medio);
   margin-top:1rem;
   margin-bottom:.3rem;
-  font-size:.9rem;
+  font-size:.85rem;
 }
 .form-contacto input,
 .form-contacto select,
 .form-contacto textarea{
   width:100%;
   padding:.85rem 1rem;
-  border:1px solid #cdd8e3;
+  border:1px solid rgba(255,255,255,.2);
   border-radius:10px;
-  font-size:1rem;
+  font-size:.95rem;
   font-family:inherit;
-  background:#fff;
+  background:rgba(255,255,255,.95);
+  color:#1e2b3a;
   transition:.2s;
 }
 .form-contacto input:focus,
 .form-contacto select:focus,
 .form-contacto textarea:focus{
-  border-color:var(--verde);
+  border-color:var(--celeste-medio);
   outline:none;
-  box-shadow:0 0 0 3px rgba(1,116,100,.15);
+  box-shadow:0 0 0 3px rgba(190,221,184,.25);
 }
-.form-contacto textarea{resize:vertical;min-height:120px;}
+.form-contacto textarea{resize:vertical;min-height:100px;}
+.form-contacto .btn-submit{
+  width:100%;
+  justify-content:center;
+  margin-top:1.2rem;
+}
 
 /* ============ FOOTER ============ */
 .footer{
@@ -547,7 +771,7 @@ ul{list-style:none;}
 }
 .footer-col h4{
   color:#fff;
-  font-size:1.1rem;
+  font-size:1.05rem;
   margin-bottom:1rem;
   border-bottom:2px solid var(--verde);
   padding-bottom:.5rem;
@@ -556,8 +780,8 @@ ul{list-style:none;}
 .footer-col p,
 .footer-col a{
   color:#cbdae9;
-  font-size:.92rem;
-  line-height:1.8;
+  font-size:.9rem;
+  line-height:1.9;
   display:block;
 }
 .footer-col a:hover{color:var(--celeste-medio);}
@@ -568,18 +792,18 @@ ul{list-style:none;}
 }
 .footer-social{
   display:flex;
-  gap:1rem;
+  gap:.8rem;
   margin-top:1rem;
 }
 .footer-social a{
-  width:42px;
-  height:42px;
+  width:40px;
+  height:40px;
   border-radius:50%;
   background:rgba(255,255,255,.08);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:1.3rem;
+  font-size:1.2rem;
   color:#fff;
   transition:.3s;
 }
@@ -621,18 +845,22 @@ ul{list-style:none;}
 
 /* ============ RESPONSIVE ============ */
 @media (max-width:1024px){
-  .hero-title{font-size:2.8rem;}
-  .servicios-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-title{font-size:2.5rem;}
+  .productos-grid{grid-template-columns:repeat(2,1fr);}
+  .catalogo-grid{grid-template-columns:repeat(3,1fr);}
   .marcas-logos{grid-template-columns:repeat(3,1fr);}
+  .nosotros-cards{grid-template-columns:1fr;}
+  .brand-strip .container{flex-wrap:wrap;gap:1rem;}
+  .brand-strip a{flex:0 0 calc(33% - 1rem);}
 }
 @media (max-width:820px){
   .header-top{
-    grid-template-columns:auto 1fr;
-    min-height:70px;
+    grid-template-columns:1fr;
+    min-height:auto;
   }
-  .header-left{padding:.5rem 1rem;}
-  .header-left img{height:50px;}
-  .header-right{padding:.5rem 1rem;gap:.8rem;}
+  .header-left{padding:.8rem 1rem;justify-content:center;}
+  .header-left img{height:60px;}
+  .header-right{padding:.6rem 1rem;justify-content:space-between;}
   .header-contact{display:none;}
   .menu-toggle{display:block;}
   .nav{display:none;}
@@ -652,66 +880,65 @@ ul{list-style:none;}
     display:block;
     border:none;
   }
+  .brand-strip a{flex:0 0 calc(50% - .5rem);}
+  .brand-strip img{max-height:45px;}
   .hero{min-height:auto;}
   .hero-content{padding:3rem 0;}
-  .hero-title{font-size:2.2rem;}
+  .hero-title{font-size:2rem;}
   .hero-subtitle{font-size:1rem;}
-  .banda-contacto h3{font-size:1.4rem;}
-  .banda-tels a{font-size:1.1rem;}
-  .banda-contacto .container{
-    flex-direction:column;
-    text-align:center;
-  }
+  .banda-contacto h3{font-size:1.3rem;}
+  .banda-tels a{font-size:1.05rem;}
+  .banda-contacto .container{flex-direction:column;text-align:center;}
   .banda-tels{align-items:center;}
-  .section{padding:3rem 0;}
-  .section-title{font-size:1.8rem;}
-  .servicios-grid{grid-template-columns:1fr 1fr;}
+  .section{padding:2.5rem 0;}
+  .section-title{font-size:1.7rem;}
+  .productos-grid{grid-template-columns:1fr 1fr;}
+  .catalogo-grid{grid-template-columns:1fr 1fr;}
   .marcas-logos{grid-template-columns:repeat(2,1fr);}
-  .pdf-viewer iframe{height:450px;}
-  .contacto-grid,
-  .nosotros-grid{grid-template-columns:1fr;}
-  .stats-grid{grid-template-columns:1fr;}
+  .catalogo-pdf iframe{height:400px;}
+  .contacto-grid{grid-template-columns:1fr;}
+  .contacto-wrapper{padding:1.8rem;}
   .footer-grid{grid-template-columns:1fr;gap:1.5rem;}
   .whatsapp-float{width:56px;height:56px;font-size:1.8rem;bottom:20px;right:20px;}
 }
 @media (max-width:480px){
-  .hero-title{font-size:1.8rem;}
+  .hero-title{font-size:1.6rem;}
   .hero-eyebrow{font-size:.75rem;letter-spacing:2px;}
-  .section-title{font-size:1.5rem;}
-  .pdf-viewer iframe{height:350px;}
+  .section-title{font-size:1.4rem;}
+  .productos-grid{grid-template-columns:1fr;}
+  .catalogo-grid{grid-template-columns:1fr 1fr;}
   .btn{width:100%;justify-content:center;}
-  .servicios-grid{grid-template-columns:1fr;}
-  .marcas-logos{grid-template-columns:1fr 1fr;gap:1rem;}
+  .brand-strip a{flex:0 0 100%;}
+  .catalogo-pdf iframe{height:320px;}
 }
 </style>
 </head>
 <body>
 
-<!-- ============ HEADER DIVIDIDO ============ -->
+<!-- ============ HEADER ============ -->
 <header class="header">
   <div class="header-top">
-    <!-- MITAD IZQUIERDA: BLANCA con logo -->
-    <a href="#inicio" class="header-left" data-section="inicio">
+    <a href="#productos" class="header-left" data-section="productos">
       <img src="assets/logo-jgc.png" alt="JGC Building Automation Supplies SAC">
     </a>
 
-    <!-- MITAD DERECHA: AZUL con contacto, redes y menú móvil -->
     <div class="header-right">
       <div class="header-contact">
-        <div class="info-line">
-          <strong>Central</strong>
-          <span>(01) 739 2482</span>
-        </div>
         <div class="info-line">
           <strong>Contacto</strong>
           <span>+51 953 299 953</span>
         </div>
+        <div class="info-line">
+          <strong>&nbsp;</strong>
+          <span>+51 961 866 051</span>
+        </div>
       </div>
 
       <div class="header-social">
-        <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.linkedin.com/company/jgc.bas" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/jgc.bas" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@jgc.bas" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
+        <a href="https://www.tiktok.com/@jgcbas" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
       </div>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Menú">
@@ -722,26 +949,48 @@ ul{list-style:none;}
 
   <nav class="nav" id="navMenu">
     <ul>
-      <li><a href="#inicio" class="active" data-section="inicio">Inicio</a></li>
+      <li><a href="#productos" class="active" data-section="productos">Productos</a></li>
       <li><a href="#nosotros" data-section="nosotros">Nosotros</a></li>
-      <li><a href="#servicios" data-section="servicios">Servicios</a></li>
-      <li><a href="#marcas" data-section="marcas">Marcas</a></li>
       <li><a href="#catalogo" data-section="catalogo">Catálogo</a></li>
       <li><a href="#contacto" data-section="contacto">Contacto</a></li>
     </ul>
   </nav>
 </header>
 
-<!-- ============ INICIO ============ -->
-<section id="inicio" class="section active">
+<!-- ============ PASARELA DE MARCAS (visible en todas las páginas) ============ -->
+<div class="brand-strip">
+  <div class="container">
+    <a href="https://greystoneenergy.com/" target="_blank" title="Greystone">
+      <img src="assets/marcas/greystone.png" alt="Greystone Energy Systems">
+    </a>
+    <a href="https://www.danfoss.com/" target="_blank" title="Danfoss">
+      <img src="assets/marcas/danfoss.png" alt="Danfoss">
+    </a>
+    <a href="https://www.dwyeromega.com/" target="_blank" title="Dwyer Omega">
+      <img src="assets/marcas/dwyer.png" alt="Dwyer Omega">
+    </a>
+    <a href="https://apcfire.com/" target="_blank" title="Air Products & Controls">
+      <img src="assets/marcas/apc.png" alt="Air Products & Controls">
+    </a>
+    <a href="https://winters.com/" target="_blank" title="Winters Instruments">
+      <img src="assets/marcas/winters.png" alt="Winters Instruments">
+    </a>
+  </div>
+</div>
+
+<!-- ============ PRODUCTOS (PÁGINA INICIAL) ============ -->
+<section id="productos" class="section active">
+
+  <!-- Hero -->
   <div class="hero">
     <div class="container">
       <div class="hero-content">
-        <span class="hero-eyebrow">Representante oficial Greystone en Perú</span>
+        <span class="hero-eyebrow">Representante Exclusivo de Greystone Energy Systems en Perú</span>
         <h1 class="hero-title">Equipamos a los expertos en <span class="highlight">climatización</span></h1>
         <p class="hero-subtitle">
           Soluciones integrales en automatización para edificios, HVAC e industria.
-          Distribuimos Greystone, Dwyer Omega, Danfoss, APC y Winters Instruments.
+          Somos representantes en Perú de Greystone Energy Systems, con distribución autorizada
+          de Dwyer Omega, Air Products & Controls, Danfoss Drive, Winters Instruments, entre otros.
         </p>
         <a href="#catalogo" class="hero-cta" data-section="catalogo">
           <i class="fas fa-file-pdf"></i> Ver catálogo
@@ -750,20 +999,76 @@ ul{list-style:none;}
     </div>
   </div>
 
+  <!-- Categorías de productos -->
+  <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
+    <h2 class="section-title">Nuestros <span class="verde">productos</span></h2>
+    <p class="section-subtitle">
+      Soluciones especializadas para cada etapa de tu proyecto, desde la selección técnica hasta la puesta en marcha.
+    </p>
+
+    <div class="productos-grid">
+      <!-- Control de motores -->
+      <article class="producto-card">
+        <span class="fallback-icon"><i class="fas fa-cogs"></i></span>
+        <img src="assets/productos/control-motores.jpg" alt="Control de motores" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Control de motores</h4>
+          <p>Variadores y arrancadores</p>
+        </div>
+      </article>
+
+      <!-- Sensores y transmisores -->
+      <article class="producto-card">
+        <span class="fallback-icon"><i class="fas fa-tachometer-alt"></i></span>
+        <img src="assets/productos/sensores-transmisores.jpg" alt="Sensores y transmisores" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Sensores y transmisores</h4>
+          <p>Presión, aire, flujo, temperatura, gases, humedad, energía eléctrica</p>
+        </div>
+      </article>
+
+      <!-- Detección de humo -->
+      <article class="producto-card">
+        <span class="fallback-icon"><i class="fas fa-fire-extinguisher"></i></span>
+        <img src="assets/productos/deteccion-humo.jpg" alt="Detección de humo" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Detección de humo</h4>
+          <p>Detectores para ducto, relés, tuberías de muestreo, accesorios, test kit</p>
+        </div>
+      </article>
+
+      <!-- Post Venta -->
+      <article class="producto-card">
+        <span class="fallback-icon"><i class="fas fa-headset"></i></span>
+        <img src="assets/productos/post-venta.jpg" alt="Post Venta" onerror="this.style.display='none'">
+        <div class="overlay">
+          <h4>Post Venta</h4>
+          <p>Asesoramiento especializado desde el proyecto hasta la puesta en marcha y mantenimiento</p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Banda de contacto -->
   <div class="banda-contacto">
     <div class="container">
       <div>
         <h3>¿En qué te podemos <span>atender</span>? Contáctanos aquí</h3>
         <div class="banda-tels">
-          <a href="tel:+51953299953"><i class="fas fa-phone-alt"></i> +51 953 299 953</a>
-          <a href="tel:+51919758580"><i class="fas fa-phone-alt"></i> +51 919 758 580</a>
+          <a href="https://wa.me/51953299953?text=Hola%20JGC%20BAS%2C%20quisiera%20solicitar%20informaci%C3%B3n." target="_blank">
+            <i class="fab fa-whatsapp"></i> +51 953 299 953
+          </a>
+          <a href="https://wa.me/51961866051?text=Hola%20JGC%20BAS%2C%20quisiera%20solicitar%20informaci%C3%B3n." target="_blank">
+            <i class="fab fa-whatsapp"></i> +51 961 866 051
+          </a>
           <span class="ciudad"><i class="fas fa-map-marker-alt"></i> San Miguel – Lima, Perú</span>
         </div>
       </div>
-      <div class="banda-social">
-        <a href="https://www.facebook.com/JGCBASSAC" target="_blank"><i class="fab fa-facebook-f"></i></a>
-        <a href="https://www.instagram.com/jgc.bas" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.tiktok.com/@jgc.bas" target="_blank"><i class="fab fa-tiktok"></i></a>
+      <div class="header-social" style="gap:1rem;">
+        <a href="https://www.linkedin.com/company/jgc.bas" target="_blank" style="width:50px;height:50px;font-size:1.5rem;"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://www.facebook.com/JGCBASSAC" target="_blank" style="width:50px;height:50px;font-size:1.5rem;"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/jgc.bas" target="_blank" style="width:50px;height:50px;font-size:1.5rem;"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@jgcbas" target="_blank" style="width:50px;height:50px;font-size:1.5rem;"><i class="fab fa-tiktok"></i></a>
       </div>
     </div>
   </div>
@@ -772,139 +1077,58 @@ ul{list-style:none;}
 <!-- ============ NOSOTROS ============ -->
 <section id="nosotros" class="section">
   <div class="container">
-    <h2 class="section-title">Sobre <span>nosotros</span></h2>
+    <h2 class="section-title">Sobre <span class="verde">nosotros</span></h2>
     <p class="section-subtitle">
-      Somos una empresa peruana especializada en la comercialización y representación de marcas líderes
-      en automatización para edificios, HVAC y procesos industriales.
+      Conoce quiénes somos y qué nos mueve a servir al mercado peruano.
     </p>
 
-    <div class="nosotros-grid">
-      <div>
-        <p>
-          <strong>JGC Building Automation Supplies SAC</strong> es el <strong>representante exclusivo de Greystone
-          Energy Systems en Perú</strong>, y complementa su oferta con marcas especializadas en sistemas HVAC
-          como <strong>Air Products & Controls, Dwyer Omega, Danfoss y Winters Instruments</strong>.
-        </p>
-        <p>
-          Nuestro compromiso es ofrecer equipos de alta precisión, respaldo técnico y asesoría personalizada
-          para cada proyecto, garantizando soluciones confiables y eficientes.
-        </p>
-        <p>
-          Trabajamos con ingenieros, contratistas e integradores de sistemas en todo el país, brindando
-          soporte técnico, disponibilidad de stock y precios competitivos.
-        </p>
+    <div class="nosotros-block">
+      <p>
+        Somos una empresa peruana especializada en la comercialización B2B y representación de marcas líderes
+        en automatización para edificios, control e instrumentación para sistemas HVAC y procesos industriales.
+      </p>
+      <p>
+        Somos <strong>representante exclusivo de Greystone Energy Systems en Perú</strong>, complementamos
+        nuestra gama de productos con marcas especializadas como son <strong>Air Products & Controls,
+        Dwyer Omega, Danfoss y Winters Instruments</strong>, entre otros.
+      </p>
+      <p>
+        Nuestro portafolio incluye sensores de precisión, variadores de velocidad para control de motores,
+        transmisores y equipos de medición de marcas referentes en el mercado.
+      </p>
+      <p>
+        Nuestro compromiso es ofrecer equipamiento especializado de calidad, asesoría técnica personalizada
+        en la selección de componentes para cada proyecto, garantizando soluciones confiables, de calidad y eficientes.
+      </p>
+      <p style="font-weight:600;color:var(--azul-oscuro);text-align:center;margin-top:1.5rem;">
+        Contáctanos para asesoría corporativa.
+      </p>
 
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="num">+10</div>
-            <div class="lbl">Años de experiencia</div>
-          </div>
-          <div class="stat-item">
-            <div class="num">5</div>
-            <div class="lbl">Marcas internacionales</div>
-          </div>
-          <div class="stat-item">
-            <div class="num">100%</div>
-            <div class="lbl">Soporte técnico</div>
-          </div>
+      <div class="nosotros-cards">
+        <div class="nosotros-card">
+          <h4><i class="fas fa-bullseye"></i> Misión</h4>
+          <p>
+            Proveer equipos de alta precisión y asesoría técnica que optimicen el rendimiento de los sistemas
+            de climatización y automatización de nuestros clientes, operando bajo un marco de absoluta legalidad,
+            honestidad y transparencia que garantice relaciones comerciales confiables y sostenibles.
+          </p>
+        </div>
+        <div class="nosotros-card">
+          <h4><i class="fas fa-eye"></i> Visión</h4>
+          <p>
+            Ser el aliado estratégico preferido en el mercado peruano para soluciones de automatización
+            en edificios e industrias, destacando por ser un referente de integridad en las licitaciones
+            y proyectos del sector.
+          </p>
+        </div>
+        <div class="nosotros-card">
+          <h4><i class="fas fa-handshake"></i> Valores</h4>
+          <p>
+            Integridad técnica y comercial, transparencia en la cadena de suministros, cumplimiento normativo,
+            tolerancia activa y denuncia activa, coraje y protección al denunciante.
+          </p>
         </div>
       </div>
-
-      <div class="nosotros-panel">
-        <h4><i class="fas fa-bullseye" style="color:var(--verde);"></i> Misión</h4>
-        <p>Proveer equipos de alta precisión y asesoría técnica que optimicen el rendimiento de los sistemas de climatización y automatización de nuestros clientes.</p>
-
-        <h4><i class="fas fa-eye" style="color:var(--verde);"></i> Visión</h4>
-        <p>Ser el aliado estratégico preferido en el mercado peruano para soluciones de automatización en edificios e industrias.</p>
-
-        <h4><i class="fas fa-handshake" style="color:var(--verde);"></i> Valores</h4>
-        <p>Compromiso, integridad, excelencia técnica y servicio al cliente.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ SERVICIOS (usa assets/servicios/) ============ -->
-<section id="servicios" class="section bg-light">
-  <div class="container">
-    <h2 class="section-title">Nuestros <span>servicios</span></h2>
-    <p class="section-subtitle">
-      Soluciones especializadas para cada etapa de tu proyecto, desde la selección técnica hasta la puesta en marcha.
-    </p>
-
-    <div class="servicios-grid">
-      <!-- HVAC -->
-      <article class="servicio-card">
-        <span class="fallback-icon"><i class="fas fa-snowflake"></i></span>
-        <img src="assets/servicios/hvac.jpg" alt="HVAC" onerror="this.style.display='none'">
-        <div class="overlay">
-          <h4>HVAC</h4>
-          <p>Climatización y ventilación</p>
-        </div>
-      </article>
-
-      <!-- Automatización -->
-      <article class="servicio-card">
-        <span class="fallback-icon"><i class="fas fa-microchip"></i></span>
-        <img src="assets/servicios/automatizacion.jpg" alt="Automatización" onerror="this.style.display='none'">
-        <div class="overlay">
-          <h4>Automatización</h4>
-          <p>Control y monitoreo</p>
-        </div>
-      </article>
-
-      <!-- Sensores -->
-      <article class="servicio-card">
-        <span class="fallback-icon"><i class="fas fa-tachometer-alt"></i></span>
-        <img src="assets/servicios/sensores.jpg" alt="Sensores" onerror="this.style.display='none'">
-        <div class="overlay">
-          <h4>Sensores</h4>
-          <p>Medición y precisión</p>
-        </div>
-      </article>
-
-      <!-- Asesoría -->
-      <article class="servicio-card">
-        <span class="fallback-icon"><i class="fas fa-user-cog"></i></span>
-        <img src="assets/servicios/asesoria.jpg" alt="Asesoría" onerror="this.style.display='none'">
-        <div class="overlay">
-          <h4>Asesoría</h4>
-          <p>Soporte técnico especializado</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ MARCAS (logos) ============ -->
-<section id="marcas" class="section">
-  <div class="container">
-    <h2 class="section-title">Nuestras <span>marcas</span></h2>
-    <p class="section-subtitle">
-      Representamos y distribuimos productos de las siguientes empresas líderes a nivel mundial.
-    </p>
-
-    <div class="marcas-logos">
-      <a class="marca-logo" href="https://greystoneenergy.com/" target="_blank">
-        <img src="assets/marcas/greystone.png" alt="Greystone Energy Systems">
-        <span class="brand-name">Representante Exclusivo</span>
-      </a>
-      <a class="marca-logo" href="https://www.danfoss.com/" target="_blank">
-        <img src="assets/marcas/danfoss.png" alt="Danfoss">
-        <span class="brand-name">Variadores de frecuencia</span>
-      </a>
-      <a class="marca-logo" href="https://www.dwyeromega.com/" target="_blank">
-        <img src="assets/marcas/dwyer.png" alt="Dwyer Omega">
-        <span class="brand-name">Instrumentación</span>
-      </a>
-      <a class="marca-logo" href="https://apcfire.com/" target="_blank">
-        <img src="assets/marcas/apc.png" alt="Air Products & Controls">
-        <span class="brand-name">Detección y control</span>
-      </a>
-      <a class="marca-logo" href="https://winters.com/" target="_blank">
-        <img src="assets/marcas/winters.png" alt="Winters Instruments">
-        <span class="brand-name">Manómetros y presión</span>
-      </a>
     </div>
   </div>
 </section>
@@ -912,12 +1136,147 @@ ul{list-style:none;}
 <!-- ============ CATÁLOGO ============ -->
 <section id="catalogo" class="section bg-light">
   <div class="container">
-    <h2 class="section-title">Catálogo <span>de productos</span></h2>
+    <h2 class="section-title"><span class="azul">Catálogo</span> <span class="verde">productos</span></h2>
     <p class="section-subtitle">
-      Consulte nuestro catálogo Jul-Ago 2026 en línea o descárguelo para revisarlo sin conexión.
+      Explora nuestro catálogo de productos destacados o revisa el catálogo completo en línea.
     </p>
 
-    <div class="pdf-viewer">
+    <!-- Grid de productos destacados -->
+    <div class="catalogo-grid">
+      <!-- Producto 1 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-tachometer-alt"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Dwyer</div>
+          <div class="item-name">Manómetro de presión diferencial</div>
+          <div class="item-code">Código: 2003</div>
+          <div class="item-footer">
+            <span class="item-price">USD 89 + IGV</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-fire-extinguisher"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Air Products & Controls</div>
+          <div class="item-name">Detector de humo para ducto</div>
+          <div class="item-code">Código: SL-2000-P</div>
+          <div class="item-footer">
+            <span class="item-price">USD 135 + IGV</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 3 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-microchip"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Dwyer</div>
+          <div class="item-name">Transmisor presión diferencial MAGNESENSE</div>
+          <div class="item-code">Código: MSX-W10-IN-LCD</div>
+          <div class="item-footer">
+            <span class="item-price">USD 199 + IGV</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 4 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-fire"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Greystone</div>
+          <div class="item-name">Detector de monóxido de carbono</div>
+          <div class="item-code">Código: CMD5B1100</div>
+          <div class="item-footer">
+            <span class="item-price">USD 122 + IGV</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 5 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-wind"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Greystone</div>
+          <div class="item-name">Sensor de velocidad de aire para ducto</div>
+          <div class="item-code">Código: AVDTMR</div>
+          <div class="item-footer">
+            <span class="item-price">USD 264 + IGV</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 6 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-cogs"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Danfoss</div>
+          <div class="item-name">Variador de frecuencia FC-101</div>
+          <div class="item-code">VLT® HVAC Basic Drive</div>
+          <div class="item-footer">
+            <span class="item-price">Desde USD 159</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 7 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-cogs"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Danfoss</div>
+          <div class="item-name">Variador HVAC Drive FC-102</div>
+          <div class="item-code">VLT® HVAC Drive FC 102</div>
+          <div class="item-footer">
+            <span class="item-price">Desde USD 619</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 8 -->
+      <div class="catalogo-item">
+        <div class="item-img">
+          <span class="placeholder"><i class="fas fa-tachometer-alt"></i></span>
+        </div>
+        <div class="item-info">
+          <div class="item-brand">Winters</div>
+          <div class="item-name">Manómetro de precisión</div>
+          <div class="item-code">Excellence Since 1953</div>
+          <div class="item-footer">
+            <span class="item-price">Consultar</span>
+            <button class="item-btn" title="Añadir al carro"><i class="fas fa-plus"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Visor del PDF completo -->
+    <h3 style="text-align:center;color:var(--azul-oscuro);font-size:1.4rem;margin:3rem 0 1rem 0;">
+      <i class="fas fa-file-pdf" style="color:var(--verde);"></i> Catálogo completo Jul-Ago 2026
+    </h3>
+    <div class="catalogo-pdf">
       <iframe src="jgc.pdf#toolbar=1&navpanes=1&scrollbar=1" title="Catálogo JGC BAS SAC"></iframe>
     </div>
 
@@ -935,63 +1294,99 @@ ul{list-style:none;}
 <!-- ============ CONTACTO ============ -->
 <section id="contacto" class="section">
   <div class="container">
-    <h2 class="section-title">Contác<span>tanos</span></h2>
-    <p class="section-subtitle">
-      Escríbenos y con gusto te atenderemos. Respondemos en horario de oficina: lunes a viernes.
-    </p>
+    <div class="contacto-wrapper">
+      <h2 class="section-title">Contác<span style="color:var(--celeste-medio);">tanos</span></h2>
+      <p class="section-subtitle" style="color:#BEDDB8;">
+        Escríbenos y con gusto te atenderemos.
+      </p>
 
-    <div class="contacto-grid">
-      <div class="contacto-info">
-        <p><i class="fas fa-user-tie"></i> <span><strong>Joel Saldarriaga</strong><br>Jefe Técnico Comercial</span></p>
-        <p><i class="fas fa-phone-alt"></i> <a href="tel:+51953299953">+51 953 299 953</a></p>
-        <p><i class="fab fa-whatsapp" style="color:#25d366;"></i> <a href="https://wa.me/51947361059" target="_blank">+51 947 361 059</a></p>
-        <p><i class="fas fa-envelope"></i> <a href="mailto:jsaldarriaga@jgcbas.com">jsaldarriaga@jgcbas.com</a></p>
-        <p><i class="fas fa-envelope"></i> <a href="mailto:adm@jgcbas.com">adm@jgcbas.com</a></p>
-        <p><i class="fas fa-map-marker-alt"></i> <span>Jr. Pedro Garezon 189<br>San Miguel – Lima – Perú – C.P. 15088</span></p>
-        <p><i class="fas fa-id-card"></i> <span>RUC: 20607166685</span></p>
+      <div class="contacto-grid">
+        <!-- Columna izquierda: contactos -->
+        <div>
+          <div class="contacto-col-title">Equipo de contacto</div>
 
-        <div style="margin-top:2rem;">
-          <p style="font-weight:700;color:var(--azul-oscuro);font-size:1.1rem;">Síguenos en redes</p>
-          <div class="footer-social" style="justify-content:flex-start;margin-top:.8rem;">
-            <a href="https://www.facebook.com/JGCBASSAC" target="_blank" style="background:var(--azul-oscuro);"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/jgc.bas" target="_blank" style="background:var(--azul-oscuro);"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.tiktok.com/@jgc.bas" target="_blank" style="background:var(--azul-oscuro);"><i class="fab fa-tiktok"></i></a>
+          <div class="contacto-persona">
+            <div class="icon-circle"><i class="fas fa-user-tie"></i></div>
+            <div class="datos">
+              <div class="nombre">Joel Saldarriaga</div>
+              <div class="cargo">Jefe Técnico Comercial</div>
+              <div class="linea"><i class="fas fa-envelope"></i> <a href="mailto:jsaldarriaga@jgcbas.com">jsaldarriaga@jgcbas.com</a></div>
+              <div class="linea"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/51953299953" target="_blank">+51 953 299 953</a></div>
+            </div>
+          </div>
+
+          <div class="contacto-persona">
+            <div class="icon-circle"><i class="fas fa-user-cog"></i></div>
+            <div class="datos">
+              <div class="nombre">Miguel Ruiz</div>
+              <div class="cargo">Asistente de gestión integral</div>
+              <div class="linea"><i class="fas fa-envelope"></i> <a href="mailto:adm@jgcbas.com">adm@jgcbas.com</a></div>
+              <div class="linea"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/51961866051" target="_blank">+51 961 866 051</a></div>
+            </div>
+          </div>
+
+          <div class="contacto-persona">
+            <div class="icon-circle"><i class="fas fa-user-circle"></i></div>
+            <div class="datos">
+              <div class="nombre">Catherine Ruiz</div>
+              <div class="cargo">Administración y Finanzas</div>
+              <div class="linea"><i class="fas fa-envelope"></i> <a href="mailto:adm@jgcbas.com">adm@jgcbas.com</a></div>
+              <div class="linea"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/51919758580" target="_blank">+51 919 758 580</a></div>
+            </div>
+          </div>
+
+          <div class="contacto-empresa">
+            <p><strong>JGC BUILDING AUTOMATION SUPPLIES SAC - JGC BAS SAC</strong></p>
+            <p><strong>RUC:</strong> 20607166685</p>
+            <p><strong>Dirección:</strong> Jr. Pedro Garezon 189, piso 3, San Miguel, Lima – Perú C.P. 15088</p>
+            <p>
+              <i class="fas fa-map-marked-alt" style="color:var(--celeste-medio);"></i>
+              <a href="https://maps.app.goo.gl/PXDDiL88aPLjkhLx8" target="_blank">
+                Ver ubicación en Google Maps
+              </a>
+            </p>
+          </div>
+
+          <div class="horario">
+            <div class="label"><i class="far fa-clock"></i> Horario de atención</div>
+            <div class="valor">Lunes a Viernes · 9:00 A.M. – 5:00 P.M.</div>
           </div>
         </div>
-      </div>
 
-      <div class="form-contacto">
-        <h3 style="color:var(--azul-oscuro);margin-bottom:.3rem;">Solicitar cotización</h3>
-        <p style="color:var(--gris-texto);font-size:.9rem;margin-bottom:1rem;">Complete el formulario y le responderemos a la brevedad.</p>
+        <!-- Columna derecha: formulario -->
+        <div class="form-contacto">
+          <h3>Solicitar cotización</h3>
+          <p class="desc">Complete el formulario y le responderemos a la brevedad.</p>
 
-        <form id="contactForm">
-          <label for="nombre">Nombre completo *</label>
-          <input type="text" id="nombre" required placeholder="Ej: Carlos Pérez">
+          <form id="contactForm">
+            <label for="nombre">Nombre completo *</label>
+            <input type="text" id="nombre" required placeholder="Ej: Carlos Pérez">
 
-          <label for="email">Correo electrónico *</label>
-          <input type="email" id="email" required placeholder="Ej: carlos@empresa.com">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" required placeholder="Ej: carlos@empresa.com">
 
-          <label for="telefono">Teléfono / WhatsApp</label>
-          <input type="tel" id="telefono" placeholder="Ej: 947 361 059">
+            <label for="telefono">Teléfono / WhatsApp</label>
+            <input type="tel" id="telefono" placeholder="Ej: 953 299 953">
 
-          <label for="producto">Producto de interés</label>
-          <select id="producto">
-            <option value="General">General / No específico</option>
-            <option value="Variador Danfoss">Variador Danfoss</option>
-            <option value="Sensor Greystone">Sensor Greystone</option>
-            <option value="Transmisor Dwyer">Transmisor Dwyer</option>
-            <option value="Detector de humo APC">Detector de humo APC</option>
-            <option value="Manómetro Winters">Manómetro Winters</option>
-            <option value="Otro">Otro (especificar en mensaje)</option>
-          </select>
+            <label for="producto">Producto de interés</label>
+            <select id="producto">
+              <option value="General">General / No específico</option>
+              <option value="Danfoss">Danfoss</option>
+              <option value="Greystone">Greystone</option>
+              <option value="Dwyer">Dwyer</option>
+              <option value="Air Products & Controls">Air Products & Controls</option>
+              <option value="Winters Instruments">Winters Instruments</option>
+              <option value="Otros equipos especializados">Otros equipos especializados</option>
+            </select>
 
-          <label for="mensaje">Mensaje</label>
-          <textarea id="mensaje" placeholder="Describa su requerimiento, cantidades, plazos, etc."></textarea>
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" placeholder="Describa su requerimiento, cantidades, plazos, etc."></textarea>
 
-          <button type="submit" class="btn btn-download" style="width:100%;justify-content:center;margin-top:1.2rem;">
-            <i class="fas fa-paper-plane"></i> Enviar mensaje
-          </button>
-        </form>
+            <button type="submit" class="btn btn-download btn-submit">
+              <i class="fas fa-paper-plane"></i> Enviar mensaje
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -1003,17 +1398,18 @@ ul{list-style:none;}
     <div class="footer-grid">
       <div class="footer-col">
         <h4>JGC BAS SAC</h4>
-        <p>Building Automation Supplies SAC</p>
+        <p>JGC Building Automation Supplies SAC</p>
         <p>Representante exclusivo de Greystone Energy Systems en Perú.</p>
-        <p style="margin-top:.5rem;"><i class="fas fa-id-card"></i>RUC: 20607166685</p>
+        <p style="margin-top:.5rem;">RUC: 20607166685</p>
       </div>
 
       <div class="footer-col">
         <h4>Contacto</h4>
-        <p><i class="fas fa-map-marker-alt"></i>Jr. Pedro Garezon 189</p>
+        <p><i class="fas fa-map-marker-alt"></i>Jr. Pedro Garezon 189, piso 3</p>
         <p style="padding-left:1.6rem;">San Miguel – Lima – Perú</p>
-        <p><i class="fas fa-phone-alt"></i>+51 953 299 953</p>
-        <p><i class="fas fa-phone-alt"></i>+51 919 758 580</p>
+        <p><i class="fab fa-whatsapp"></i>+51 953 299 953</p>
+        <p><i class="fab fa-whatsapp"></i>+51 961 866 051</p>
+        <p><i class="fab fa-whatsapp"></i>+51 919 758 580</p>
       </div>
 
       <div class="footer-col">
@@ -1023,9 +1419,10 @@ ul{list-style:none;}
 
         <h4 style="margin-top:1.5rem;">Redes</h4>
         <div class="footer-social">
-          <a href="https://www.facebook.com/JGCBASSAC" target="_blank"><i class="fab fa-facebook-f"></i></a>
-          <a href="https://www.instagram.com/jgc.bas" target="_blank"><i class="fab fa-instagram"></i></a>
-          <a href="https://www.tiktok.com/@jgc.bas" target="_blank"><i class="fab fa-tiktok"></i></a>
+          <a href="https://www.linkedin.com/company/jgc.bas" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com/JGCBASSAC" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/jgc.bas" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@jgcbas" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
         </div>
       </div>
     </div>
@@ -1037,7 +1434,7 @@ ul{list-style:none;}
 </footer>
 
 <!-- ============ WHATSAPP FLOTANTE ============ -->
-<a href="https://wa.me/51947361059?text=Hola%20JGC%20BAS%2C%20vi%20su%20web%20y%20quisiera%20solicitar%20informaci%C3%B3n."
+<a href="https://wa.me/51953299953?text=Hola%20JGC%20BAS%2C%20vi%20su%20web%20y%20quisiera%20solicitar%20informaci%C3%B3n."
    class="whatsapp-float" target="_blank" title="WhatsApp">
   <i class="fab fa-whatsapp"></i>
 </a>
@@ -1047,10 +1444,8 @@ ul{list-style:none;}
 (function(){
   const navLinks = document.querySelectorAll('a[data-section]');
   const sections = {
-    inicio: document.getElementById('inicio'),
+    productos: document.getElementById('productos'),
     nosotros: document.getElementById('nosotros'),
-    servicios: document.getElementById('servicios'),
-    marcas: document.getElementById('marcas'),
     catalogo: document.getElementById('catalogo'),
     contacto: document.getElementById('contacto')
   };
@@ -1098,6 +1493,7 @@ ul{list-style:none;}
     if(h && sections[h]) activateSection(h);
   });
 
+  // Formulario
   document.getElementById('contactForm').addEventListener('submit', function(e){
     e.preventDefault();
     const nombre = document.getElementById('nombre').value.trim();
@@ -1115,11 +1511,23 @@ ul{list-style:none;}
     body += `Nombre: ${nombre}\n`;
     body += `Email: ${email}\n`;
     if(tel) body += `Teléfono: ${tel}\n`;
-    body += `Producto: ${prod}\n\n`;
+    body += `Producto de interés: ${prod}\n\n`;
     body += `Mensaje:\n${msg || 'Sin mensaje adicional'}\n`;
 
     const subject = encodeURIComponent('Contacto JGC BAS - ' + prod);
     location.href = `mailto:jsaldarriaga@jgcbas.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+  });
+
+  // Botones "añadir al carro" (demo visual)
+  document.querySelectorAll('.item-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+      this.innerHTML = '<i class="fas fa-check"></i>';
+      this.style.background = '#017464';
+      setTimeout(() => {
+        this.innerHTML = '<i class="fas fa-plus"></i>';
+        this.style.background = '';
+      }, 1500);
+    });
   });
 })();
 </script>
