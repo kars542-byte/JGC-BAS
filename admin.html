@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JGC BAS SAC · Panel de Administración CRM</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #f4f7fc; color: #1e2b3a; }
+    :root { --verde: #017464; --azul: #244061; --gris: #3d4f5e; --gris-claro: #eef2f7; }
+    #login-screen { position: fixed; inset: 0; background: var(--azul); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .login-box { background: #fff; padding: 2.5rem; border-radius: 16px; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
+    .login-box h2 { color: var(--azul); margin-bottom: 0.5rem; font-size: 1.8rem; }
+    .login-box input { width: 100%; padding: 0.9rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    .login-box button { width: 100%; padding: 0.9rem; background: var(--verde); color: #fff; border: none; border-radius: 8px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    .error-msg { color: #e63946; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+    #dashboard { display: none; min-height: 100vh; flex-direction: column; }
+    .dash-header { background: var(--azul); color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-wrap: wrap; gap: 1rem; }
+    .dash-header h1 { font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+    .tabs { display: flex; gap: 1rem; background: #fff; padding: 1rem 2rem; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap; }
+    .tab-btn { padding: 0.6rem 1.2rem; border-radius: 8px; border: none; background: #f1f5f9; color: var(--gris); font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .tab-btn.active { background: var(--azul); color: #fff; }
+    .tab-content { display: none; padding: 2rem; max-width: 1280px; margin: 0 auto; width: 100%; flex: 1; }
+    .tab-content.active { display: block; }
+    .header-actions { display: flex; gap: 1rem; align-items: center; }
+    .vendedor-selector { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.4rem 0.8rem; border-radius: 8px; }
+    .vendedor-selector label { font-size: 0.85rem; color: #BEDDB8; font-weight: 600; }
+    .vendedor-selector select { padding: 0.4rem; border-radius: 6px; border: none; font-weight: 600; }
+    .logout-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+    .api-status { display: inline-flex; align-items: center; gap: 8px; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; background: rgba(255,255,255,0.1); color: #fff; }
+    .api-status .dot { width: 10px; height: 10px; border-radius: 50%; background: #94a3b8; }
+    .api-status.online .dot { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .api-status.offline .dot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .api-status.checking .dot { background: #f59e0b; animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .kpi-card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 5px solid var(--azul); }
+    .kpi-card .kpi-title { font-size: 0.85rem; color: var(--gris); text-transform: uppercase; font-weight: 700; margin-bottom: 0.5rem; }
+    .kpi-card .kpi-value { font-size: 2.5rem; font-weight: 800; color: var(--azul); }
+    .kpi-card.green { border-left-color: var(--verde); }
+    .kpi-card.green .kpi-value { color: var(--verde); }
+    .kpi-card.orange { border-left-color: #f59e0b; }
+    .kpi-card.orange .kpi-value { color: #f59e0b; }
+    .kpi-card.red { border-left-color: #e63946; }
+    .kpi-card.red .kpi-value { color: #e63946; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    @media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .chart-container { position: relative; height: 280px; width: 100%; }
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; border: 1px solid #e0e8ef; }
+    .card h3 { color: var(--azul); margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 2px solid var(--verde); padding-bottom: 0.5rem; display: inline-block; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: #f0f4f8; color: var(--azul); text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; }
+    td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: var(--gris); vertical-align: middle; }
+    .badge { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    .badge.score-A { background: #d1fae5; color: #065f46; }
+    .badge.score-B { background: #fef3c7; color: #92400e; }
+    .badge.score-C { background: #fee2e2; color: #991b1b; }
+    .ia-box { background: #f8fafc; border: 1px dashed #8b5cf6; padding: 0.6rem; border-radius: 6px; font-size: 0.8rem; }
+    .ia-box ul { margin-left: 1rem; margin-top: 0.3rem; }
+    .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; }
+    .btn-check { background: #10b981; color: #fff; border: none; padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer; font-size: 0.7rem; }
+    .btn-check-undo { background: #f59e0b; color: #fff; border: none; padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer; font-size: 0.7rem; }
+    .progress-steps { display: flex; gap: 4px; margin-top: 0.5rem; }
+    .step { width: 20px; height: 6px; background: #e2e8f0; border-radius: 3px; }
+    .step.active { background: var(--verde); }
+    .step.current { background: #f59e0b; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { font-size: 0.85rem; font-weight: 700; color: var(--azul); margin-bottom: 0.3rem; }
+    .form-group input, .form-group select, .form-group textarea { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; font-family: inherit; }
+    .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary { background: var(--azul); color: #fff; }
+    .btn-success { background: var(--verde); color: #fff; }
+    .btn-edit { background: #f59e0b; color: #fff; padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+    .modal-box h2 { color: var(--azul); margin-bottom: 1rem; }
+    .chat-container { background: #f8fafc; border-radius: 8px; padding: 1rem; height: 400px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid #e2e8f0; }
+    .chat-msg { padding: 0.8rem 1rem; margin: 0.5rem 0; border-radius: 12px; max-width: 80%; line-height: 1.5; }
+    .chat-msg.user { background: var(--azul); color: #fff; margin-left: auto; border-bottom-right-radius: 4px; }
+    .chat-msg.assistant { background: #fff; color: var(--gris); border: 1px solid #e2e8f0; border-bottom-left-radius: 4px; }
+    .dash-footer { text-align: center; padding: 1.5rem; font-size: 0.8rem; color: #64748b; border-top: 1px solid #e2e8f0; background: #fff; margin-top: 2rem; }
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+    <div class="login-box">
+        <h2><i class="fas fa-lock" style="color: var(--verde);"></i> JGC BAS SAC</h2>
+        <p style="color:#64748b; margin-bottom:1.5rem; font-size:0.9rem;">Panel de Administración CRM</p>
+        <input type="text" id="username" placeholder="Usuario">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+        <div class="error-msg" id="login-error">Credenciales incorrectas.</div>
+    </div>
+</div>
+
+<div id="dashboard">
+    <div class="dash-header">
+        <h1><i class="fas fa-chart-line"></i> CRM JGC BAS SAC</h1>
+        <div class="header-actions">
+            <div class="api-status checking" id="api-status"><span class="dot"></span><span id="api-status-text">Verificando...</span></div>
+            <div class="vendedor-selector">
+                <label><i class="fas fa-user-tag"></i> Vendedor:</label>
+                <select id="vendedor-filter" onchange="filtrarPorVendedor()">
+                    <option value="todos">👑 Todos (Admin)</option>
+                    <option value="Joel Saldarriaga">Joel Saldarriaga</option>
+                    <option value="Miguel Ruiz">Miguel Ruiz</option>
+                    <option value="Catherine Ruiz">Catherine Ruiz</option>
+                </select>
+            </div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Salir</button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('leads')"><i class="fas fa-chart-pie"></i> Dashboard & Kilo</button>
+        <button class="tab-btn" onclick="switchTab('gestion')"><i class="fas fa-users-cog"></i> Gestión Prospectos</button>
+        <button class="tab-btn" onclick="switchTab('oportunidades')"><i class="fas fa-handshake"></i> Oportunidades</button>
+        <button class="tab-btn" onclick="switchTab('qwen')"><i class="fas fa-brain"></i> Gerente IA (Qwen)</button>
+    </div>
+
+    <!-- TAB 1 -->
+    <div id="tab-leads" class="tab-content active">
+        <div class="kpi-grid">
+            <div class="kpi-card"><div class="kpi-title">Total Prospectos</div><div class="kpi-value" id="kpi-total">-</div></div>
+            <div class="kpi-card green"><div class="kpi-title">Score A</div><div class="kpi-value" id="kpi-a">-</div></div>
+            <div class="kpi-card orange"><div class="kpi-title">Score B</div><div class="kpi-value" id="kpi-b">-</div></div>
+            <div class="kpi-card red"><div class="kpi-title">Score C</div><div class="kpi-value" id="kpi-c">-</div></div>
+        </div>
+        <div class="charts-grid">
+            <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Distribución por Score</h3><div class="chart-container"><canvas id="chartScore"></canvas></div></div>
+            <div class="chart-card"><h3><i class="fas fa-chart-bar"></i> Leads por Segmento</h3><div class="chart-container"><canvas id="chartSegmento"></canvas></div></div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-users"></i> Prospectos + IA Sugerencias (Kilo)</h3>
+            <table>
+                <thead><tr><th>Código</th><th>Empresa</th><th>Vendedor</th><th>🤖 Próximos Pasos</th><th>Acción</th></tr></thead>
+                <tbody id="tabla-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 2 -->
+    <div id="tab-gestion" class="tab-content">
+        <div class="card">
+            <h3><i class="fas fa-users-cog"></i> Base de Datos de Prospectos</h3>
+            <table>
+                <thead><tr><th>Código</th><th>Empresa</th><th>Vendedor</th><th>Segmento</th><th>Notas</th><th>Acción</th></tr></thead>
+                <tbody id="tabla-gestion-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 3 -->
+    <div id="tab-oportunidades" class="tab-content">
+        <div class="card">
+            <h3><i class="fas fa-handshake"></i> Pipeline de Oportunidades</h3>
+            <table>
+                <thead><tr><th>Código</th><th>Cliente</th><th>Título / Monto</th><th>Progreso</th><th>Acciones</th></tr></thead>
+                <tbody id="tabla-oportunidades"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TAB 4 -->
+    <div id="tab-qwen" class="tab-content">
+        <div class="card">
+            <h3><i class="fas fa-clipboard-list"></i> Resumen Ejecutivo del Negocio</h3>
+            <p style="font-size:0.9rem; color:var(--gris); margin-bottom:1rem;">El agente analiza el estado completo del negocio y da un reporte con acciones prioritarias.</p>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem;">
+                <button class="btn btn-primary" id="btn-resumen-qwen" onclick="generarResumenEjecutivo()"><i class="fas fa-chart-line"></i> Generar Resumen Ahora</button>
+                <button class="btn" style="background:#e2e8f0;" onclick="cargarUltimoResumen()"><i class="fas fa-history"></i> Ver Último Guardado</button>
+            </div>
+            <div id="resumen-ejecutivo-box" style="display:none; background:#f8fafc; border-left:4px solid var(--verde); padding:1.5rem; border-radius:8px; font-size:0.95rem; line-height:1.7; white-space:pre-wrap;"></div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-comments"></i> Chat con tu Gerente IA</h3>
+            <p style="font-size:0.9rem; color:var(--gris); margin-bottom:1rem;">Pregúntale lo que quieras sobre tu negocio. Tiene contexto de tus clientes, oportunidades y métricas.</p>
+            <div class="chat-container" id="chat-mensajes">
+                <div style="color:#64748b; font-style:italic; text-align:center; padding:2rem;">
+                    Escribe tu primera pregunta abajo.<br><br>
+                    <strong>Sugerencias:</strong><br>
+                    • "¿Qué cliente debo contactar primero esta semana?"<br>
+                    • "¿Cómo va mi pipeline este mes?"<br>
+                    • "Dame 3 ideas para reactivar clientes inactivos"
+                </div>
+            </div>
+            <div style="display:flex; gap:0.5rem;">
+                <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." style="flex:1; padding:0.8rem; border:1px solid #cbd5e1; border-radius:8px; font-size:0.95rem;" onkeypress="if(event.key === 'Enter') enviarMensajeChat()">
+                <button class="btn btn-success" onclick="enviarMensajeChat()" id="btn-enviar-chat"><i class="fas fa-paper-plane"></i> Enviar</button>
+                <button class="btn" style="background:#e2e8f0;" onclick="limpiarChat()" title="Limpiar"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-history"></i> Análisis por Lotes (Background)</h3>
+            <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                <div style="flex:1; background:#f0f4f8; padding:0.8rem; border-radius:6px; text-align:center;">
+                    <div style="font-size:0.75rem; color:var(--gris); text-transform:uppercase; font-weight:700;">Pendientes</div>
+                    <div style="font-size:1.8rem; font-weight:800; color:var(--azul);" id="qwen-pendientes-count">-</div>
+                </div>
+                <div style="flex:1; background:#f0f4f8; padding:0.8rem; border-radius:6px; text-align:center;">
+                    <div style="font-size:0.75rem; color:var(--gris); text-transform:uppercase; font-weight:700;">Lotes hechos</div>
+                    <div style="font-size:1.8rem; font-weight:800; color:var(--verde);" id="qwen-progreso">0</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+                <button class="btn btn-primary" id="btn-analizar-qwen" onclick="iniciarAnalisisQwen()" style="flex:1;"><i class="fas fa-magic"></i> Analizar Pendientes por Lotes</button>
+                <button class="btn" style="background:#e2e8f0;" onclick="detenerAnalisisQwen()" id="btn-detener-qwen" disabled><i class="fas fa-stop"></i></button>
+            </div>
+            <div id="qwen-log" style="display:none; max-height:300px; overflow-y:auto; background:#f8fafc; border-radius:8px; padding:1rem; border-left:4px solid #8b5cf6; font-size:0.85rem;"></div>
+        </div>
+    </div>
+
+    <div class="dash-footer">
+        <p>© 2026 JGC Building Automation Supplies SAC · CRM Multi-tenant</p>
+        <p>💡 Siguiendo estándares de Microsoft Dynamics 365.</p>
+    </div>
+</div>
+
+<div class="modal-overlay" id="edit-modal">
+    <div class="modal-box">
+        <h2><i class="fas fa-edit"></i> Editar Prospecto</h2>
+        <form onsubmit="guardarEdicion(event)">
+            <input type="hidden" id="edit-id">
+            <div class="form-grid">
+                <div class="form-group"><label>Razón Social</label><input type="text" id="edit-razon"></div>
+                <div class="form-group"><label>RUC</label><input type="text" id="edit-ruc"></div>
+                <div class="form-group"><label>Contacto</label><input type="text" id="edit-contacto"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="edit-email"></div>
+                <div class="form-group"><label>Teléfono</label><input type="text" id="edit-telefono"></div>
+                <div class="form-group"><label>Segmento</label><select id="edit-segmento"><option value="HVAC">HVAC</option><option value="Industria">Industria</option><option value="Edificaciones">Edificaciones</option><option value="Tratamiento agua">Tratamiento agua</option></select></div>
+                <div class="form-group"><label>Score</label><select id="edit-score"><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div>
+                <div class="form-group"><label>Vendedor</label><select id="edit-vendedor"><option value="Sin asignar">Sin asignar</option><option value="Joel Saldarriaga">Joel Saldarriaga</option><option value="Miguel Ruiz">Miguel Ruiz</option><option value="Catherine Ruiz">Catherine Ruiz</option></select></div>
+                <div class="form-group" style="grid-column: 1 / -1;"><label>Notas</label><textarea id="edit-notas" rows="3"></textarea></div>
+            </div>
+            <div style="margin-top:1.5rem; display:flex; gap:1rem;">
+                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar</button>
+                <button type="button" class="btn" style="background:#e2e8f0;" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+const API_URL = 'https://api.camisale.work/api/jgc';
+const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+const AUTH_USER = 'catherine', AUTH_PASS = 'jgc2026';
+
+let chartScoreInstance, chartSegmentoInstance;
+let todosLosClientes = [], todasLasOportunidades = [];
+let qwenAnalisisActivo = false;
+let qwenLotesCompletados = 0;
+
+async function checkAPIStatus() {
+    const s = document.getElementById('api-status'), t = document.getElementById('api-status-text');
+    if (!s || !t) return;
+    s.className = 'api-status checking'; t.textContent = 'Verificando...';
+    try {
+        const res = await fetch(API_URL + '/health', { headers: { 'X-API-Key': API_KEY } });
+        if(res.ok) { s.className = 'api-status online'; t.textContent = 'API Online'; }
+        else throw new Error();
+    } catch { s.className = 'api-status offline'; t.textContent = 'API Offline'; }
+}
+
+function login() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value.trim();
+    if (u === AUTH_USER && p === AUTH_PASS) {
+        localStorage.setItem('jgc_session', 'true');
+        document.getElementById('login-error').style.display = 'none';
+        mostrarDashboard();
+    } else {
+        document.getElementById('login-error').style.display = 'block';
+    }
+}
+
+function logout() { localStorage.removeItem('jgc_session'); location.reload(); }
+
+function mostrarDashboard() {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'flex';
+    checkAPIStatus(); setInterval(checkAPIStatus, 30000);
+    cargarProspectos(); cargarOportunidades();
+}
+
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    event.target.classList.add('active');
+    if(tabId === 'qwen') cargarMemoriaQwen();
+}
+
+async function fetchAPI(endpoint, options = {}) {
+    const res = await fetch(API_URL + endpoint, {
+        ...options,
+        headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
+    });
+    if (!res.ok) throw new Error('API Error: ' + res.status);
+    return res.json();
+}
+
+async function cargarProspectos() {
+    try {
+        const data = await fetchAPI('/clientes');
+        todosLosClientes = data.clientes || [];
+        filtrarPorVendedor();
+        renderTablaGestion();
+    } catch(e) { console.error(e); }
+}
+
+async function cargarOportunidades() {
+    try {
+        const data = await fetchAPI('/oportunidades');
+        todasLasOportunidades = data.oportunidades || [];
+        renderTablaOportunidades();
+    } catch(e) { console.error(e); }
+}
+
+function filtrarPorVendedor() {
+    const vendedor = document.getElementById('vendedor-filter').value;
+    const filtrados = vendedor === 'todos' ? todosLosClientes : todosLosClientes.filter(c => (c.vendedor_asignado || 'Sin asignar') === vendedor);
+    document.getElementById('kpi-total').textContent = filtrados.length;
+    document.getElementById('kpi-a').textContent = filtrados.filter(c => c.score_valor === 'A').length;
+    document.getElementById('kpi-b').textContent = filtrados.filter(c => c.score_valor === 'B').length;
+    document.getElementById('kpi-c').textContent = filtrados.filter(c => c.score_valor === 'C').length;
+    
+    const tbody = document.getElementById('tabla-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    filtrados.forEach(c => {
+        let iaHtml = '<span style="color:#aaa; font-size:0.8rem;">Sin sugerencias</span>';
+        if (c.ia_next_step_1 || c.ia_next_step_2) {
+            iaHtml = '<div class="ia-box"><ul>';
+            if (c.ia_next_step_1) {
+                const done = c.ia_step_1_done ? 'style="text-decoration:line-through; color:#aaa;"' : '';
+                const btnText = c.ia_step_1_done ? '↩' : '✓';
+                const btnClass = c.ia_step_1_done ? 'btn-check-undo' : 'btn-check';
+                iaHtml += '<li><span ' + done + '>' + c.ia_next_step_1 + '</span> <button class="' + btnClass + '" onclick="marcarPaso(' + c.id + ', 1)">' + btnText + '</button></li>';
+            }
+            if (c.ia_next_step_2) {
+                const done = c.ia_step_2_done ? 'style="text-decoration:line-through; color:#aaa;"' : '';
+                const btnText = c.ia_step_2_done ? '↩' : '✓';
+                const btnClass = c.ia_step_2_done ? 'btn-check-undo' : 'btn-check';
+                iaHtml += '<li><span ' + done + '>' + c.ia_next_step_2 + '</span> <button class="' + btnClass + '" onclick="marcarPaso(' + c.id + ', 2)">' + btnText + '</button></li>';
+            }
+            iaHtml += '</ul></div>';
+        }
+        tbody.innerHTML += '<tr><td><strong>' + (c.codigo_cliente || 'N/A') + '</strong></td><td><strong>' + c.razon_social + '</strong><br><small>' + (c.contacto_nombre || '') + '</small></td><td>' + (c.vendedor_asignado || 'Sin asignar') + '</td><td>' + (c.segmento_negocio || '-') + ' <span class="badge score-' + (c.score_valor || 'C') + '">' + (c.score_valor || 'C') + '</span></td><td>' + iaHtml + '</td><td><button class="btn-ia" onclick="generarNextStepsIA(' + c.id + ', \'' + (c.razon_social||'').replace(/'/g, "\\'") + '\')"><i class="fas fa-magic"></i> Generar</button></td></tr>';
+    });
+    dibujarGraficos(filtrados);
+}
+
+async function generarNextStepsIA(clienteId, empresa) {
+    if(!confirm('¿Pedir a Kilo sugerencias para "' + empresa + '"?')) return;
+    try {
+        const res = await fetchAPI('/clientes/' + clienteId + '/ia-generar-auto', { method: 'POST' });
+        alert('✅ Sugerencias:\n1. ' + res.step1 + '\n2. ' + res.step2);
+        cargarProspectos();
+    } catch(e) { alert("Error: " + e.message); }
+}
+
+async function marcarPaso(clienteId, stepNumber) {
+    try {
+        await fetchAPI('/clientes/' + clienteId + '/ia-step-done', {
+            method: 'PUT',
+            body: JSON.stringify({ step_number: stepNumber })
+        });
+        cargarProspectos();
+    } catch(e) { alert("Error marcando paso: " + e.message); }
+}
+
+function renderTablaGestion() {
+    const tbody = document.getElementById('tabla-gestion-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    todosLosClientes.forEach(c => {
+        tbody.innerHTML += '<tr><td><strong>' + (c.codigo_cliente || 'N/A') + '</strong></td><td><strong>' + c.razon_social + '</strong><br><small>' + (c.contacto_nombre || '') + '</small></td><td>' + (c.vendedor_asignado || 'Sin asignar') + '</td><td>' + (c.segmento_negocio || '-') + ' <span class="badge score-' + (c.score_valor || 'C') + '">' + (c.score_valor || 'C') + '</span></td><td><div style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="' + (c.notas || '') + '">' + (c.notas || 'Sin notas') + '</div></td><td><button class="btn btn-edit" onclick=\'abrirModalEdicion(' + JSON.stringify(c).replace(/'/g, "&#39;") + ')\'><i class="fas fa-edit"></i> Editar</button></td></tr>';
+    });
+}
+
+function abrirModalEdicion(c) {
+    document.getElementById('edit-id').value = c.id;
+    document.getElementById('edit-razon').value = c.razon_social;
+    document.getElementById('edit-ruc').value = c.ruc || '';
+    document.getElementById('edit-contacto').value = c.contacto_nombre || '';
+    document.getElementById('edit-email').value = c.contacto_email || '';
+    document.getElementById('edit-telefono').value = c.contacto_telefono || '';
+    document.getElementById('edit-segmento').value = c.segmento_negocio || 'HVAC';
+    document.getElementById('edit-score').value = c.score_valor || 'C';
+    document.getElementById('edit-vendedor').value = c.vendedor_asignado || 'Sin asignar';
+    document.getElementById('edit-notas').value = c.notas || '';
+    document.getElementById('edit-modal').classList.add('open');
+}
+
+function cerrarModal() { document.getElementById('edit-modal').classList.remove('open'); }
+
+async function guardarEdicion(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-id').value;
+    const payload = {
+        razon_social: document.getElementById('edit-razon').value.trim(),
+        ruc: document.getElementById('edit-ruc').value.trim(),
+        contacto_nombre: document.getElementById('edit-contacto').value.trim(),
+        contacto_email: document.getElementById('edit-email').value.trim(),
+        contacto_telefono: document.getElementById('edit-telefono').value.trim(),
+        segmento_negocio: document.getElementById('edit-segmento').value,
+        score_valor: document.getElementById('edit-score').value,
+        vendedor_asignado: document.getElementById('edit-vendedor').value,
+        notas: document.getElementById('edit-notas').value.trim()
+    };
+    try {
+        await fetchAPI('/clientes/' + id, { method: 'PUT', body: JSON.stringify(payload) });
+        alert('✅ Cliente actualizado');
+        cerrarModal();
+        cargarProspectos();
+    } catch(err) { alert('❌ Error: ' + err.message); }
+}
+
+function renderTablaOportunidades() {
+    const tbody = document.getElementById('tabla-oportunidades');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if(todasLasOportunidades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay oportunidades.</td></tr>';
+        return;
+    }
+    todasLasOportunidades.forEach(o => {
+        let step = 1;
+        if (o.estado === 'cotizacion') step = 2;
+        if (o.estado === 'negociacion') step = 3;
+        if (o.estado === 'ganada') step = 4;
+        let progressHtml = '<div class="progress-steps">';
+        for(let i=1; i<=4; i++) progressHtml += '<div class="step ' + (i<step?'active':(i===step?'current':'')) + '"></div>';
+        progressHtml += '</div><small>' + step + '/4</small>';
+        let accionBtn = step < 4 ? '<button class="btn-check" style="margin-top:4px;" onclick="avanzarOportunidad(' + o.id + ')">Avanzar ➡</button>' : '<span style="color:var(--verde); font-weight:700;">✅ Ganada</span>';
+        tbody.innerHTML += '<tr><td><strong>' + o.codigo + '</strong></td><td>' + (o.cliente_razon_social || o.cliente_id) + '</td><td>' + o.titulo + '<br><strong style="color:var(--verde)">USD ' + parseFloat(o.monto || 0).toLocaleString() + '</strong></td><td>' + progressHtml + '</td><td>' + accionBtn + '</td></tr>';
+    });
+}
+
+async function avanzarOportunidad(oportunidadId) {
+    try {
+        const res = await fetchAPI('/oportunidades/' + oportunidadId + '/avanzar', { method: 'PUT' });
+        alert('✅ Oportunidad avanzada a: ' + res.nuevo_estado);
+        cargarOportunidades();
+    } catch(e) { alert("Error: " + e.message); }
+}
+
+function dibujarGraficos(clientes) {
+    const el1 = document.getElementById('chartScore');
+    const el2 = document.getElementById('chartSegmento');
+    if (!el1 || !el2) return;
+    const a = clientes.filter(c => c.score_valor === 'A').length;
+    const b = clientes.filter(c => c.score_valor === 'B').length;
+    const c = clientes.filter(c => c.score_valor === 'C').length;
+    if (chartScoreInstance) chartScoreInstance.destroy();
+    chartScoreInstance = new Chart(el1, { type: 'doughnut', data: { labels: ['A','B','C'], datasets: [{ data: [a,b,c], backgroundColor: ['#017464','#f59e0b','#e63946'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+    const segs = {};
+    clientes.forEach(cl => { const s = cl.segmento_negocio || 'N/A'; segs[s] = (segs[s] || 0) + 1; });
+    if (chartSegmentoInstance) chartSegmentoInstance.destroy();
+    chartSegmentoInstance = new Chart(el2, { type: 'bar', data: { labels: Object.keys(segs), datasets: [{ label: 'Leads', data: Object.values(segs), backgroundColor: '#244061' }] }, options: { responsive: true, maintainAspectRatio: false } });
+}
+
+async function actualizarPendientesQwen() {
+    const el = document.getElementById('qwen-pendientes-count');
+    if (!el) return 0;
+    try {
+        const res = await fetchAPI('/qwen/pendientes-count');
+        el.textContent = res.total;
+        return res.total;
+    } catch(e) { el.textContent = '?'; return 0; }
+}
+
+async function iniciarAnalisisQwen() {
+    if (qwenAnalisisActivo) return;
+    qwenAnalisisActivo = true;
+    qwenLotesCompletados = 0;
+    document.getElementById('btn-analizar-qwen').disabled = true;
+    document.getElementById('btn-detener-qwen').disabled = false;
+    document.getElementById('qwen-log').style.display = 'block';
+    document.getElementById('qwen-log').innerHTML = '';
+    
+    const totalInicial = await actualizarPendientesQwen();
+    if (totalInicial === 0) {
+        document.getElementById('qwen-log').innerHTML = '<p style="color:var(--verde); font-weight:700;">✅ No hay pendientes. El negocio está al día.</p>';
+        qwenAnalisisActivo = false;
+        document.getElementById('btn-analizar-qwen').disabled = false;
+        document.getElementById('btn-detener-qwen').disabled = true;
+        return;
+    }
+    agregarLog('🚀 Iniciando análisis. Total pendientes: ' + totalInicial + ' clientes.');
+    let loteActual = 0;
+    let totalLotesEstimados = Math.ceil(totalInicial / 5);
+    
+    while (qwenAnalisisActivo) {
+        loteActual++;
+        const logDiv = document.createElement('div');
+        logDiv.textContent = '📦 Procesando lote ' + loteActual + ' de ~' + totalLotesEstimados + '...';
+        logDiv.style.cssText = 'margin-bottom:0.5rem; padding:0.5rem; color:#64748b;';
+        document.getElementById('qwen-log').appendChild(logDiv);
+        document.getElementById('qwen-log').scrollTop = document.getElementById('qwen-log').scrollHeight;
+        
+        try {
+            const inicioLote = Date.now();
+            const intervaloTiempo = setInterval(() => {
+                const segs = Math.floor((Date.now() - inicioLote) / 1000);
+                logDiv.textContent = '⏳ Procesando lote ' + loteActual + '... (' + segs + 's)';
+            }, 1000);
+            const res = await fetchAPI('/qwen/analizar-lote', { method: 'POST' });
+            clearInterval(intervaloTiempo);
+            logDiv.textContent = '✅ Lote ' + loteActual + ' completado (' + res.lote_size + ' clientes). Restantes: ' + res.pendientes_restantes + '.';
+            logDiv.style.color = '#017464';
+            if (res.analisis) agregarLog('   💡 ' + res.analisis, 'resultado');
+            qwenLotesCompletados++;
+            document.getElementById('qwen-progreso').textContent = qwenLotesCompletados;
+            document.getElementById('qwen-pendientes-count').textContent = res.pendientes_restantes;
+            if (res.completado || res.lote_size === 0) {
+                agregarLog('🎉 ¡Análisis completo! ' + qwenLotesCompletados + ' lotes procesados.', 'final');
+                break;
+            }
+            if (loteActual >= 20) {
+                agregarLog('⚠️ Se alcanzó el límite de 20 lotes.', 'aviso');
+                break;
+            }
+            await new Promise(r => setTimeout(r, 1000));
+        } catch(err) {
+            agregarLog('❌ Error en lote ' + loteActual + ': ' + err.message);
+            break;
+        }
+    }
+    qwenAnalisisActivo = false;
+    document.getElementById('btn-analizar-qwen').disabled = false;
+    document.getElementById('btn-detener-qwen').disabled = true;
+}
+
+function detenerAnalisisQwen() {
+    qwenAnalisisActivo = false;
+    agregarLog('⏸️ Análisis detenido por el usuario.', 'aviso');
+}
+
+function agregarLog(mensaje, tipo = 'info') {
+    const log = document.getElementById('qwen-log');
+    if (!log) return;
+    const div = document.createElement('div');
+    div.style.marginBottom = '0.5rem';
+    div.style.padding = '0.5rem';
+    div.style.borderRadius = '4px';
+    div.style.fontSize = '0.85rem';
+    if (tipo === 'resultado') {
+        div.style.background = '#f8fafc';
+        div.style.borderLeft = '3px solid #8b5cf6';
+        div.style.color = '#3d4f5e';
+        div.style.paddingLeft = '0.8rem';
+    } else if (tipo === 'final') {
+        div.style.background = '#d1fae5';
+        div.style.color = '#065f46';
+        div.style.fontWeight = '700';
+    } else if (tipo === 'aviso') {
+        div.style.background = '#fef3c7';
+        div.style.color = '#92400e';
+    } else {
+        div.style.color = '#64748b';
+    }
+    div.textContent = mensaje;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+}
+
+async function cargarMemoriaQwen() {
+    await actualizarPendientesQwen();
+    await cargarChatHistorial();
+    try {
+        const res = await fetchAPI('/qwen/ultimo-resumen');
+        if (res.resumen) {
+            const box = document.getElementById('resumen-ejecutivo-box');
+            box.style.display = 'block';
+            box.textContent = '📅 ' + new Date(res.fecha).toLocaleString() + '\n\n' + res.resumen;
+        }
+    } catch(e) {}
+}
+
+    async function generarResumenEjecutivo() {
+        const box = document.getElementById('resumen-ejecutivo-box');
+        const btn = document.getElementById('btn-resumen-qwen');
+        box.style.display = 'block';
+        box.innerHTML = '<div style="text-align:center; padding:2rem;"><i class="fas fa-spinner fa-spin" style="font-size:2rem; color:var(--verde);"></i><br><br>🧠 <strong>Qwen está analizando tu negocio...</strong><br><span style="font-size:0.85rem; color:#64748b;">Esto puede tomar 30-90 segundos.</span></div>';
+        btn.disabled = true;
+        
+        try {
+            const res = await fetchAPI('/qwen/resumen-ejecutivo', { method: 'POST' });
+            
+            // Formatear el texto con estilo
+            const textoFormateado = res.resumen
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^/, '<p>')
+                .replace(/$/, '</p>');
+            
+            const m = res.metadata;
+            box.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:1rem; border-bottom:2px solid var(--verde);">
+                    <div>
+                        <div style="font-weight:800; color:var(--azul); font-size:1.1rem;">📋 Recomendación Comercial</div>
+                        <div style="font-size:0.8rem; color:#64748b;">${new Date().toLocaleString()}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:1.5rem; font-weight:800; color:var(--verde);">${m.total_acciones_pendientes}</div>
+                        <div style="font-size:0.75rem; color:#64748b;">acciones pendientes</div>
+                    </div>
+                </div>
+                <div style="line-height:1.8; font-size:0.95rem; color:#1e2b3a;">${textoFormateado}</div>
+                <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; text-align:center; font-size:0.85rem;">
+                    <div><strong style="color:var(--azul); font-size:1.3rem;">${m.total_clientes}</strong><br>Clientes</div>
+                    <div><strong style="color:#f59e0b; font-size:1.3rem;">${m.num_oportunidades}</strong><br>Oportunidades</div>
+                    <div><strong style="color:var(--verde); font-size:1.3rem;">USD ${m.monto_oportunidades.toLocaleString()}</strong><br>En juego</div>
+                </div>`;
+        } catch(e) {
+            box.innerHTML = '<div style="color:#e63946; padding:1rem;">❌ Error generando resumen: ' + e.message + '</div>';
+        } finally {
+            btn.disabled = false;
+        }
+    }
+
+
+    async function cargarUltimoResumen() {
+        const box = document.getElementById('resumen-ejecutivo-box');
+        box.style.display = 'block';
+        box.textContent = 'Cargando...';
+        try {
+            const res = await fetchAPI('/qwen/ultimo-resumen');
+            if (!res.resumen) {
+                box.textContent = '⚠️ No hay resumen guardado aún. Genera uno nuevo.';
+                return;
+            }
+            const textoFormateado = res.resumen
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^/, '<p>')
+                .replace(/$/, '</p>');
+            box.innerHTML = `
+                <div style="margin-bottom:1rem; padding-bottom:1rem; border-bottom:2px solid var(--verde);">
+                    <div style="font-weight:800; color:var(--azul); font-size:1.1rem;">📋 Último Resumen Guardado</div>
+                    <div style="font-size:0.8rem; color:#64748b;">${new Date(res.fecha).toLocaleString()}</div>
+                </div>
+                <div style="line-height:1.8;">${textoFormateado}</div>`;
+        } catch(e) {
+            box.textContent = 'Error: ' + e.message;
+        }
+    }
+
+
+async function enviarMensajeChat() {
+    const input = document.getElementById('chat-input');
+    const mensaje = input.value.trim();
+    if (!mensaje) return;
+    const container = document.getElementById('chat-mensajes');
+    if (container.querySelector('div[style*="italic"]')) container.innerHTML = '';
+    agregarMensajeChat('user', mensaje);
+    input.value = '';
+    const typingId = 'typing-' + Date.now();
+    const typing = document.createElement('div');
+    typing.id = typingId;
+    typing.style.cssText = 'color:#8b5cf6; font-style:italic; padding:0.5rem; font-size:0.9rem;';
+    typing.textContent = '🤖 Qwen está escribiendo...';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+    document.getElementById('btn-enviar-chat').disabled = true;
+    try {
+        const res = await fetchAPI('/qwen/chat', { method: 'POST', body: JSON.stringify({ mensaje: mensaje, session_id: 'default' }) });
+        document.getElementById(typingId)?.remove();
+        agregarMensajeChat('assistant', res.respuesta);
+    } catch(e) {
+        document.getElementById(typingId)?.remove();
+        agregarMensajeChat('assistant', '❌ Error: ' + e.message);
+    } finally {
+        document.getElementById('btn-enviar-chat').disabled = false;
+    }
+}
+
+function agregarMensajeChat(rol, mensaje) {
+    const container = document.getElementById('chat-mensajes');
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + rol;
+    const nombre = rol === 'user' ? 'Tú' : '🤖 Qwen';
+    div.innerHTML = '<strong style="display:block; font-size:0.75rem; margin-bottom:0.3rem; opacity:0.8;">' + nombre + '</strong><div>' + mensaje.replace(/\n/g, '<br>') + '</div>';
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+async function cargarChatHistorial() {
+    try {
+        const res = await fetchAPI('/qwen/chat/historial');
+        const container = document.getElementById('chat-mensajes');
+        if (res.mensajes && res.mensajes.length > 0) {
+            container.innerHTML = '';
+            res.mensajes.forEach(m => agregarMensajeChat(m.rol === 'user' ? 'user' : 'assistant', m.mensaje));
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function limpiarChat() {
+    if (!confirm('¿Borrar todo el historial del chat?')) return;
+    try {
+        await fetchAPI('/qwen/chat/limpiar', { method: 'DELETE' });
+        document.getElementById('chat-mensajes').innerHTML = '<div style="color:#64748b; font-style:italic; text-align:center; padding:2rem;">Chat limpiado. Escribe tu primera pregunta.</div>';
+    } catch(e) { alert('Error: ' + e.message); }
+}
+
+if (localStorage.getItem('jgc_session') === 'true') mostrarDashboard();
+</script>
+</body>
+</html>
