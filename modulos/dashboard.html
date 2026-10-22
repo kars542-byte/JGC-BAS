@@ -1,0 +1,131 @@
+<style>
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .kpi-card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-left: 5px solid #244061; }
+    .kpi-title { font-size: 0.85rem; color: #3d4f5e; text-transform: uppercase; font-weight: 700; margin-bottom: 0.5rem; }
+    .kpi-value { font-size: 2.5rem; font-weight: 800; color: #244061; }
+    .kpi-card.green { border-left-color: #017464; }
+    .kpi-card.green .kpi-value { color: #017464; }
+    .kpi-card.orange { border-left-color: #f59e0b; }
+    .kpi-card.orange .kpi-value { color: #f59e0b; }
+    .kpi-card.red { border-left-color: #e63946; }
+    .kpi-card.red .kpi-value { color: #e63946; }
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+    .chart-card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); height: 320px; }
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #e0e8ef; }
+    .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; }
+    td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; }
+    .badge { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+    .badge.score-A { background: #d1fae5; color: #065f46; }
+    .badge.score-B { background: #fef3c7; color: #92400e; }
+    .badge.score-C { background: #fee2e2; color: #991b1b; }
+    .ia-box { background: #f8fafc; border: 1px dashed #8b5cf6; padding: 0.6rem; border-radius: 6px; font-size: 0.8rem; margin-top: 0.3rem; }
+    .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: 700; }
+    .btn-check { background: #10b981; color: #fff; border: none; padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer; font-size: 0.7rem; }
+    .btn-check-undo { background: #f59e0b; color: #fff; border: none; padding: 0.2rem 0.4rem; border-radius: 4px; cursor: pointer; font-size: 0.7rem; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-title">Total Prospectos</div><div class="kpi-value" id="kpi-total">-</div></div>
+    <div class="kpi-card green"><div class="kpi-title">Score A</div><div class="kpi-value" id="kpi-a">-</div></div>
+    <div class="kpi-card orange"><div class="kpi-title">Score B</div><div class="kpi-value" id="kpi-b">-</div></div>
+    <div class="kpi-card red"><div class="kpi-title">Score C</div><div class="kpi-value" id="kpi-c">-</div></div>
+</div>
+
+<div class="charts-grid">
+    <div class="chart-card"><canvas id="chartScore"></canvas></div>
+    <div class="chart-card"><canvas id="chartSegmento"></canvas></div>
+</div>
+
+<div class="card">
+    <h3><i class="fas fa-users"></i> Clientes y Acciones (Kilo)</h3>
+    <table>
+        <thead><tr><th>Código</th><th>Empresa</th><th>Segmento</th><th>🤖 Próximos Pasos</th><th>Acción</th></tr></thead>
+        <tbody id="tabla-body"></tbody>
+    </table>
+</div>
+
+<script>
+(function() {
+    const API_URL = 'https://api.camisale.work/api/jgc';
+    const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+    let chartScoreInstance, chartSegmentoInstance;
+
+    async function fetchAPI(endpoint, options = {}) {
+        const res = await fetch(API_URL + endpoint, {
+            ...options,
+            headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
+        });
+        if (!res.ok) throw new Error('API Error');
+        return res.json();
+    }
+
+    async function cargarDatos() {
+        try {
+            const data = await fetchAPI('/clientes');
+            const clientes = data.clientes || [];
+            
+            document.getElementById('kpi-total').textContent = clientes.length;
+            document.getElementById('kpi-a').textContent = clientes.filter(c => c.score_valor === 'A').length;
+            document.getElementById('kpi-b').textContent = clientes.filter(c => c.score_valor === 'B').length;
+            document.getElementById('kpi-c').textContent = clientes.filter(c => c.score_valor === 'C').length;
+
+            const tbody = document.getElementById('tabla-body');
+            tbody.innerHTML = '';
+            clientes.forEach(c => {
+                let iaHtml = '<span style="color:#aaa;">Sin sugerencias</span>';
+                if (c.ia_next_step_1) {
+                    const done = c.ia_step_1_done ? 'style="text-decoration:line-through; color:#aaa;"' : '';
+                    iaHtml = `<div class="ia-box"><span ${done}>${c.ia_next_step_1}</span> <button class="btn-check" onclick="window.marcarPaso(${c.id}, 1)">✓</button></div>`;
+                }
+                tbody.innerHTML += `<tr>
+                    <td><strong>${c.codigo_cliente || 'N/A'}</strong></td>
+                    <td><strong>${c.razon_social}</strong><br><small>${c.contacto_nombre || ''}</small></td>
+                    <td>${c.segmento_negocio || '-'} <span class="badge score-${c.score_valor || 'C'}">${c.score_valor || 'C'}</span></td>
+                    <td>${iaHtml}</td>
+                    <td><button class="btn-ia" onclick="window.generarIA(${c.id})"><i class="fas fa-magic"></i> Generar</button></td>
+                </tr>`;
+            });
+
+            dibujarGraficos(clientes);
+        } catch (e) { 
+            console.error(e);
+            document.getElementById('tabla-body').innerHTML = '<tr><td colspan="5" style="text-align:center; color:#e63946;">Error cargando datos. Verifica API Online.</td></tr>';
+        }
+    }
+
+    window.generarIA = async function(id) {
+        if(!confirm('¿Pedir a Kilo sugerencias?')) return;
+        try {
+            const res = await fetchAPI(`/clientes/${id}/ia-generar-auto`, { method: 'POST' });
+            alert(`✅ Sugerencias:\n1. ${res.step1}\n2. ${res.step2}`);
+            cargarDatos();
+        } catch(e) { alert("Error: " + e.message); }
+    }
+
+    window.marcarPaso = async function(id, step) {
+        try {
+            await fetchAPI(`/clientes/${id}/ia-step-done`, { method: 'PUT', body: JSON.stringify({ step_number: step }) });
+            cargarDatos();
+        } catch(e) { alert("Error: " + e.message); }
+    }
+
+    function dibujarGraficos(clientes) {
+        const a = clientes.filter(c => c.score_valor === 'A').length;
+        const b = clientes.filter(c => c.score_valor === 'B').length;
+        const c = clientes.filter(c => c.score_valor === 'C').length;
+        
+        if (chartScoreInstance) chartScoreInstance.destroy();
+        chartScoreInstance = new Chart(document.getElementById('chartScore'), { type: 'doughnut', data: { labels: ['A','B','C'], datasets: [{ data: [a,b,c], backgroundColor: ['#017464','#f59e0b','#e63946'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+
+        const segs = {};
+        clientes.forEach(cl => { const s = cl.segmento_negocio || 'N/A'; segs[s] = (segs[s] || 0) + 1; });
+        if (chartSegmentoInstance) chartSegmentoInstance.destroy();
+        chartSegmentoInstance = new Chart(document.getElementById('chartSegmento'), { type: 'bar', data: { labels: Object.keys(segs), datasets: [{ label: 'Leads', data: Object.values(segs), backgroundColor: '#244061' }] }, options: { responsive: true, maintainAspectRatio: false } });
+    }
+
+    cargarDatos();
+})();
+</script>

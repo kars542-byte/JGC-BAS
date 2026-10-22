@@ -1,0 +1,249 @@
+<style>
+    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+    .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; }
+    td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; }
+    .progress-steps { display: flex; gap: 4px; margin-top: 0.5rem; }
+    .step { width: 20px; height: 6px; background: #e2e8f0; border-radius: 3px; }
+    .step.active { background: #017464; }
+    .step.current { background: #f59e0b; }
+    .btn { padding: 0.4rem 0.8rem; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+    .btn-primary { background: #244061; color: #fff; }
+    .btn-excel { background: #10b981; color: #fff; }
+    .btn-check { background: #10b981; color: #fff; padding: 0.2rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; }
+    
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 900px; max-height: 90vh; overflow-y: auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; background: #f8fafc; padding: 1rem; border-radius: 8px; }
+    .form-group label { font-size: 0.8rem; font-weight: 700; color: #244061; }
+    .form-group input { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; }
+    .quote-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .quote-table th, .quote-table td { border: 1px solid #cbd5e1; padding: 0.5rem; }
+    
+    @media print {
+        body * { visibility: hidden; }
+        #print-section, #print-section * { visibility: visible; }
+        #print-section { position: absolute; left: 0; top: 0; width: 100%; }
+    }
+    #print-section { display: none; font-family: Arial; color: #000; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<div class="card">
+    <h3><i class="fas fa-handshake"></i> Pipeline de Oportunidades</h3>
+    <table>
+        <thead><tr><th>Código</th><th>Cliente</th><th>Título / Monto</th><th>Progreso</th><th>Acciones</th></tr></thead>
+        <tbody id="tabla-oportunidades"><tr><td colspan="5" style="text-align:center;">Cargando...</td></tr></tbody>
+    </table>
+</div>
+
+<div class="modal-overlay" id="quote-modal">
+    <div class="modal-box">
+        <h2 style="color:#244061; margin-bottom:1rem;"><i class="fas fa-file-invoice-dollar"></i> Nueva Cotización</h2>
+        <div class="form-grid">
+            <div class="form-group"><label>Cliente</label><input type="text" id="q-client" readonly></div>
+            <div class="form-group"><label>RUC</label><input type="text" id="q-ruc" readonly></div>
+            <div class="form-group"><label>Cotización N°</label><input type="text" id="q-number"></div>
+            <div class="form-group"><label>Atención</label><input type="text" id="q-attention"></div>
+        </div>
+        <table class="quote-table" id="quote-table">
+            <thead><tr><th>ITEM</th><th>CANT.</th><th>UND</th><th>DESCRIPCIÓN</th><th>PRECIO</th><th>TOTAL</th><th></th></tr></thead>
+            <tbody id="quote-items-body"></tbody>
+        </table>
+        <button class="btn btn-primary" style="margin-top:0.5rem;" onclick="window.agregarFilaCotizacion()"><i class="fas fa-plus"></i> Agregar Ítem</button>
+        <div style="text-align: right; margin-top: 1.5rem; font-size: 1.1rem;">
+            <div>SUB TOTAL: <span id="q-subtotal">USD 0.00</span></div>
+            <div>IGV (18%): <span id="q-igv">USD 0.00</span></div>
+            <div style="font-weight: 800;">TOTAL: <span id="q-total">USD 0.00</span></div>
+        </div>
+        <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+            <button class="btn btn-excel" onclick="window.exportarExcel()"><i class="fas fa-file-excel"></i> Excel</button>
+            <button class="btn btn-primary" onclick="window.imprimirPDF()"><i class="fas fa-print"></i> PDF</button>
+            <button class="btn" style="background:#e2e8f0;" onclick="window.cerrarCotizacion()">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<div id="print-section">
+    <div style="text-align:center; margin-bottom:2rem;">
+        <h1>JGC Building Automation Supplies SAC</h1>
+        <h2>RUC: 20607166685</h2><hr>
+        <h2 id="print-quote-number">COTIZACIÓN</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:2rem; font-size:14px;">
+        <table><tr><td><strong>RAZÓN SOCIAL:</strong></td><td id="print-client">-</td></tr><tr><td><strong>RUC:</strong></td><td id="print-ruc">-</td></tr><tr><td><strong>Atención:</strong></td><td id="print-attention">-</td></tr></table>
+        <table><tr><td><strong>FECHA:</strong></td><td id="print-date">-</td></tr><tr><td><strong>MONEDA:</strong></td><td>USD</td></tr></table>
+    </div>
+    <table style="width:100%; border-collapse:collapse;" id="print-items-table">
+        <thead><tr><th style="border:1px solid #000; padding:0.5rem;">ITEM</th><th style="border:1px solid #000; padding:0.5rem;">CANT.</th><th style="border:1px solid #000; padding:0.5rem;">UND</th><th style="border:1px solid #000; padding:0.5rem;">DESCRIPCIÓN</th><th style="border:1px solid #000; padding:0.5rem;">PRECIO</th><th style="border:1px solid #000; padding:0.5rem;">P.TOTAL</th></tr></thead>
+        <tbody id="print-items-body"></tbody>
+    </table>
+    <div style="text-align:right; margin-top:1.5rem; font-size:14px;">
+        <div>SUB TOTAL: <span id="print-subtotal">USD 0.00</span></div>
+        <div>IGV (18%): <span id="print-igv">USD 0.00</span></div>
+        <div style="font-weight:bold; font-size:16px;">TOTAL: <span id="print-total">USD 0.00</span></div>
+    </div>
+    <div style="font-size:11px; margin-top:2rem;">
+        <strong>TÉRMINOS Y CONDICIONES:</strong><br>
+        • Lugar de entrega: Sus instalaciones en Lima Metropolitana.<br>
+        • Forma de pago: Abono en cuenta previo al despacho.<br>
+        • Precios unitarios no incluyen IGV.<br>
+        • Validez de la oferta 7 días.<br>
+    </div>
+</div>
+
+<script>
+(function() {
+    const API_URL = 'https://api.camisale.work/api/jgc';
+    const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+    let todasLasOportunidades = [], todosLosClientes = [], clienteActualCotizacion = null, itemCount = 1;
+
+    async function fetchAPI(endpoint, options = {}) {
+        const res = await fetch(API_URL + endpoint, {
+            ...options,
+            headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
+        });
+        if (!res.ok) throw new Error('API Error');
+        return res.json();
+    }
+
+    async function cargarDatos() {
+        try {
+            const dataOps = await fetchAPI('/oportunidades');
+            todasLasOportunidades = dataOps.oportunidades || [];
+            const dataCli = await fetchAPI('/clientes');
+            todosLosClientes = dataCli.clientes || [];
+            
+            const tbody = document.getElementById('tabla-oportunidades');
+            tbody.innerHTML = '';
+            if(todasLasOportunidades.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay oportunidades registradas.</td></tr>';
+                return;
+            }
+
+            todasLasOportunidades.forEach(o => {
+                let step = 1;
+                if (o.estado === 'cotizacion') step = 2;
+                if (o.estado === 'negociacion') step = 3;
+                if (o.estado === 'ganada') step = 4;
+                let progressHtml = '<div class="progress-steps">';
+                for(let i=1; i<=4; i++) progressHtml += `<div class="step ${i<step?'active':(i===step?'current':'')}"></div>`;
+                progressHtml += '</div><small>' + step + '/4</small>';
+                
+                tbody.innerHTML += `<tr>
+                    <td><strong>${o.codigo}</strong></td>
+                    <td>${o.cliente_razon_social || o.cliente_id}</td>
+                    <td>${o.titulo}<br><strong style="color:#017464">USD ${parseFloat(o.monto || 0).toLocaleString()}</strong></td>
+                    <td>${progressHtml}</td>
+                    <td><button class="btn btn-primary" onclick="window.abrirCotizacion(${o.cliente_id}, '${o.titulo.replace(/'/g, "\\'")}')"><i class="fas fa-file-invoice"></i> Cotizar</button></td>
+                </tr>`;
+            });
+        } catch (e) { 
+            console.error(e); 
+            document.getElementById('tabla-oportunidades').innerHTML = '<tr><td colspan="5" style="text-align:center; color:#e63946;">Error. Verifica conexión API.</td></tr>';
+        }
+    }
+
+    window.abrirCotizacion = function(clienteId, titulo) {
+        clienteActualCotizacion = todosLosClientes.find(c => c.id === clienteId);
+        if(!clienteActualCotizacion) return alert("Error: Cliente no encontrado.");
+
+        document.getElementById('q-client').value = clienteActualCotizacion.razon_social;
+        document.getElementById('q-ruc').value = clienteActualCotizacion.ruc || '';
+        document.getElementById('q-number').value = `COT-${Date.now().toString().slice(-6)}`;
+        document.getElementById('q-attention').value = titulo;
+
+        document.getElementById('quote-items-body').innerHTML = '';
+        itemCount = 1;
+        window.agregarFilaCotizacion();
+        document.getElementById('quote-modal').classList.add('open');
+    }
+
+    window.cerrarCotizacion = function() { 
+        document.getElementById('quote-modal').classList.remove('open'); 
+    }
+
+    window.agregarFilaCotizacion = function() {
+        const tbody = document.getElementById('quote-items-body');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${itemCount}</td>
+            <td><input type="number" class="q-cant" value="1" min="1" style="width:100%;" onchange="window.calcularTotales()"></td>
+            <td><input type="text" class="q-und" value="UND" style="width:100%;"></td>
+            <td><textarea class="q-desc" rows="2" style="width:100%;"></textarea></td>
+            <td><input type="number" class="q-price" value="0" step="0.01" style="width:100%;" onchange="window.calcularTotales()"></td>
+            <td class="q-total-row" style="text-align:right;">USD 0.00</td>
+            <td><button class="btn" style="background:#fee2e2; color:#991b1b;" onclick="this.closest('tr').remove(); window.calcularTotales();"><i class="fas fa-times"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+        itemCount++;
+        window.calcularTotales();
+    }
+
+    window.calcularTotales = function() {
+        let subtotal = 0;
+        document.querySelectorAll('#quote-items-body tr').forEach(row => {
+            const cant = parseFloat(row.querySelector('.q-cant').value) || 0;
+            const price = parseFloat(row.querySelector('.q-price').value) || 0;
+            const total = cant * price;
+            row.querySelector('.q-total-row').textContent = 'USD ' + total.toFixed(2);
+            subtotal += total;
+        });
+        const igv = subtotal * 0.18;
+        document.getElementById('q-subtotal').textContent = 'USD ' + subtotal.toFixed(2);
+        document.getElementById('q-igv').textContent = 'USD ' + igv.toFixed(2);
+        document.getElementById('q-total').textContent = 'USD ' + (subtotal + igv).toFixed(2);
+    }
+
+    window.imprimirPDF = function() {
+        if(!clienteActualCotizacion) return;
+        document.getElementById('print-quote-number').textContent = document.getElementById('q-number').value;
+        document.getElementById('print-client').textContent = clienteActualCotizacion.razon_social;
+        document.getElementById('print-ruc').textContent = clienteActualCotizacion.ruc || '-';
+        document.getElementById('print-attention').textContent = document.getElementById('q-attention').value;
+        document.getElementById('print-date').textContent = new Date().toLocaleDateString('es-PE');
+
+        const printBody = document.getElementById('print-items-body');
+        printBody.innerHTML = '';
+        document.querySelectorAll('#quote-items-body tr').forEach((row, i) => {
+            const cant = row.querySelector('.q-cant').value;
+            const und = row.querySelector('.q-und').value;
+            const desc = row.querySelector('.q-desc').value.replace(/\n/g, '<br>');
+            const price = parseFloat(row.querySelector('.q-price').value) || 0;
+            printBody.innerHTML += `<tr><td>${i+1}</td><td>${cant}</td><td>${und}</td><td>${desc}</td><td>USD ${price.toFixed(2)}</td><td>USD ${(cant*price).toFixed(2)}</td></tr>`;
+        });
+
+        document.getElementById('print-subtotal').textContent = document.getElementById('q-subtotal').textContent;
+        document.getElementById('print-igv').textContent = document.getElementById('q-igv').textContent;
+        document.getElementById('print-total').textContent = document.getElementById('q-total').textContent;
+
+        document.getElementById('print-section').style.display = 'block';
+        window.print();
+        document.getElementById('print-section').style.display = 'none';
+    }
+
+    window.exportarExcel = function() {
+        if(!clienteActualCotizacion) return;
+        const wb = XLSX.utils.book_new();
+        const ws_data = [["COTIZACIÓN", document.getElementById('q-number').value], [], ["RAZÓN SOCIAL", clienteActualCotizacion.razon_social], ["RUC", clienteActualCotizacion.ruc || '-'], [], ["ITEM", "CANT.", "UND", "DESCRIPCIÓN", "PRECIO", "P.TOTAL"]];
+        
+        document.querySelectorAll('#quote-items-body tr').forEach((row, i) => {
+            const cant = parseFloat(row.querySelector('.q-cant').value) || 0;
+            const price = parseFloat(row.querySelector('.q-price').value) || 0;
+            ws_data.push([i+1, cant, row.querySelector('.q-und').value, row.querySelector('.q-desc').value.replace(/\n/g, ' '), price, cant*price]);
+        });
+        
+        ws_data.push([], ["", "", "", "", "SUB TOTAL", parseFloat(document.getElementById('q-subtotal').textContent.replace('USD ',''))]);
+        ws_data.push(["", "", "", "", "IGV", parseFloat(document.getElementById('q-igv').textContent.replace('USD ',''))]);
+        ws_data.push(["", "", "", "", "TOTAL", parseFloat(document.getElementById('q-total').textContent.replace('USD ',''))]);
+
+        const ws = XLSX.utils.aoa_to_sheet(ws_data);
+        XLSX.utils.book_append_sheet(wb, ws, "Cotizacion");
+        XLSX.writeFile(wb, `Cotizacion_${clienteActualCotizacion.razon_social.replace(/\s+/g, '_')}.xlsx`);
+    }
+
+    cargarDatos();
+})();
+</script>
