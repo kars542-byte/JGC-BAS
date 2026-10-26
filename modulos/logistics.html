@@ -1,8 +1,207 @@
-<style>
-    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
-</style>
-<div class="card">
-    <h3><i class="fas fa-boxes"></i> Logística e Inventario</h3>
-    <p style="color:#64748b; margin-top:1rem;">Módulo en construcción. Aquí podrás gestionar stock, precios base y proveedores.</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logística - JGC BAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f4f7fc; color: #1e2b3a; }
+        .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; }
+        td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; }
+        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #244061; color: #fff; }
+        .btn-success { background: #017464; color: #fff; }
+        .btn-edit { background: #f59e0b; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 500px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
+        .form-group label { font-size: 0.85rem; font-weight: 700; color: #244061; margin-bottom: 0.3rem; }
+        .form-group input, .form-group select { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3><i class="fas fa-boxes"></i> Gestión de Inventario y Precios</h3>
+            <button class="btn btn-success" onclick="window.abrirModalNuevo()">
+                <i class="fas fa-plus"></i> Nuevo Producto
+            </button>
+        </div>
+        
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Marca</th>
+                        <th>Categoría</th>
+                        <th>Precio Base</th>
+                        <th>Stock</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-productos">
+                    <tr><td colspan="7" style="text-align:center;">Cargando productos...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="producto-modal">
+        <div class="modal-box">
+            <h2 style="color:#244061; margin-bottom:1rem;" id="modal-title">Nuevo Producto</h2>
+            <form onsubmit="window.guardarProducto(event)">
+                <input type="hidden" id="p-id">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Código (Único) *</label>
+                        <input type="text" id="p-codigo" required>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Nombre del Producto *</label>
+                        <input type="text" id="p-nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <input type="text" id="p-marca">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select id="p-categoria">
+                            <option value="Motores">Motores</option>
+                            <option value="Sensores">Sensores</option>
+                            <option value="Detección">Detección</option>
+                            <option value="Control">Control</option>
+                            <option value="Instrumentación">Instrumentación</option>
+                            <option value="Accesorios">Accesorios</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Base (USD)</label>
+                        <input type="number" id="p-precio" step="0.01" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Actual</label>
+                        <input type="number" id="p-stock" min="0">
+                    </div>
+                </div>
+                <div style="display:flex; gap:1rem; margin-top:1rem;">
+                    <button type="submit" class="btn btn-primary" style="flex:1; justify-content:center;">Guardar</button>
+                    <button type="button" class="btn" style="background:#e2e8f0; flex:1; justify-content:center;" onclick="document.getElementById('producto-modal').classList.remove('open')">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        const API_URL = 'https://api.camisale.work/api/jgc';
+        const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+
+        async function fetchAPI(endpoint, options = {}) {
+            const res = await fetch(API_URL + endpoint, {
+                ...options,
+                headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
+            });
+            if (!res.ok) throw new Error('API Error');
+            return res.json();
+        }
+
+        async function cargarProductos() {
+            try {
+                const data = await fetchAPI('/productos');
+                const tbody = document.getElementById('tabla-productos');
+                tbody.innerHTML = '';
+                
+                if(data.productos.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No hay productos registrados.</td></tr>';
+                    return;
+                }
+
+                data.productos.forEach(p => {
+                    const precioStr = p.precio_base > 0 ? `$${parseFloat(p.precio_base).toFixed(2)}` : 'Consultar';
+                    const stockColor = p.stock <= 3 ? 'color:#e63946; font-weight:700;' : '';
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${p.codigo}</strong></td>
+                            <td>${p.nombre}</td>
+                            <td>${p.marca || '-'}</td>
+                            <td>${p.categoria || '-'}</td>
+                            <td>${precioStr}</td>
+                            <td style="${stockColor}">${p.stock} und</td>
+                            <td><button class="btn btn-edit" onclick='window.editarProducto(${JSON.stringify(p).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i> Editar</button></td>
+                        </tr>
+                    `;
+                });
+            } catch(e) {
+                document.getElementById('tabla-productos').innerHTML = '<tr><td colspan="7" style="text-align:center; color:#e63946;">Error cargando inventario.</td></tr>';
+            }
+        }
+
+        window.abrirModalNuevo = function() {
+            document.getElementById('modal-title').textContent = 'Nuevo Producto';
+            document.getElementById('p-id').value = '';
+            document.getElementById('p-codigo').value = '';
+            document.getElementById('p-codigo').disabled = false;
+            document.getElementById('p-nombre').value = '';
+            document.getElementById('p-marca').value = '';
+            document.getElementById('p-categoria').value = 'Motores';
+            document.getElementById('p-precio').value = '0';
+            document.getElementById('p-stock').value = '0';
+            document.getElementById('producto-modal').classList.add('open');
+        };
+
+        window.editarProducto = function(p) {
+            document.getElementById('modal-title').textContent = 'Editar Producto';
+            document.getElementById('p-id').value = p.id;
+            document.getElementById('p-codigo').value = p.codigo;
+            document.getElementById('p-codigo').disabled = true;
+            document.getElementById('p-nombre').value = p.nombre;
+            document.getElementById('p-marca').value = p.marca || '';
+            document.getElementById('p-categoria').value = p.categoria || 'Motores';
+            document.getElementById('p-precio').value = p.precio_base;
+            document.getElementById('p-stock').value = p.stock;
+            document.getElementById('producto-modal').classList.add('open');
+        };
+
+        window.guardarProducto = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('p-id').value;
+            const payload = {
+                codigo: document.getElementById('p-codigo').value.trim().toUpperCase(),
+                nombre: document.getElementById('p-nombre').value.trim(),
+                marca: document.getElementById('p-marca').value.trim(),
+                categoria: document.getElementById('p-categoria').value,
+                precio_base: parseFloat(document.getElementById('p-precio').value) || 0,
+                stock: parseInt(document.getElementById('p-stock').value) || 0
+            };
+
+            try {
+                if(id) {
+                    delete payload.codigo;
+                    await fetchAPI(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+                } else {
+                    await fetchAPI('/productos', { method: 'POST', body: JSON.stringify(payload) });
+                }
+                document.getElementById('producto-modal').classList.remove('open');
+                cargarProductos();
+            } catch(err) {
+                alert('Error guardando: ' + err.message);
+            }
+        };
+
+        cargarProductos();
+    })();
+    </script>
+</body>
+</html>

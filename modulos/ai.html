@@ -1,240 +1,111 @@
-<style>
-    .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
-    .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
-    .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; background: #244061; color: #fff; }
-    .chat-container { background: #f8fafc; border-radius: 8px; padding: 1rem; height: 300px; overflow-y: auto; margin-bottom: 1rem; border: 1px solid #e2e8f0; }
-    .chat-msg { padding: 0.8rem 1rem; margin: 0.5rem 0; border-radius: 12px; max-width: 80%; line-height: 1.5; }
-    .chat-msg.user { background: #244061; color: #fff; margin-left: auto; }
-    .chat-msg.assistant { background: #fff; color: #3d4f5e; border: 1px solid #e2e8f0; }
-    #resumen-box { display: none; background: #f8fafc; border-left: 4px solid #017464; padding: 1.5rem; border-radius: 8px; font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; margin-top: 1rem; }
-</style>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jota · Asesor Comercial - JGC BAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #f4f7fc; color: #1e2b3a; padding: 20px; }
+        .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.9rem; background: #244061; color: #fff; }
+        .btn:hover { background: #1a3150; }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+        #resumen-box { display: none; background: #f8fafc; border-left: 4px solid #017464; padding: 1.5rem; border-radius: 8px; font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; margin-top: 1rem; }
+        .badge { background: #10b981; color: #fff; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-left: 0.5rem; }
+        .maintenance-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 1.5rem; border-radius: 8px; text-align: center; color: #92400e; }
+    </style>
+</head>
+<body>
 
-<div class="card">
-    <h3><i class="fas fa-clipboard-list"></i> Resumen Ejecutivo (Gerente IA)</h3>
-    <button class="btn" onclick="window.generarResumen()"><i class="fas fa-chart-line"></i> Generar Resumen Ahora</button>
-    <div id="resumen-box"></div>
-</div>
-
-<div class="card">
-    <h3><i class="fas fa-comments"></i> Chat con Qwen</h3>
-    <div class="chat-container" id="chat-mensajes"></div>
-    <div style="display:flex; gap:0.5rem;">
-        <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." style="flex:1; padding:0.8rem; border:1px solid #cbd5e1; border-radius:8px;" onkeypress="if(event.key === 'Enter') window.enviarMensaje()">
-        <button class="btn" onclick="window.enviarMensaje()"><i class="fas fa-paper-plane"></i></button>
+    <div class="card">
+        <h3><i class="fas fa-robot"></i> Resumen Ejecutivo de Jota</h3>
+        <p style="font-size:0.9rem; color:#64748b; margin-bottom:1rem;">Jota analiza los clientes, el pipeline y las acciones pendientes para darte un reporte estratégico.</p>
+        <button class="btn" onclick="window.generarResumen()" id="btn-resumen"><i class="fas fa-chart-line"></i> Generar Resumen Ahora</button>
+        <div id="resumen-box"></div>
     </div>
-</div>
 
-<script>
-(function() {
-    const API_URL = 'https://api.camisale.work/api/jgc';
-    const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
-    let pollingInterval = null;
+    <div class="card">
+        <h3><i class="fas fa-comments"></i> Chat con Jota</h3>
+        <div class="maintenance-box">
+            <i class="fas fa-tools" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <h4>Chat en mantenimiento</h4>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Estamos entrenando a Jota con más información de tu negocio para que sus respuestas sean 100% precisas. Esta función estará disponible próximamente.</p>
+        </div>
+    </div>
 
-    async function fetchAPI(endpoint, options = {}) {
-        const res = await fetch(API_URL + endpoint, {
-            ...options,
-            headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
-        });
-        if (!res.ok) throw new Error('API Error');
-        return res.json();
-    }
+    <script>
+    (function() {
+        const API_URL = 'https://api.camisale.work/api/jgc';
+        const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+        let pollingInterval = null;
 
-    // ==================== FORMATEAR RESUMEN ====================
-    function formatearResumen(texto, metadata) {
-        const m = metadata || {};
-        const fuente = m.fuente || 'desconocida';
-        
-        // Badge de la fuente
-        let fuenteBadge = '';
-        if (fuente === 'kilo') {
-            fuenteBadge = '<span style="background:#10b981; color:#fff; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem; font-weight:700; margin-left:0.5rem;">⚡ Generado por Kilo</span>';
-        } else if (fuente === 'qwen_local') {
-            fuenteBadge = '<span style="background:#8b5cf6; color:#fff; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem; font-weight:700; margin-left:0.5rem;">🧠 Generado por Qwen</span>';
-        } else if (fuente === 'fallback_estructurado') {
-            fuenteBadge = '<span style="background:#f59e0b; color:#fff; padding:0.2rem 0.6rem; border-radius:20px; font-size:0.7rem; font-weight:700; margin-left:0.5rem;">⚠️ Fallback</span>';
-        }
-
-        // Convertir markdown básico a HTML
-        let html = texto;
-        html = html.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#244061; display:block; margin-top:1rem; margin-bottom:0.5rem; font-size:1rem;">$1</strong>');
-        html = html.replace(/^- (.+)$/gm, '<li style="margin-left:1.5rem; margin-bottom:0.3rem; color:#3d4f5e;">$1</li>');
-        html = html.replace(/(<li.*<\/li>\n?)+/g, '<ul style="margin-bottom:1rem; padding-left:0;">$&</ul>');
-        html = html.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
-
-        return `
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:0.8rem; border-bottom:2px solid #017464;">
-                <div>
-                    <div style="font-weight:800; color:#244061; font-size:1.1rem;">📋 Reporte Ejecutivo Comercial ${fuenteBadge}</div>
-                    <div style="font-size:0.8rem; color:#64748b;">${new Date().toLocaleString()}</div>
-                </div>
-            </div>
-            
-            <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:0.8rem; margin-bottom:1rem; padding:0.8rem; background:#f8fafc; border-radius:8px;">
-                <div style="text-align:center; padding:0.3rem;">
-                    <div style="font-size:1.5rem; font-weight:800; color:#244061;">${m.total_clientes || 0}</div>
-                    <div style="font-size:0.65rem; color:#64748b; text-transform:uppercase;">Clientes</div>
-                </div>
-                <div style="text-align:center; padding:0.3rem;">
-                    <div style="font-size:1.5rem; font-weight:800; color:#f59e0b;">${m.total_pendientes || 0}</div>
-                    <div style="font-size:0.65rem; color:#64748b; text-transform:uppercase;">Acciones</div>
-                </div>
-                <div style="text-align:center; padding:0.3rem;">
-                    <div style="font-size:1.5rem; font-weight:800; color:#3b82f6;">${m.num_oportunidades || 0}</div>
-                    <div style="font-size:0.65rem; color:#64748b; text-transform:uppercase;">Ops</div>
-                </div>
-                <div style="text-align:center; padding:0.3rem;">
-                    <div style="font-size:1.5rem; font-weight:800; color:#017464;">$${(m.monto_oportunidades || 0).toLocaleString()}</div>
-                    <div style="font-size:0.65rem; color:#64748b; text-transform:uppercase;">USD</div>
-                </div>
-            </div>
-            
-            <div style="line-height:1.6; font-size:0.9rem; color:#1e2b3a; padding:0.8rem; background:#fff; border-left:3px solid #017464; border-radius:4px;">
-                ${html}
-            </div>
-            
-            ${m.top3 && m.top3.length > 0 ? `
-            <div style="margin-top:1rem; padding:0.8rem; background:#fef3c7; border-radius:6px; border-left:3px solid #f59e0b;">
-                <div style="font-weight:700; color:#92400e; font-size:0.85rem; margin-bottom:0.3rem;">🎯 Top 3 Priorizados</div>
-                <div style="font-size:0.85rem; color:#78350f;">${m.top3.join(' · ')}</div>
-            </div>` : ''}
-        `;
-    }
-
-    // ==================== CONSULTAR ESTADO ====================
-    async function consultarResumen() {
-        const box = document.getElementById('resumen-box');
-        try {
-            const res = await fetchAPI('/qwen/ultimo-resumen');
-            
-            if (res.status === 'pending') {
-                box.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <strong>Analizando negocio en segundo plano...</strong><br><span style="font-size:0.85rem; color:#64748b;">Qwen está procesando. Actualización automática en 10 segundos.</span>';
-                return false;
-            }
-            
-            if (res.status === 'ready') {
-                box.innerHTML = formatearResumen(res.resumen, res.metadata);
-                detenerPolling();
-                return true;
-            }
-            
-            if (res.status === 'empty') {
-                box.innerHTML = '<span style="color:#64748b;">No hay resumen aún. Haz clic en "Generar Resumen" para comenzar.</span>';
-                return false;
-            }
-        } catch(e) {
-            box.innerHTML = '<span style="color:#e63946;">Error: ' + e.message + '</span>';
-            return false;
-        }
-    }
-
-    // ==================== POLLING ====================
-    function iniciarPolling() {
-        detenerPolling();
-        let intentos = 0;
-        pollingInterval = setInterval(async () => {
-            intentos++;
-            const listo = await consultarResumen();
-            if (listo || intentos > 30) { // 30 intentos = 5 minutos
-                detenerPolling();
-                if (intentos > 30) {
-                    document.getElementById('resumen-box').innerHTML += '<br><span style="color:#f59e0b; font-size:0.85rem;">⚠️ Se agotó el tiempo de espera. Intenta de nuevo.</span>';
-                }
-            }
-        }, 10000); // Cada 10 segundos
-    }
-
-    function detenerPolling() {
-        if (pollingInterval) {
-            clearInterval(pollingInterval);
-            pollingInterval = null;
-        }
-    }
-
-    // ==================== GENERAR RESUMEN ====================
-    window.generarResumen = async function() {
-        const box = document.getElementById('resumen-box');
-        box.style.display = 'block';
-        box.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Iniciando análisis...';
-        
-        try {
-            const res = await fetchAPI('/qwen/resumen-ejecutivo', { method: 'POST' });
-            
-            if (res.status === 'already_running') {
-                box.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <strong>Ya hay un análisis en curso.</strong><br>Esperando resultados...';
-            } else {
-                box.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <strong>Análisis iniciado en segundo plano.</strong><br><span style="font-size:0.85rem; color:#64748b;">Kilo está procesando. Esto puede tomar 10-20 segundos.</span>';
-            }
-            
-            iniciarPolling();
-        } catch(e) {
-            box.innerHTML = '<span style="color:#e63946;">❌ Error: ' + e.message + '</span>';
-        }
-    };
-
-    // ==================== CHAT ====================
-    window.enviarMensajeChat = async function() {
-        const input = document.getElementById('chat-input');
-        const mensaje = input.value.trim();
-        if (!mensaje) return;
-        
-        const container = document.getElementById('chat-mensajes');
-        if (container.querySelector('div[style*="italic"]')) container.innerHTML = '';
-        
-        agregarMensajeChat('user', mensaje);
-        input.value = '';
-        document.getElementById('btn-enviar-chat').disabled = true;
-        
-        try {
-            const res = await fetchAPI('/qwen/chat', { method: 'POST', body: JSON.stringify({ mensaje: mensaje, session_id: 'default' }) });
-            agregarMensajeChat('assistant', res.respuesta);
-        } catch(e) {
-            agregarMensajeChat('assistant', '❌ Error: ' + e.message);
-        } finally {
-            document.getElementById('btn-enviar-chat').disabled = false;
-        }
-    };
-
-    function agregarMensajeChat(rol, mensaje) {
-        const container = document.getElementById('chat-mensajes');
-        const div = document.createElement('div');
-        div.className = 'chat-msg ' + rol;
-        const nombre = rol === 'user' ? 'Tú' : '🤖 Qwen';
-        div.innerHTML = '<strong style="display:block; font-size:0.75rem; margin-bottom:0.3rem; opacity:0.8;">' + nombre + '</strong><div>' + mensaje.replace(/\n/g, '<br>') + '</div>';
-        container.appendChild(div);
-        container.scrollTop = container.scrollHeight;
-    }
-
-    async function cargarChatHistorial() {
-        try {
-            const res = await fetchAPI('/qwen/chat/historial');
-            const container = document.getElementById('chat-mensajes');
-            if (res.mensajes && res.mensajes.length > 0) {
-                container.innerHTML = '';
-                res.mensajes.forEach(m => agregarMensajeChat(m.rol === 'user' ? 'user' : 'assistant', m.mensaje));
-            }
-        } catch(e) { console.error(e); }
-    }
-
-    window.limpiarChat = async function() {
-        if (!confirm('¿Borrar todo el historial del chat?')) return;
-        try {
-            await fetchAPI('/qwen/chat/limpiar', { method: 'DELETE' });
-            document.getElementById('chat-mensajes').innerHTML = '<div style="color:#64748b; font-style:italic; text-align:center; padding:2rem;">Chat limpiado. Escribe tu primera pregunta.</div>';
-        } catch(e) { alert('Error: ' + e.message); }
-    };
-
-    // ==================== INICIALIZACIÓN ====================
-    // Cargar último resumen al entrar
-    consultarResumen().then(listo => {
-        if (!listo) {
-            // Si no está listo, verificar si hay uno pendiente
-            fetchAPI('/qwen/ultimo-resumen').then(r => {
-                if (r.status === 'pending') iniciarPolling();
+        async function fetchAPI(endpoint, options = {}) {
+            const res = await fetch(API_URL + endpoint, {
+                ...options,
+                headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
             });
+            if (!res.ok) throw new Error('API Error');
+            return res.json();
         }
-    });
-    
-    // Cargar historial de chat
-    cargarChatHistorial();
-})();
-</script>
+
+        window.generarResumen = async function() {
+            const box = document.getElementById('resumen-box');
+            const btn = document.getElementById('btn-resumen');
+            box.style.display = 'block';
+            box.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jota está analizando tu negocio... (esto puede tomar unos segundos)';
+            btn.disabled = true;
+            
+            try {
+                await fetchAPI('/qwen/resumen-ejecutivo', { method: 'POST' });
+                iniciarPolling(box, btn);
+            } catch(e) {
+                box.innerHTML = '<span style="color:#e63946;">❌ Error: ' + e.message + '</span>';
+                btn.disabled = false;
+            }
+        };
+
+        function iniciarPolling(box, btn) {
+            if (pollingInterval) clearInterval(pollingInterval);
+            let intentos = 0;
+            
+            pollingInterval = setInterval(async () => {
+                intentos++;
+                try {
+                    const res = await fetchAPI('/qwen/ultimo-resumen');
+                    if (res.status === 'ready') {
+                        clearInterval(pollingInterval);
+                        btn.disabled = false;
+                        
+                        const m = res.metadata || {};
+                        let html = res.resumen;
+                        html = html.replace(/\*\*(.+?)\*\*/g, '<strong style="color:#244061; display:block; margin-top:1rem; margin-bottom:0.5rem;">$1</strong>');
+                        html = html.replace(/\n/g, '<br>');
+                        
+                        const fuente = m.fuente === 'kilo' ? '⚡ Jota (Kilo)' : (m.fuente === 'qwen_local' ? '🧠 Jota (Qwen)' : '⚠️ Fallback');
+                        
+                        box.innerHTML = `
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; border-bottom:2px solid #017464; padding-bottom:0.5rem;">
+                                <div><strong style="color:#244061;">📋 Reporte Ejecutivo</strong></div>
+                                <div><span class="badge">${fuente}</span></div>
+                            </div>
+                            <div>${html}</div>
+                        `;
+                    } else if (intentos > 30) {
+                        clearInterval(pollingInterval);
+                        box.innerHTML = '<span style="color:#f59e0b;">⚠️ Jota está tardando más de lo esperado. Intenta de nuevo.</span>';
+                        btn.disabled = false;
+                    }
+                } catch(e) {
+                    clearInterval(pollingInterval);
+                    box.innerHTML = '<span style="color:#e63946;">❌ Error consultando el resumen.</span>';
+                    btn.disabled = false;
+                }
+            }, 5000);
+        }
+    })();
+    </script>
+</body>
+</html>
