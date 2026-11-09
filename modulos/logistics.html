@@ -3,102 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logística - JGC BAS</title>
+    <title>Logística IA - JGC BAS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { background: #f4f7fc; color: #1e2b3a; }
-        .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; }
+        body { background: #f4f7fc; color: #1e2b3a; padding: 20px; }
+        
+        .card { background: #fff; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 1.5rem; border: 1px solid #e0e8ef; }
         .card h3 { color: #244061; margin-bottom: 1rem; border-bottom: 2px solid #017464; display: inline-block; padding-bottom: 0.5rem; }
+        
+        /* Filtros */
+        .filter-bar { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .filter-bar input, .filter-bar select { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; width: 100%; }
+        
+        /* Layout del análisis */
+        .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .chart-container { position: relative; height: 250px; width: 100%; }
+        
+        /* Tabla */
+        .table-container { max-height: 500px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; }
-        td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; }
-        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-primary { background: #244061; color: #fff; }
-        .btn-success { background: #017464; color: #fff; }
-        .btn-edit { background: #f59e0b; color: #fff; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
-        .modal-overlay.open { display: flex; }
-        .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 500px; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .form-group { display: flex; flex-direction: column; margin-bottom: 1rem; }
-        .form-group label { font-size: 0.85rem; font-weight: 700; color: #244061; margin-bottom: 0.3rem; }
-        .form-group input, .form-group select { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
+        th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; position: sticky; top: 0; }
+        td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; vertical-align: middle; }
+        tr.selected-row { background: #e0f2fe; border-left: 4px solid #3b82f6; }
+        tr:hover { background: #f8fafc; cursor: pointer; }
+        
+        .stock-badge { padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .stock-ok { background: #d1fae5; color: #065f46; }
+        .stock-low { background: #fee2e2; color: #991b1b; }
+        .stock-high { background: #fef3c7; color: #92400e; }
+
+        /* Bloques IA */
+        .ia-block { background: #f8fafc; border-left: 4px solid #8b5cf6; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; }
+        .ia-block h4 { color: #6d28d9; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
+        .ia-text { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #3d4f5e; }
+        
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
     </style>
 </head>
 <body>
 
+    <!-- 1. Filtros -->
     <div class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-            <h3><i class="fas fa-boxes"></i> Gestión de Inventario y Precios</h3>
-            <button class="btn btn-success" onclick="window.abrirModalNuevo()">
-                <i class="fas fa-plus"></i> Nuevo Producto
-            </button>
+        <h3><i class="fas fa-boxes"></i> Gestión de Inventario</h3>
+        <div class="filter-bar">
+            <input type="text" id="filter-search" placeholder="🔍 Buscar por código o nombre..." oninput="window.aplicarFiltros()">
+            <select id="filter-marca" onchange="window.aplicarFiltros()"><option value="">Todas las Marcas</option></select>
+            <select id="filter-categoria" onchange="window.aplicarFiltros()"><option value="">Todas las Categorías</option></select>
+            <select id="filter-stock" onchange="window.aplicarFiltros()">
+                <option value="">Todo el Stock</option>
+                <option value="low">⚠️ Stock Crítico (<= 3)</option>
+                <option value="high">📦 Exceso de Stock (>= 50)</option>
+            </select>
         </div>
-        
-        <div style="overflow-x: auto;">
+        <div class="table-container">
             <table>
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Producto</th>
-                        <th>Marca</th>
-                        <th>Categoría</th>
-                        <th>Precio Base</th>
-                        <th>Stock</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-productos">
-                    <tr><td colspan="7" style="text-align:center;">Cargando productos...</td></tr>
-                </tbody>
+                <thead><tr><th>Código</th><th>Producto</th><th>Marca</th><th>Categoría</th><th>Precio Base</th><th>Stock</th></tr></thead>
+                <tbody id="tabla-productos"></tbody>
             </table>
         </div>
     </div>
 
-    <div class="modal-overlay" id="producto-modal">
-        <div class="modal-box">
-            <h2 style="color:#244061; margin-bottom:1rem;" id="modal-title">Nuevo Producto</h2>
-            <form onsubmit="window.guardarProducto(event)">
-                <input type="hidden" id="p-id">
-                <div class="form-grid">
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label>Código (Único) *</label>
-                        <input type="text" id="p-codigo" required>
-                    </div>
-                    <div class="form-group" style="grid-column: 1 / -1;">
-                        <label>Nombre del Producto *</label>
-                        <input type="text" id="p-nombre" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Marca</label>
-                        <input type="text" id="p-marca">
-                    </div>
-                    <div class="form-group">
-                        <label>Categoría</label>
-                        <select id="p-categoria">
-                            <option value="Motores">Motores</option>
-                            <option value="Sensores">Sensores</option>
-                            <option value="Detección">Detección</option>
-                            <option value="Control">Control</option>
-                            <option value="Instrumentación">Instrumentación</option>
-                            <option value="Accesorios">Accesorios</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Precio Base (USD)</label>
-                        <input type="number" id="p-precio" step="0.01" min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Stock Actual</label>
-                        <input type="number" id="p-stock" min="0">
-                    </div>
-                </div>
-                <div style="display:flex; gap:1rem; margin-top:1rem;">
-                    <button type="submit" class="btn btn-primary" style="flex:1; justify-content:center;">Guardar</button>
-                    <button type="button" class="btn" style="background:#e2e8f0; flex:1; justify-content:center;" onclick="document.getElementById('producto-modal').classList.remove('open')">Cancelar</button>
-                </div>
-            </form>
+    <!-- 2. Análisis y Gráfico -->
+    <div class="analytics-grid">
+        <div class="card" style="margin-bottom:0;">
+            <h3><i class="fas fa-chart-bar"></i> Stock por Categoría</h3>
+            <div class="chart-container"><canvas id="chartStock"></canvas></div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+            <h3><i class="fas fa-robot"></i> Análisis de Jota</h3>
+            <div class="ia-block">
+                <h4><i class="fas fa-lightbulb"></i> Recomendación de Inventario</h4>
+                <div class="ia-text" id="ia-stock-text">Haz clic en "Analizar Stock" para que Jota evalúe los riesgos de quiebre o exceso.</div>
+                <button class="btn btn-ia" style="margin-top:10px;" onclick="window.analizarStockIA()"><i class="fas fa-magic"></i> Analizar Stock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Detalle del Producto y Proveedores IA -->
+    <div class="card" id="producto-detalle" style="display: none;">
+        <h3><i class="fas fa-search"></i> Proveedores Sugeridos para: <span id="detalle-nombre" style="color:#017464;"></span></h3>
+        <div class="ia-block">
+            <h4><i class="fas fa-truck-loading"></i> Alternativas en el Mercado (IA)</h4>
+            <div class="ia-text" id="ia-proveedores-text">Cargando proveedores...</div>
         </div>
     </div>
 
@@ -106,6 +95,8 @@
     (function() {
         const API_URL = 'https://api.camisale.work/api/jgc';
         const API_KEY = 'jgc_sk_5d036db1fcf867d5fc9fb97d5605afeb431e683f68d39e03';
+        let todosLosProductos = [];
+        let chartInstance = null;
 
         async function fetchAPI(endpoint, options = {}) {
             const res = await fetch(API_URL + endpoint, {
@@ -119,85 +110,121 @@
         async function cargarProductos() {
             try {
                 const data = await fetchAPI('/productos');
-                const tbody = document.getElementById('tabla-productos');
-                tbody.innerHTML = '';
+                todosLosProductos = data.productos || [];
                 
-                if(data.productos.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No hay productos registrados.</td></tr>';
-                    return;
-                }
+                // Llenar los selects de filtros
+                const marcas = [...new Set(todosLosProductos.map(p => p.marca).filter(Boolean))];
+                const categorias = [...new Set(todosLosProductos.map(p => p.categoria).filter(Boolean))];
+                
+                marcas.forEach(m => document.getElementById('filter-marca').innerHTML += `<option value="${m}">${m}</option>`);
+                categorias.forEach(c => document.getElementById('filter-categoria').innerHTML += `<option value="${c}">${c}</option>`);
 
-                data.productos.forEach(p => {
-                    const precioStr = p.precio_base > 0 ? `$${parseFloat(p.precio_base).toFixed(2)}` : 'Consultar';
-                    const stockColor = p.stock <= 3 ? 'color:#e63946; font-weight:700;' : '';
-                    
-                    tbody.innerHTML += `
-                        <tr>
-                            <td><strong>${p.codigo}</strong></td>
-                            <td>${p.nombre}</td>
-                            <td>${p.marca || '-'}</td>
-                            <td>${p.categoria || '-'}</td>
-                            <td>${precioStr}</td>
-                            <td style="${stockColor}">${p.stock} und</td>
-                            <td><button class="btn btn-edit" onclick='window.editarProducto(${JSON.stringify(p).replace(/'/g, "&#39;")})'><i class="fas fa-edit"></i> Editar</button></td>
-                        </tr>
-                    `;
-                });
-            } catch(e) {
-                document.getElementById('tabla-productos').innerHTML = '<tr><td colspan="7" style="text-align:center; color:#e63946;">Error cargando inventario.</td></tr>';
-            }
+                window.aplicarFiltros();
+            } catch (e) { console.error(e); }
         }
 
-        window.abrirModalNuevo = function() {
-            document.getElementById('modal-title').textContent = 'Nuevo Producto';
-            document.getElementById('p-id').value = '';
-            document.getElementById('p-codigo').value = '';
-            document.getElementById('p-codigo').disabled = false;
-            document.getElementById('p-nombre').value = '';
-            document.getElementById('p-marca').value = '';
-            document.getElementById('p-categoria').value = 'Motores';
-            document.getElementById('p-precio').value = '0';
-            document.getElementById('p-stock').value = '0';
-            document.getElementById('producto-modal').classList.add('open');
+        window.aplicarFiltros = function() {
+            const q = document.getElementById('filter-search').value.toLowerCase();
+            const marca = document.getElementById('filter-marca').value;
+            const categoria = document.getElementById('filter-categoria').value;
+            const stockFiltro = document.getElementById('filter-stock').value;
+
+            const filtrados = todosLosProductos.filter(p => {
+                const matchQ = p.nombre.toLowerCase().includes(q) || p.codigo.toLowerCase().includes(q);
+                const matchMarca = !marca || p.marca === marca;
+                const matchCat = !categoria || p.categoria === categoria;
+                let matchStock = true;
+                if (stockFiltro === 'low') matchStock = p.stock <= 3;
+                if (stockFiltro === 'high') matchStock = p.stock >= 50;
+                
+                return matchQ && matchMarca && matchCat && matchStock;
+            });
+
+            window.renderTabla(filtrados);
+            window.renderChart(filtrados);
         };
 
-        window.editarProducto = function(p) {
-            document.getElementById('modal-title').textContent = 'Editar Producto';
-            document.getElementById('p-id').value = p.id;
-            document.getElementById('p-codigo').value = p.codigo;
-            document.getElementById('p-codigo').disabled = true;
-            document.getElementById('p-nombre').value = p.nombre;
-            document.getElementById('p-marca').value = p.marca || '';
-            document.getElementById('p-categoria').value = p.categoria || 'Motores';
-            document.getElementById('p-precio').value = p.precio_base;
-            document.getElementById('p-stock').value = p.stock;
-            document.getElementById('producto-modal').classList.add('open');
-        };
-
-        window.guardarProducto = async function(e) {
-            e.preventDefault();
-            const id = document.getElementById('p-id').value;
-            const payload = {
-                codigo: document.getElementById('p-codigo').value.trim().toUpperCase(),
-                nombre: document.getElementById('p-nombre').value.trim(),
-                marca: document.getElementById('p-marca').value.trim(),
-                categoria: document.getElementById('p-categoria').value,
-                precio_base: parseFloat(document.getElementById('p-precio').value) || 0,
-                stock: parseInt(document.getElementById('p-stock').value) || 0
-            };
-
-            try {
-                if(id) {
-                    delete payload.codigo;
-                    await fetchAPI(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
-                } else {
-                    await fetchAPI('/productos', { method: 'POST', body: JSON.stringify(payload) });
-                }
-                document.getElementById('producto-modal').classList.remove('open');
-                cargarProductos();
-            } catch(err) {
-                alert('Error guardando: ' + err.message);
+        window.renderTabla = function(productos) {
+            const tbody = document.getElementById('tabla-productos');
+            tbody.innerHTML = '';
+            
+            if (productos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No se encontraron productos con esos filtros.</td></tr>';
+                return;
             }
+
+            productos.forEach(p => {
+                let stockClass = 'stock-ok';
+                if (p.stock <= 3) stockClass = 'stock-low';
+                else if (p.stock >= 50) stockClass = 'stock-high';
+
+                tbody.innerHTML += `<tr onclick="window.seleccionarProducto(${p.id}, '${p.nombre.replace(/'/g, "\\'")}')">
+                    <td><strong>${p.codigo}</strong></td>
+                    <td>${p.nombre}</td>
+                    <td>${p.marca || '-'}</td>
+                    <td>${p.categoria || '-'}</td>
+                    <td>USD ${parseFloat(p.precio_base || 0).toFixed(2)}</td>
+                    <td><span class="stock-badge ${stockClass}">${p.stock} und</span></td>
+                </tr>`;
+            });
+        };
+
+        window.renderChart = function(productos) {
+            const agrupado = {};
+            productos.forEach(p => {
+                const cat = p.categoria || 'General';
+                agrupado[cat] = (agrupado[cat] || 0) + p.stock;
+            });
+
+            const el = document.getElementById('chartStock');
+            if (chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(el, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(agrupado),
+                    datasets: [{
+                        label: 'Stock Total',
+                        data: Object.values(agrupado),
+                        backgroundColor: '#017464',
+                        borderRadius: 6
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        };
+
+        window.analizarStockIA = async function() {
+            const textDiv = document.getElementById('ia-stock-text');
+            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jota está analizando el inventario...';
+            try {
+                const res = await fetchAPI('/productos/ia-analisis');
+                textDiv.textContent = res.analisis;
+            } catch (e) {
+                textDiv.textContent = "Error consultando a Jota: " + e.message;
+            }
+        };
+
+        window.seleccionarProducto = function(id, nombre) {
+            // Resaltar la fila seleccionada
+            document.querySelectorAll('#tabla-productos tr').forEach(tr => tr.classList.remove('selected-row'));
+            event.currentTarget.classList.add('selected-row');
+
+            // Mostrar panel de proveedores
+            const panel = document.getElementById('producto-detalle');
+            panel.style.display = 'block';
+            document.getElementById('detalle-nombre').textContent = nombre;
+            
+            const textDiv = document.getElementById('ia-proveedores-text');
+            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando proveedores en el mercado...';
+
+            // Scroll hacia abajo
+            panel.scrollIntoView({ behavior: 'smooth' });
+
+            fetchAPI(`/productos/${id}/ia-proveedores`).then(res => {
+                textDiv.textContent = res.proveedores;
+            }).catch(e => {
+                textDiv.textContent = "Error buscando proveedores: " + e.message;
+            });
         };
 
         cargarProductos();
