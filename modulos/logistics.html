@@ -23,8 +23,8 @@
         
         /* Tabla */
         .table-container { max-height: 500px; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-        th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; position: sticky; top: 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; position: sticky; top: 0; z-index: 10; }
         td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; vertical-align: middle; }
         tr.selected-row { background: #e0f2fe; border-left: 4px solid #3b82f6; }
         tr:hover { background: #f8fafc; cursor: pointer; }
@@ -34,20 +34,32 @@
         .stock-low { background: #fee2e2; color: #991b1b; }
         .stock-high { background: #fef3c7; color: #92400e; }
 
+        /* Botones */
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
+        .btn-edit { background: #f59e0b; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; cursor: pointer; border: none; font-size: 0.9rem; }
+        .btn-edit:hover { background: #d97706; }
+        
         /* Bloques IA */
         .ia-block { background: #f8fafc; border-left: 4px solid #8b5cf6; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; }
         .ia-block h4 { color: #6d28d9; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
         .ia-text { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #3d4f5e; }
-        
-        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 500px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; font-weight: 700; color: #244061; margin-bottom: 0.3rem; }
+        .form-group input { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <!-- 1. Filtros -->
     <div class="card">
-        <h3><i class="fas fa-boxes"></i> Gestión de Inventario</h3>
+        <h3><i class="fas fa-boxes"></i> Gestión de Inventario y Pedidos</h3>
         <div class="filter-bar">
             <input type="text" id="filter-search" placeholder="🔍 Buscar por código o nombre..." oninput="window.aplicarFiltros()">
             <select id="filter-marca" onchange="window.aplicarFiltros()"><option value="">Todas las Marcas</option></select>
@@ -60,7 +72,17 @@
         </div>
         <div class="table-container">
             <table>
-                <thead><tr><th>Código</th><th>Producto</th><th>Marca</th><th>Categoría</th><th>Precio Base</th><th>Stock</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Producto</th>
+                        <th>Nro. Pedido</th>
+                        <th>OC Cliente</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
                 <tbody id="tabla-productos"></tbody>
             </table>
         </div>
@@ -76,7 +98,7 @@
             <h3><i class="fas fa-robot"></i> Análisis de Jota</h3>
             <div class="ia-block">
                 <h4><i class="fas fa-lightbulb"></i> Recomendación de Inventario</h4>
-                <div class="ia-text" id="ia-stock-text">Haz clic en "Analizar Stock" para que Jota evalúe los riesgos de quiebre o exceso.</div>
+                <div class="ia-text" id="ia-stock-text">Haz clic en "Analizar Stock" para que Jota evalúe los riesgos.</div>
                 <button class="btn btn-ia" style="margin-top:10px;" onclick="window.analizarStockIA()"><i class="fas fa-magic"></i> Analizar Stock</button>
             </div>
         </div>
@@ -88,6 +110,38 @@
         <div class="ia-block">
             <h4><i class="fas fa-truck-loading"></i> Alternativas en el Mercado (IA)</h4>
             <div class="ia-text" id="ia-proveedores-text">Cargando proveedores...</div>
+        </div>
+    </div>
+
+    <!-- MODAL DE EDICIÓN -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-box">
+            <h2 style="color:#244061; margin-bottom:1rem;" id="edit-title">Editar Producto</h2>
+            <form onsubmit="window.guardarEdicion(event)">
+                <input type="hidden" id="edit-id">
+                <div class="form-grid">
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Nro. Pedido</label>
+                        <input type="text" id="edit-pedido" placeholder="Ej: PED-001">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>OC Cliente</label>
+                        <input type="text" id="edit-oc" placeholder="Ej: OC-2026-99">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Actual</label>
+                        <input type="number" id="edit-stock" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Base (USD)</label>
+                        <input type="number" id="edit-precio" step="0.01" min="0" required>
+                    </div>
+                </div>
+                <div style="display:flex; gap:1rem; margin-top:1rem;">
+                    <button type="submit" class="btn btn-ia" style="flex:1; justify-content:center;">Guardar Cambios</button>
+                    <button type="button" class="btn" style="background:#e2e8f0; flex:1; justify-content:center;" onclick="document.getElementById('edit-modal').classList.remove('open')">Cancelar</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -112,9 +166,11 @@
                 const data = await fetchAPI('/productos');
                 todosLosProductos = data.productos || [];
                 
-                // Llenar los selects de filtros
                 const marcas = [...new Set(todosLosProductos.map(p => p.marca).filter(Boolean))];
                 const categorias = [...new Set(todosLosProductos.map(p => p.categoria).filter(Boolean))];
+                
+                document.getElementById('filter-marca').innerHTML = '<option value="">Todas las Marcas</option>';
+                document.getElementById('filter-categoria').innerHTML = '<option value="">Todas las Categorías</option>';
                 
                 marcas.forEach(m => document.getElementById('filter-marca').innerHTML += `<option value="${m}">${m}</option>`);
                 categorias.forEach(c => document.getElementById('filter-categoria').innerHTML += `<option value="${c}">${c}</option>`);
@@ -136,7 +192,6 @@
                 let matchStock = true;
                 if (stockFiltro === 'low') matchStock = p.stock <= 3;
                 if (stockFiltro === 'high') matchStock = p.stock >= 50;
-                
                 return matchQ && matchMarca && matchCat && matchStock;
             });
 
@@ -149,7 +204,7 @@
             tbody.innerHTML = '';
             
             if (productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No se encontraron productos con esos filtros.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No se encontraron productos.</td></tr>';
                 return;
             }
 
@@ -158,13 +213,19 @@
                 if (p.stock <= 3) stockClass = 'stock-low';
                 else if (p.stock >= 50) stockClass = 'stock-high';
 
-                tbody.innerHTML += `<tr onclick="window.seleccionarProducto(${p.id}, '${p.nombre.replace(/'/g, "\\'")}')">
+                // Enviamos solo el ID al botón de edición para evitar errores de comillas
+                tbody.innerHTML += `<tr onclick="window.seleccionarProducto(${p.id}, '${p.nombre.replace(/'/g, "\\'")}', this)">
                     <td><strong>${p.codigo}</strong></td>
-                    <td>${p.nombre}</td>
-                    <td>${p.marca || '-'}</td>
-                    <td>${p.categoria || '-'}</td>
+                    <td>${p.nombre}<br><small>${p.marca || ''}</small></td>
+                    <td>${p.numero_pedido || '-'}</td>
+                    <td>${p.oc_cliente || '-'}</td>
                     <td>USD ${parseFloat(p.precio_base || 0).toFixed(2)}</td>
                     <td><span class="stock-badge ${stockClass}">${p.stock} und</span></td>
+                    <td>
+                        <button class="btn-edit" onclick="event.stopPropagation(); window.abrirModalEdicion(${p.id})" title="Editar Stock/Pedido">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </td>
                 </tr>`;
             });
         };
@@ -182,12 +243,7 @@
                 type: 'bar',
                 data: {
                     labels: Object.keys(agrupado),
-                    datasets: [{
-                        label: 'Stock Total',
-                        data: Object.values(agrupado),
-                        backgroundColor: '#017464',
-                        borderRadius: 6
-                    }]
+                    datasets: [{ label: 'Stock Total', data: Object.values(agrupado), backgroundColor: '#017464', borderRadius: 6 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
@@ -195,36 +251,62 @@
 
         window.analizarStockIA = async function() {
             const textDiv = document.getElementById('ia-stock-text');
-            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jota está analizando el inventario...';
+            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jota está analizando...';
             try {
                 const res = await fetchAPI('/productos/ia-analisis');
                 textDiv.textContent = res.analisis;
-            } catch (e) {
-                textDiv.textContent = "Error consultando a Jota: " + e.message;
-            }
+            } catch (e) { textDiv.textContent = "Error: " + e.message; }
         };
 
-        window.seleccionarProducto = function(id, nombre) {
-            // Resaltar la fila seleccionada
+        window.seleccionarProducto = function(id, nombre, element) {
+            // Resaltar la fila clickeada
             document.querySelectorAll('#tabla-productos tr').forEach(tr => tr.classList.remove('selected-row'));
-            event.currentTarget.classList.add('selected-row');
+            if(element) element.classList.add('selected-row');
 
-            // Mostrar panel de proveedores
             const panel = document.getElementById('producto-detalle');
             panel.style.display = 'block';
             document.getElementById('detalle-nombre').textContent = nombre;
             
             const textDiv = document.getElementById('ia-proveedores-text');
-            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando proveedores en el mercado...';
-
-            // Scroll hacia abajo
+            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando proveedores...';
             panel.scrollIntoView({ behavior: 'smooth' });
 
             fetchAPI(`/productos/${id}/ia-proveedores`).then(res => {
                 textDiv.textContent = res.proveedores;
-            }).catch(e => {
-                textDiv.textContent = "Error buscando proveedores: " + e.message;
-            });
+            }).catch(e => { textDiv.textContent = "Error: " + e.message; });
+        };
+
+        // Función corregida: Recibe solo el ID y busca en el arreglo local
+        window.abrirModalEdicion = function(id) {
+            const p = todosLosProductos.find(prod => prod.id === id);
+            if(!p) return;
+
+            document.getElementById('edit-id').value = p.id;
+            document.getElementById('edit-title').textContent = 'Editar: ' + p.nombre;
+            document.getElementById('edit-pedido').value = p.numero_pedido || '';
+            document.getElementById('edit-oc').value = p.oc_cliente || '';
+            document.getElementById('edit-stock').value = p.stock;
+            document.getElementById('edit-precio').value = p.precio_base;
+            document.getElementById('edit-modal').classList.add('open');
+        };
+
+        window.guardarEdicion = async function(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            const payload = {
+                numero_pedido: document.getElementById('edit-pedido').value.trim(),
+                oc_cliente: document.getElementById('edit-oc').value.trim(),
+                stock: parseInt(document.getElementById('edit-stock').value),
+                precio_base: parseFloat(document.getElementById('edit-precio').value)
+            };
+
+            try {
+                await fetchAPI(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+                document.getElementById('edit-modal').classList.remove('open');
+                cargarProductos(); // Recargar tabla
+            } catch (err) {
+                alert("Error guardando: " + err.message);
+            }
         };
 
         cargarProductos();
