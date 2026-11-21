@@ -16,14 +16,16 @@
         /* Filtros */
         .filter-bar { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
         .filter-bar input, .filter-bar select { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; width: 100%; }
+        @media (max-width: 768px) { .filter-bar { grid-template-columns: 1fr; } }
         
         /* Layout del análisis */
         .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        @media (max-width: 768px) { .analytics-grid { grid-template-columns: 1fr; } }
         .chart-container { position: relative; height: 250px; width: 100%; }
         
         /* Tabla */
-        .table-container { max-height: 500px; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .table-container { max-height: 500px; overflow-y: auto; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 600px; }
         th { background: #f0f4f8; color: #244061; text-align: left; padding: 0.8rem; border-bottom: 2px solid #dde5ee; position: sticky; top: 0; z-index: 10; }
         td { padding: 0.8rem; border-bottom: 1px solid #eef2f7; color: #3d4f5e; vertical-align: middle; }
         tr.selected-row { background: #e0f2fe; border-left: 4px solid #3b82f6; }
@@ -34,11 +36,13 @@
         .stock-low { background: #fee2e2; color: #991b1b; }
         .stock-high { background: #fef3c7; color: #92400e; }
 
+        /* Imagen del producto */
+        .prod-img { width: 40px; height: 40px; object-fit: cover; border-radius: 6px; border: 1px solid #ccc; }
+
         /* Botones */
         .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
         .btn-ia { background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: #fff; }
         .btn-edit { background: #f59e0b; color: #fff; padding: 0.4rem 0.6rem; border-radius: 4px; cursor: pointer; border: none; font-size: 0.9rem; }
-        .btn-edit:hover { background: #d97706; }
         
         /* Bloques IA */
         .ia-block { background: #f8fafc; border-left: 4px solid #8b5cf6; padding: 1.2rem; border-radius: 8px; margin-bottom: 1rem; }
@@ -46,10 +50,11 @@
         .ia-text { white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: #3d4f5e; }
 
         /* Modal */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 1rem; }
         .modal-overlay.open { display: flex; }
-        .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 90%; max-width: 500px; }
+        .modal-box { background: #fff; border-radius: 12px; padding: 2rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        @media (max-width: 480px) { .form-grid { grid-template-columns: 1fr; } }
         .form-group { display: flex; flex-direction: column; }
         .form-group label { font-size: 0.85rem; font-weight: 700; color: #244061; margin-bottom: 0.3rem; }
         .form-group input { padding: 0.7rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; }
@@ -59,24 +64,25 @@
 
     <!-- 1. Filtros -->
     <div class="card">
-        <h3><i class="fas fa-boxes"></i> Gestión de Inventario y Pedidos</h3>
+        <h3><i class="fas fa-boxes"></i> Gestión de Inventario</h3>
         <div class="filter-bar">
-            <input type="text" id="filter-search" placeholder="🔍 Buscar por código o nombre..." oninput="window.aplicarFiltros()">
-            <select id="filter-marca" onchange="window.aplicarFiltros()"><option value="">Todas las Marcas</option></select>
-            <select id="filter-categoria" onchange="window.aplicarFiltros()"><option value="">Todas las Categorías</option></select>
+            <input type="text" id="filter-search" placeholder="🔍 Buscar..." oninput="window.aplicarFiltros()">
+            <select id="filter-marca" onchange="window.aplicarFiltros()"><option value="">Marcas</option></select>
+            <select id="filter-categoria" onchange="window.aplicarFiltros()"><option value="">Categorías</option></select>
             <select id="filter-stock" onchange="window.aplicarFiltros()">
                 <option value="">Todo el Stock</option>
-                <option value="low">⚠️ Stock Crítico (<= 3)</option>
-                <option value="high">📦 Exceso de Stock (>= 50)</option>
+                <option value="low">⚠️ Crítico (<= 3)</option>
+                <option value="high">📦 Exceso (>= 50)</option>
             </select>
         </div>
         <div class="table-container">
             <table>
                 <thead>
                     <tr>
+                        <th>Imagen</th>
                         <th>Código</th>
                         <th>Producto</th>
-                        <th>Nro. Pedido</th>
+                        <th>Pedido</th>
                         <th>OC Cliente</th>
                         <th>Precio</th>
                         <th>Stock</th>
@@ -97,7 +103,7 @@
         <div class="card" style="margin-bottom:0;">
             <h3><i class="fas fa-robot"></i> Análisis de Jota</h3>
             <div class="ia-block">
-                <h4><i class="fas fa-lightbulb"></i> Recomendación de Inventario</h4>
+                <h4><i class="fas fa-lightbulb"></i> Recomendación</h4>
                 <div class="ia-text" id="ia-stock-text">Haz clic en "Analizar Stock" para que Jota evalúe los riesgos.</div>
                 <button class="btn btn-ia" style="margin-top:10px;" onclick="window.analizarStockIA()"><i class="fas fa-magic"></i> Analizar Stock</button>
             </div>
@@ -106,10 +112,10 @@
 
     <!-- 3. Detalle del Producto y Proveedores IA -->
     <div class="card" id="producto-detalle" style="display: none;">
-        <h3><i class="fas fa-search"></i> Proveedores Sugeridos para: <span id="detalle-nombre" style="color:#017464;"></span></h3>
+        <h3><i class="fas fa-search"></i> Proveedores para: <span id="detalle-nombre" style="color:#017464;"></span></h3>
         <div class="ia-block">
             <h4><i class="fas fa-truck-loading"></i> Alternativas en el Mercado (IA)</h4>
-            <div class="ia-text" id="ia-proveedores-text">Cargando proveedores...</div>
+            <div class="ia-text" id="ia-proveedores-text">Cargando...</div>
         </div>
     </div>
 
@@ -121,24 +127,29 @@
                 <input type="hidden" id="edit-id">
                 <div class="form-grid">
                     <div class="form-group" style="grid-column: 1 / -1;">
+                        <label>Imagen del Producto</label>
+                        <input type="file" id="edit-imagen" accept="image/*">
+                        <img id="edit-preview" src="" style="max-height: 80px; margin-top: 5px; display: none; border-radius:4px;">
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1;">
                         <label>Nro. Pedido</label>
-                        <input type="text" id="edit-pedido" placeholder="Ej: PED-001">
+                        <input type="text" id="edit-pedido">
                     </div>
                     <div class="form-group" style="grid-column: 1 / -1;">
                         <label>OC Cliente</label>
-                        <input type="text" id="edit-oc" placeholder="Ej: OC-2026-99">
+                        <input type="text" id="edit-oc">
                     </div>
                     <div class="form-group">
-                        <label>Stock Actual</label>
+                        <label>Stock</label>
                         <input type="number" id="edit-stock" min="0" required>
                     </div>
                     <div class="form-group">
-                        <label>Precio Base (USD)</label>
+                        <label>Precio (USD)</label>
                         <input type="number" id="edit-precio" step="0.01" min="0" required>
                     </div>
                 </div>
                 <div style="display:flex; gap:1rem; margin-top:1rem;">
-                    <button type="submit" class="btn btn-ia" style="flex:1; justify-content:center;">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-ia" style="flex:1; justify-content:center;">Guardar</button>
                     <button type="button" class="btn" style="background:#e2e8f0; flex:1; justify-content:center;" onclick="document.getElementById('edit-modal').classList.remove('open')">Cancelar</button>
                 </div>
             </form>
@@ -155,7 +166,7 @@
         async function fetchAPI(endpoint, options = {}) {
             const res = await fetch(API_URL + endpoint, {
                 ...options,
-                headers: { 'Content-Type': 'application/json', 'X-API-Key': API_KEY, ...(options.headers || {}) }
+                headers: { ...(options.headers || {}), 'X-API-Key': API_KEY }
             });
             if (!res.ok) throw new Error('API Error');
             return res.json();
@@ -169,8 +180,8 @@
                 const marcas = [...new Set(todosLosProductos.map(p => p.marca).filter(Boolean))];
                 const categorias = [...new Set(todosLosProductos.map(p => p.categoria).filter(Boolean))];
                 
-                document.getElementById('filter-marca').innerHTML = '<option value="">Todas las Marcas</option>';
-                document.getElementById('filter-categoria').innerHTML = '<option value="">Todas las Categorías</option>';
+                document.getElementById('filter-marca').innerHTML = '<option value="">Marcas</option>';
+                document.getElementById('filter-categoria').innerHTML = '<option value="">Categorías</option>';
                 
                 marcas.forEach(m => document.getElementById('filter-marca').innerHTML += `<option value="${m}">${m}</option>`);
                 categorias.forEach(c => document.getElementById('filter-categoria').innerHTML += `<option value="${c}">${c}</option>`);
@@ -204,7 +215,7 @@
             tbody.innerHTML = '';
             
             if (productos.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No se encontraron productos.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No hay productos.</td></tr>';
                 return;
             }
 
@@ -213,8 +224,11 @@
                 if (p.stock <= 3) stockClass = 'stock-low';
                 else if (p.stock >= 50) stockClass = 'stock-high';
 
-                // Enviamos solo el ID al botón de edición para evitar errores de comillas
+                // Ruta absoluta para la imagen
+                const imgSrc = p.imagen_url ? `${API_URL.replace('/api/jgc', '')}${p.imagen_url}` : 'https://via.placeholder.com/40?text=IMG';
+
                 tbody.innerHTML += `<tr onclick="window.seleccionarProducto(${p.id}, '${p.nombre.replace(/'/g, "\\'")}', this)">
+                    <td><img src="${imgSrc}" class="prod-img"></td>
                     <td><strong>${p.codigo}</strong></td>
                     <td>${p.nombre}<br><small>${p.marca || ''}</small></td>
                     <td>${p.numero_pedido || '-'}</td>
@@ -222,7 +236,7 @@
                     <td>USD ${parseFloat(p.precio_base || 0).toFixed(2)}</td>
                     <td><span class="stock-badge ${stockClass}">${p.stock} und</span></td>
                     <td>
-                        <button class="btn-edit" onclick="event.stopPropagation(); window.abrirModalEdicion(${p.id})" title="Editar Stock/Pedido">
+                        <button class="btn-edit" onclick="event.stopPropagation(); window.abrirModalEdicion(${p.id})">
                             <i class="fas fa-pencil-alt"></i>
                         </button>
                     </td>
@@ -241,17 +255,14 @@
             if (chartInstance) chartInstance.destroy();
             chartInstance = new Chart(el, {
                 type: 'bar',
-                data: {
-                    labels: Object.keys(agrupado),
-                    datasets: [{ label: 'Stock Total', data: Object.values(agrupado), backgroundColor: '#017464', borderRadius: 6 }]
-                },
+                data: { labels: Object.keys(agrupado), datasets: [{ label: 'Stock', data: Object.values(agrupado), backgroundColor: '#017464', borderRadius: 6 }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
         };
 
         window.analizarStockIA = async function() {
             const textDiv = document.getElementById('ia-stock-text');
-            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Jota está analizando...';
+            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analizando...';
             try {
                 const res = await fetchAPI('/productos/ia-analisis');
                 textDiv.textContent = res.analisis;
@@ -259,24 +270,20 @@
         };
 
         window.seleccionarProducto = function(id, nombre, element) {
-            // Resaltar la fila clickeada
             document.querySelectorAll('#tabla-productos tr').forEach(tr => tr.classList.remove('selected-row'));
             if(element) element.classList.add('selected-row');
 
             const panel = document.getElementById('producto-detalle');
             panel.style.display = 'block';
             document.getElementById('detalle-nombre').textContent = nombre;
-            
-            const textDiv = document.getElementById('ia-proveedores-text');
-            textDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando proveedores...';
+            document.getElementById('ia-proveedores-text').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Buscando...';
             panel.scrollIntoView({ behavior: 'smooth' });
 
             fetchAPI(`/productos/${id}/ia-proveedores`).then(res => {
-                textDiv.textContent = res.proveedores;
-            }).catch(e => { textDiv.textContent = "Error: " + e.message; });
+                document.getElementById('ia-proveedores-text').textContent = res.proveedores;
+            }).catch(e => { document.getElementById('ia-proveedores-text').textContent = "Error."; });
         };
 
-        // Función corregida: Recibe solo el ID y busca en el arreglo local
         window.abrirModalEdicion = function(id) {
             const p = todosLosProductos.find(prod => prod.id === id);
             if(!p) return;
@@ -287,12 +294,43 @@
             document.getElementById('edit-oc').value = p.oc_cliente || '';
             document.getElementById('edit-stock').value = p.stock;
             document.getElementById('edit-precio').value = p.precio_base;
+            
+            // Preview de imagen
+            const preview = document.getElementById('edit-preview');
+            if(p.imagen_url) {
+                const imgSrc = `${API_URL.replace('/api/jgc', '')}${p.imagen_url}`;
+                preview.src = imgSrc;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+            
             document.getElementById('edit-modal').classList.add('open');
         };
 
         window.guardarEdicion = async function(e) {
             e.preventDefault();
             const id = document.getElementById('edit-id').value;
+            const fileInput = document.getElementById('edit-imagen');
+            
+            // 1. Subir Imagen (si hay una seleccionada)
+            if (fileInput.files.length > 0) {
+                const formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                
+                try {
+                    await fetch(`${API_URL}/productos/${id}/imagen`, {
+                        method: 'POST',
+                        headers: { 'X-API-Key': API_KEY }, // No incluir Content-Type aquí
+                        body: formData
+                    });
+                } catch (err) {
+                    alert("Error subiendo imagen: " + err.message);
+                    return;
+                }
+            }
+
+            // 2. Guardar el resto de datos
             const payload = {
                 numero_pedido: document.getElementById('edit-pedido').value.trim(),
                 oc_cliente: document.getElementById('edit-oc').value.trim(),
@@ -301,11 +339,11 @@
             };
 
             try {
-                await fetchAPI(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+                await fetchAPI(`/productos/${id}`, { method: 'PUT', body: JSON.stringify(payload), headers: {'Content-Type': 'application/json'} });
                 document.getElementById('edit-modal').classList.remove('open');
-                cargarProductos(); // Recargar tabla
+                cargarProductos(); 
             } catch (err) {
-                alert("Error guardando: " + err.message);
+                alert("Error guardando datos: " + err.message);
             }
         };
 
