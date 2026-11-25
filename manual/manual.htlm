@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Usuario · JGC BAS SAC</title>
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: #1e2a3a;
+            background-color: #f0f3f7;
+            padding: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .manual-container {
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 40px 50px;
+        }
+
+        /* ===== TIPOGRAFÍA ===== */
+        h1 {
+            font-size: 2.4rem;
+            color: #0b2b4a;
+            border-bottom: 4px solid #1e6f9f;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #0b2b4a;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            border-left: 6px solid #1e6f9f;
+            padding-left: 15px;
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #1e6f9f;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 1.1rem;
+            color: #2a4d6e;
+            margin-top: 15px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        strong {
+            color: #0b2b4a;
+        }
+
+        /* ===== TABLAS ===== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0 20px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: #1e6f9f;
+            color: #ffffff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #d0dbe5;
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f5f8fb;
+        }
+
+        /* ===== BOTONES ===== */
+        .btn-print {
+            display: inline-block;
+            background-color: #1e6f9f;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px 0 10px;
+            transition: background 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: #0b2b4a;
+        }
+
+        /* ===== PORTADA ===== */
+        .cover {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+
+        .cover h1 {
+            font-size: 3rem;
+            border-bottom: none;
+            margin-bottom: 10px;
+            color: #0b2b4a;
+        }
+
+        .cover .subtitle {
+            font-size: 1.4rem;
+            color: #1e6f9f;
+            font-weight: 400;
+            margin-bottom: 30px;
+        }
+
+        .cover .meta {
+            font-size: 1rem;
+            color: #4a607a;
+            margin-top: 40px;
+        }
+
+        .cover .version {
+            display: inline-block;
+            background: #e8eef4;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: #1e6f9f;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        /* ===== ÍNDICE ===== */
+        .toc {
+            background: #f5f8fb;
+            padding: 25px 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .toc h2 {
+            margin-top: 0;
+            border-left: none;
+            padding-left: 0;
+            text-align: center;
+            font-size: 1.6rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            padding: 6px 0;
+            border-bottom: 1px dotted #c0d0e0;
+            font-size: 1.05rem;
+        }
+
+        .toc li a {
+            color: #1e6f9f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toc li a:hover {
+            text-decoration: underline;
+        }
+
+        .toc .sub-item {
+            padding-left: 25px;
+            font-size: 0.95rem;
+        }
+
+        /* ===== SECCIONES ===== */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-break {
+            page-break-before: always;
+        }
+
+        .highlight-box {
+            background: #e8f2fa;
+            border-left: 5px solid #1e6f9f;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .note-box {
+            background: #fff8e1;
+            border-left: 5px solid #f0a500;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .step-list li {
+            counter-increment: step;
+            padding-left: 35px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .step-list li::before {
+            content: counter(step);
+            background: #1e6f9f;
+            color: #fff;
+            font-weight: 700;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.85rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 700px) {
+            .manual-container {
+                padding: 20px 18px;
+            }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.4rem; }
+            .cover h1 { font-size: 2rem; }
+            .cover .subtitle { font-size: 1.1rem; }
+            table { font-size: 0.8rem; }
+            th, td { padding: 6px 8px; }
+        }
+
+        /* ===== IMPRESIÓN ===== */
+        @media print {
+            body {
+                background: #ffffff;
+                padding: 0;
+                font-size: 11pt;
+            }
+            .manual-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-width: 100%;
+            }
+            .btn-print {
+                display: none !important;
+            }
+            .section-break {
+                page-break-before: always;
+            }
+            .toc a {
+                color: #000;
+                text-decoration: none;
+            }
+            .toc {
+                background: #f5f8fb !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            th {
+                background-color: #1e6f9f !important;
+                color: #fff !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            tr:nth-child(even) {
+                background-color: #f5f8fb !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .highlight-box, .note-box {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            h1, h2, h3, h4 {
+                page-break-after: avoid;
+            }
+            table, figure {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="manual-container">
+
+    <!-- ================= PORTADA ================= -->
+    <div class="cover">
+        <h1>Manual de Usuario</h1>
+        <div class="subtitle">Sitio Web Corporativo &amp; Panel de Administración CRM</div>
+        <p style="font-size:1.2rem; color:#2a4d6e; font-weight:300;">JGC BAS SAC · Building Automation Supplies</p>
+        <div class="version">Versión 1.0 · Noviembre 2026</div>
+        <div class="meta">
+            <p><strong>Cliente:</strong> JGC BAS SAC</p>
+            <p><strong>Dominio:</strong> jgcbas.com</p>
+            <p><strong>Preparado por:</strong> Equipo de Desarrollo</p>
+        </div>
+    </div>
+
+    <!-- BOTÓN IMPRIMIR -->
+    <div style="text-align:center;">
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
+    </div>
+
+    <!-- ================= ÍNDICE ================= -->
+    <div class="toc">
+        <h2>📑 Índice de Contenidos</h2>
+        <ul>
+            <li><a href="#introduccion">1. Introducción</a></li>
+            <li><a href="#sitio-publico">2. Sitio Web Público (jgcbas.com)</a></li>
+            <li class="sub-item"><a href="#navegacion">2.1 Navegación principal</a></li>
+            <li class="sub-item"><a href="#productos">2.2 Sección de productos</a></li>
+            <li class="sub-item"><a href="#marcas">2.3 Marcas representadas</a></li>
+            <li class="sub-item"><a href="#contacto-publico">2.4 Contacto y WhatsApp</a></li>
+            <li class="sub-item"><a href="#catalogo">2.5 Catálogo PDF</a></li>
+            <li><a href="#panel-admin">3. Panel de Administración CRM (jgcbas.com/admin)</a></li>
+            <li class="sub-item"><a href="#acceso">3.1 Acceso al panel</a></li>
+            <li class="sub-item"><a href="#dashboard">3.2 Dashboard</a></li>
+            <li class="sub-item"><a href="#clientes">3.3 Clientes</a></li>
+            <li class="sub-item"><a href="#oportunidades">3.4 Oportunidades</a></li>
+            <li class="sub-item"><a href="#jota">3.5 Gerente IA (Jota)</a></li>
+            <li class="sub-item"><a href="#logistica">3.6 Logística e Inventario</a></li>
+            <li><a href="#faq">4. Preguntas Frecuentes</a></li>
+            <li><a href="#soporte">5. Soporte y Contacto</a></li>
+        </ul>
+    </div>
+
+    <!-- ================= 1. INTRODUCCIÓN ================= -->
+    <div class="section" id="introduccion">
+        <h2>1. Introducción</h2>
+        <p>Bienvenido al manual de usuario de <strong>JGC BAS SAC</strong>. Este documento describe las funcionalidades del sitio web corporativo y del panel de administración CRM, y proporciona instrucciones básicas para que el equipo de JGC BAS pueda operar ambas herramientas de forma autónoma.</p>
+        <p>El sistema está compuesto por dos grandes bloques:</p>
+        <ul>
+            <li><strong>Sitio web público (<code>jgcbas.com</code>):</strong> Vitrina digital para clientes y prospectos, donde se presentan los productos, las marcas representadas, la información corporativa y los canales de contacto.</li>
+            <li><strong>Panel de administración CRM (<code>jgcbas.com/admin</code>):</strong> Herramienta interna para gestionar clientes, oportunidades de venta, inventario y recibir sugerencias de un agente de inteligencia artificial llamado <strong>Jota</strong>.</li>
+        </ul>
+        <div class="highlight-box">
+            <strong>💡 Recomendación:</strong> Use este manual como guía de referencia rápida. Para capacitaciones adicionales, contacte al equipo de soporte.
+        </div>
+    </div>
+
+    <!-- ================= 2. SITIO WEB PÚBLICO ================= -->
+    <div class="section section-break" id="sitio-publico">
+        <h2>2. Sitio Web Público (jgcbas.com)</h2>
+        <p>El sitio web público es la cara visible de JGC BAS SAC. Está diseñado para que los visitantes conozcan la empresa, exploren los productos y se pongan en contacto fácilmente.</p>
+
+        <!-- 2.1 Navegación -->
+        <h3 id="navegacion">2.1 Navegación principal</h3>
+        <p>El menú superior del sitio incluye los siguientes enlaces:</p>
+        <table>
+            <thead>
+                <tr><th>Sección</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Productos</strong></td><td>Muestra las categorías de productos: control de motores, sensores y transmisores, detección de humo y post venta.</td></tr>
+                <tr><td><strong>Nosotros</strong></td><td>Información corporativa: misión, visión, marcas representadas y datos de la empresa.</td></tr>
+                <tr><td><strong>Catálogo</strong></td><td>Enlace para visualizar o descargar el catálogo en PDF.</td></tr>
+                <tr><td><strong>Contacto</strong></td><td>Formulario y datos de contacto directo (teléfonos, WhatsApp, dirección).</td></tr>
+            </tbody>
+        </table>
+
+        <!-- 2.2 Productos -->
+        <h3 id="productos">2.2 Sección de productos</h3>
+        <p>La página de productos presenta cuatro categorías principales, cada una con una imagen representativa y una breve descripción:</p>
+        <ul>
+            <li><strong>Control de motores:</strong> Variadores y arrancadores.</li>
+            <li><strong>Sensores y transmisores:</strong> Presión, aire, flujo, temperatura, gases, humedad y energía eléctrica.</li>
+            <li><strong>Detección de humo:</strong> Detectores para ducto, relés, tuberías de muestreo, accesorios y test kit.</li>
+            <li><strong>Post Venta:</strong> Asesoramiento especializado desde el proyecto hasta la puesta en marcha y mantenimiento.</li>
+        </ul>
+        <p><strong>¿Qué puede hacer el cliente en esta sección?</strong></p>
+        <ul>
+            <li>Explorar visualmente las categorías de productos.</li>
+            <li>Identificar rápidamente si JGC BAS ofrece la solución que necesita.</li>
+            <li>Solicitar más información a través de los canales de contacto.</li>
+        </ul>
+
+        <!-- 2.3 Marcas -->
+        <h3 id="marcas">2.3 Marcas representadas</h3>
+        <p>El sitio destaca las marcas líderes que JGC BAS representa y distribuye en Perú:</p>
+        <table>
+            <thead>
+                <tr><th>Marca</th><th>Tipo de representación</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Greystone Energy Systems</strong></td><td>Representante exclusivo en Perú.</td></tr>
+                <tr><td><strong>Danfoss</strong></td><td>Distribución autorizada (variadores de velocidad).</td></tr>
+                <tr><td><strong>Dwyer Omega</strong></td><td>Distribución autorizada (instrumentación).</td></tr>
+                <tr><td><strong>Air Products &amp; Controls (APC)</strong></td><td>Distribución autorizada (detección de humo).</td></tr>
+                <tr><td><strong>Winters Instruments</strong></td><td>Distribución autorizada (medición de presión y temperatura).</td></tr>
+            </tbody>
+        </table>
+        <p>Esta sección refuerza la confianza del visitante al mostrar alianzas con fabricantes de prestigio internacional.</p>
+
+        <!-- 2.4 Contacto -->
+        <h3 id="contacto-publico">2.4 Contacto y WhatsApp</h3>
+        <p>El sitio ofrece múltiples vías de contacto para facilitar la comunicación con los clientes:</p>
+        <ul>
+            <li><strong>Teléfonos:</strong> +51 953 299 953 y +51 961 866 051.</li>
+            <li><strong>WhatsApp:</strong> Botones directos que abren una conversación en WhatsApp con los números de contacto.</li>
+            <li><strong>Dirección:</strong> San Miguel – Lima, Perú (Jr. Pedro Garezon 189, piso 3).</li>
+            <li><strong>Formulario de contacto:</strong> Disponible para enviar consultas directamente desde la web.</li>
+        </ul>
+        <div class="highlight-box">
+            <strong>📱 Instrucción básica:</strong> Para contactar por WhatsApp, haga clic en el botón flotante o en los enlaces de teléfono. Se abrirá la aplicación de WhatsApp (en móvil) o WhatsApp Web (en escritorio) con el mensaje listo para enviar.
+        </div>
+
+        <!-- 2.5 Catálogo -->
+        <h3 id="catalogo">2.5 Catálogo PDF</h3>
+        <p>El sitio permite visualizar o descargar el catálogo de productos en formato PDF. Este catálogo incluye información detallada de los productos disponibles.</p>
+        <p><strong>¿Cómo acceder al catálogo?</strong></p>
+        <ol class="step-list">
+            <li>Haga clic en la sección <strong>Catálogo</strong> del menú principal.</li>
+            <li>Se abrirá el visor de PDF integrado o se iniciará la descarga del archivo.</li>
+            <li>Puede guardar el PDF en su dispositivo o imprimirlo para consulta offline.</li>
+        </ol>
+    </div>
+
+    <!-- ================= 3. PANEL DE ADMINISTRACIÓN ================= -->
+    <div class="section section-break" id="panel-admin">
+        <h2>3. Panel de Administración CRM (jgcbas.com/admin)</h2>
+        <p>El panel de administración es el centro de operaciones interno de JGC BAS. Permite gestionar clientes, oportunidades de venta, inventario y recibir asistencia de inteligencia artificial.</p>
+
+        <!-- 3.1 Acceso -->
+        <h3 id="acceso">3.1 Acceso al panel</h3>
+        <ol class="step-list">
+            <li>Ingrese a <strong>jgcbas.com/admin</strong> desde su navegador.</li>
+            <li>Introduzca sus credenciales (usuario y contraseña) proporcionadas por el administrador del sistema.</li>
+            <li>Haga clic en <strong>Ingresar</strong>.</li>
+            <li>Si las credenciales son correctas, accederá al dashboard principal. Si son incorrectas, verá el mensaje “Credenciales incorrectas”.</li>
+        </ol>
+        <div class="note-box">
+            <strong>🔐 Seguridad:</strong> No comparta sus credenciales. Si olvida su contraseña, contacte al administrador para restablecerla.
+        </div>
+
+        <!-- 3.2 Dashboard -->
+        <h3 id="dashboard">3.2 Dashboard</h3>
+        <p>El Dashboard es la pantalla de inicio y ofrece una visión general del estado del negocio. Incluye indicadores clave como:</p>
+        <ul>
+            <li>Número total de clientes registrados.</li>
+            <li>Oportunidades activas en el pipeline.</li>
+            <li>Clientes inactivos (sin contacto reciente).</li>
+            <li>Resumen de actividades recientes.</li>
+        </ul>
+        <p><strong>¿Qué puede hacer aquí?</strong> Revisar métricas rápidas, identificar áreas de atención y navegar a los módulos específicos.</p>
+
+        <!-- 3.3 Clientes -->
+        <h3 id="clientes">3.3 Clientes</h3>
+        <p>Este módulo centraliza la información de los clientes de JGC BAS. Cada cliente tiene una ficha con datos como:</p>
+        <ul>
+            <li><strong>RUC / Razón Social</strong></li>
+            <li><strong>Score (A/B/C):</strong> Clasificación de prioridad del cliente.</li>
+            <li><strong>Segmento:</strong> Tipo de cliente o industria.</li>
+            <li><strong>Contactos asociados:</strong> Nombre, email, teléfono y cargo.</li>
+            <li><strong>Historial de interacciones</strong></li>
+        </ul>
+        <p><strong>Instrucciones básicas:</strong></p>
+        <ul>
+            <li><strong>Buscar un cliente:</strong> Utilice la barra de búsqueda por RUC o razón social.</li>
+            <li><strong>Ver detalles:</strong> Haga clic en el nombre del cliente para abrir su ficha completa.</li>
+            <li><strong>Agregar un cliente:</strong> Use el botón “Nuevo Cliente” (si está disponible) y complete los campos obligatorios.</li>
+            <li><strong>Editar información:</strong> Desde la ficha del cliente, seleccione “Editar” para actualizar datos.</li>
+        </ul>
+
+        <!-- 3.4 Oportunidades -->
+        <h3 id="oportunidades">3.4 Oportunidades</h3>
+        <p>El módulo de oportunidades gestiona el <strong>pipeline de ventas</strong>. Cada oportunidad representa una posible venta y avanza por las siguientes etapas:</p>
+        <table>
+            <thead>
+                <tr><th>Etapa</th><th>Descripción</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Prospección</strong></td><td>Cliente potencial identificado, aún sin cotización.</td></tr>
+                <tr><td><strong>Cotización</strong></td><td>Se ha enviado una cotización formal.</td></tr>
+                <tr><td><strong>Negociación</strong></td><td>Se están discutiendo términos y condiciones.</td></tr>
+                <tr><td><strong>Ganada</strong></td><td>La venta se ha concretado.</td></tr>
+                <tr><td><strong>Perdida</strong></td><td>La oportunidad no prosperó.</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Instrucciones básicas:</strong></p>
+        <ul>
+            <li><strong>Crear una oportunidad:</strong> Seleccione un cliente y haga clic en “Nueva Oportunidad”. Complete los datos (producto, monto estimado, etapa inicial).</li>
+            <li><strong>Actualizar etapa:</strong> Arrastre la oportunidad a la columna correspondiente o use el menú desplegable de estado.</li>
+            <li><strong>Generar cotización:</strong> Desde la oportunidad, use la opción “Generar Cotización” para crear un PDF o Excel (según disponibilidad).</li>
+        </ul>
+
+        <!-- 3.5 Jota -->
+        <h3 id="jota">3.5 Gerente IA (Jota)</h3>
+        <p><strong>Jota</strong> es el agente de inteligencia artificial integrado en el CRM. Su función es ayudar al equipo comercial a priorizar acciones y dar los siguientes pasos lógicos en cada oportunidad.</p>
+        <p><strong>¿Qué hace Jota?</strong></p>
+        <ul>
+            <li>Analiza el historial del cliente, su score y el estado de la oportunidad.</li>
+            <li>Sugiere <strong>2 acciones concretas</strong> (por ejemplo: “Llamar para confirmar recepción de cotización” o “Enviar ficha técnica del producto X”).</li>
+            <li>Permite marcar las acciones como completadas con un <strong>checkmark (✓)</strong>.</li>
+            <li>Al solicitar nuevas sugerencias, Jota lee el estado anterior y propone los siguientes pasos lógicos para avanzar en la venta.</li>
+        </ul>
+        <div class="highlight-box">
+            <strong>💡 Cómo usar a Jota:</strong>
+            <ol class="step-list" style="margin-top:10px;">
+                <li>Abra la ficha de un cliente o una oportunidad.</li>
+                <li>Acceda al módulo <strong>Gerente IA (Jota)</strong>.</li>
+                <li>Revise las sugerencias de “Próximos pasos”.</li>
+                <li>Cuando realice una acción, márquela con el checkmark (✓).</li>
+                <li>Si necesita nuevas sugerencias, haga clic en “Actualizar sugerencias” (o el botón equivalente).</li>
+            </ol>
+        </div>
+        <p><strong>Nota:</strong> Jota utiliza conocimiento de mejores prácticas comerciales (Microsoft Dynamics 365, Salesforce) y reglas específicas del negocio JGC BAS para generar sus recomendaciones.</p>
+
+        <!-- 3.6 Logística -->
+        <h3 id="logistica">3.6 Logística e Inventario</h3>
+        <p>Este módulo permite gestionar el inventario de productos y la logística asociada a las ventas. Incluye:</p>
+        <ul>
+            <li><strong>Productos:</strong> Listado de los 23 productos del catálogo (Danfoss, Greystone, Dwyer, APC, Winters).</li>
+            <li><strong>Stock:</strong> Cantidades disponibles por producto.</li>
+            <li><strong>Carga de imágenes:</strong> Posibilidad de subir imágenes de productos para el catálogo interno.</li>
+            <li><strong>Movimientos:</strong> Registro de entradas y salidas de inventario.</li>
+        </ul>
+        <p><strong>Instrucciones básicas:</strong></p>
+        <ul>
+            <li><strong>Consultar stock:</strong> Ingrese al módulo y revise la columna de “Stock actual”.</li>
+            <li><strong>Actualizar stock:</strong> Use el botón “Ajustar stock” o “Registrar movimiento” según corresponda.</li>
+            <li><strong>Subir imagen:</strong> En la ficha del producto, haga clic en “Cargar imagen” y seleccione el archivo desde su dispositivo.</li>
+        </ul>
+    </div>
+
+    <!-- ================= 4. FAQ ================= -->
+    <div class="section section-break" id="faq">
+        <h2>4. Preguntas Frecuentes</h2>
+
+        <h4>¿Cómo recupero mi contraseña del panel de administración?</h4>
+        <p>Contacte al administrador del sistema para que restablezca su contraseña. Por seguridad, no hay un enlace de autorrecuperación en la interfaz.</p>
+
+        <h4>¿Puedo acceder al panel desde el móvil?</h4>
+        <p>Sí. El panel de administración es <strong>responsive</strong> y se adapta a dispositivos móviles. Sin embargo, para tareas que requieren mucha edición de datos, se recomienda usar una computadora de escritorio.</p>
+
+        <h4>¿Qué significan los scores A, B y C en los clientes?</h4>
+        <p>Es una clasificación interna de prioridad: <strong>A</strong> = cliente estratégico o de alto valor; <strong>B</strong> = cliente con potencial medio; <strong>C</strong> = cliente de bajo movimiento o en prospección. Jota utiliza este score para priorizar sus sugerencias.</p>
+
+        <h4>¿Jota reemplaza al vendedor?</h4>
+        <p>No. Jota es un asistente que sugiere próximos pasos basados en datos y mejores prácticas. La decisión final y la relación con el cliente siguen siendo responsabilidad del equipo comercial.</p>
+
+        <h4>¿El sitio público muestra precios?</h4>
+        <p>No. El sitio público es una vitrina de productos y marcas. Para obtener precios o cotizaciones, el visitante debe contactar a través de los canales de contacto (WhatsApp, teléfono o formulario).</p>
+
+        <h4>¿Cómo actualizo el catálogo PDF?</h4>
+        <p>El catálogo PDF se actualiza desde el repositorio del proyecto. Si necesita una versión actualizada, contacte al equipo de desarrollo o al administrador del sitio.</p>
+    </div>
+
+    <!-- ================= 5. SOPORTE ================= -->
+    <div class="section" id="soporte">
+        <h2>5. Soporte y Contacto</h2>
+        <p>Para consultas técnicas, incidencias o solicitudes de mejora, puede contactar a:</p>
+        <table>
+            <thead>
+                <tr><th>Área</th><th>Contacto</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Soporte técnico del sitio y CRM</strong></td><td>Equipo de Desarrollo (canal habitual de comunicación)</td></tr>
+                <tr><td><strong>Administración JGC BAS</strong></td><td>Catherine Ruiz · adm@jgcbas.com</td></tr>
+                <tr><td><strong>Jefe Técnico Comercial</strong></td><td>Joel Saldarriaga · jsaldarriaga@jgcbas.com</td></tr>
+                <tr><td><strong>Asistente de gestión integral</strong></td><td>Miguel Ruiz · adm@jgcbas.com</td></tr>
+            </tbody>
+        </table>
+        <div class="highlight-box">
+            <strong>📌 Recomendación final:</strong> Guarde este manual en un lugar accesible. Puede imprimirlo o guardarlo como PDF para consultarlo cuando lo necesite.
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <div style="text-align:center; margin-top:50px; padding-top:20px; border-top:1px solid #d0dbe5; font-size:0.9rem; color:#6a809a;">
+        <p>JGC BAS SAC · Manual de Usuario · Versión 1.0 · Noviembre 2026</p>
+        <p>Documento generado a partir de la información del repositorio del proyecto.</p>
+    </div>
+
+</div>
+
+</body>
+</html>
