@@ -5,13 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual de Usuario · JGC BAS SAC</title>
     <style>
-        /* ===== ESTILOS GENERALES ===== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', Roboto, Arial, sans-serif;
             line-height: 1.6;
@@ -21,305 +15,73 @@
             max-width: 1100px;
             margin: 0 auto;
         }
-
         .manual-container {
             background: #ffffff;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             padding: 40px 50px;
         }
-
-        /* ===== TIPOGRAFÍA ===== */
-        h1 {
-            font-size: 2.4rem;
-            color: #0b2b4a;
-            border-bottom: 4px solid #1e6f9f;
-            padding-bottom: 8px;
-            margin-bottom: 20px;
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            color: #0b2b4a;
-            margin-top: 40px;
-            margin-bottom: 15px;
-            border-left: 6px solid #1e6f9f;
-            padding-left: 15px;
-        }
-
-        h3 {
-            font-size: 1.3rem;
-            color: #1e6f9f;
-            margin-top: 25px;
-            margin-bottom: 10px;
-        }
-
-        h4 {
-            font-size: 1.1rem;
-            color: #2a4d6e;
-            margin-top: 15px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 12px;
-            text-align: justify;
-        }
-
-        ul, ol {
-            margin-left: 25px;
-            margin-bottom: 15px;
-        }
-
-        li {
-            margin-bottom: 6px;
-        }
-
-        strong {
-            color: #0b2b4a;
-        }
-
-        /* ===== TABLAS ===== */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0 20px;
-            font-size: 0.95rem;
-        }
-
-        th {
-            background-color: #1e6f9f;
-            color: #ffffff;
-            padding: 10px 12px;
-            text-align: left;
-            font-weight: 600;
-        }
-
-        td {
-            padding: 8px 12px;
-            border-bottom: 1px solid #d0dbe5;
-            vertical-align: top;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f5f8fb;
-        }
-
-        /* ===== BOTONES ===== */
+        h1 { font-size: 2.4rem; color: #0b2b4a; border-bottom: 4px solid #1e6f9f; padding-bottom: 8px; margin-bottom: 20px; }
+        h2 { font-size: 1.8rem; color: #0b2b4a; margin-top: 40px; margin-bottom: 15px; border-left: 6px solid #1e6f9f; padding-left: 15px; }
+        h3 { font-size: 1.3rem; color: #1e6f9f; margin-top: 25px; margin-bottom: 10px; }
+        h4 { font-size: 1.1rem; color: #2a4d6e; margin-top: 15px; margin-bottom: 8px; }
+        p { margin-bottom: 12px; text-align: justify; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 6px; }
+        strong { color: #0b2b4a; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0 20px; font-size: 0.95rem; }
+        th { background-color: #1e6f9f; color: #ffffff; padding: 10px 12px; text-align: left; font-weight: 600; }
+        td { padding: 8px 12px; border-bottom: 1px solid #d0dbe5; vertical-align: top; }
+        tr:nth-child(even) { background-color: #f5f8fb; }
         .btn-print {
-            display: inline-block;
-            background-color: #1e6f9f;
-            color: #ffffff;
-            border: none;
-            padding: 12px 28px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 20px 0 10px;
-            transition: background 0.2s;
+            display: inline-block; background-color: #1e6f9f; color: #ffffff;
+            border: none; padding: 12px 28px; font-size: 1rem; font-weight: 600;
+            border-radius: 8px; cursor: pointer; margin: 20px 0 10px; transition: background 0.2s;
         }
-
-        .btn-print:hover {
-            background-color: #0b2b4a;
-        }
-
-        /* ===== PORTADA ===== */
-        .cover {
-            text-align: center;
-            padding: 40px 0 30px;
-        }
-
-        .cover h1 {
-            font-size: 3rem;
-            border-bottom: none;
-            margin-bottom: 10px;
-            color: #0b2b4a;
-        }
-
-        .cover .subtitle {
-            font-size: 1.4rem;
-            color: #1e6f9f;
-            font-weight: 400;
-            margin-bottom: 30px;
-        }
-
-        .cover .meta {
-            font-size: 1rem;
-            color: #4a607a;
-            margin-top: 40px;
-        }
-
-        .cover .version {
-            display: inline-block;
-            background: #e8eef4;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #1e6f9f;
-            font-weight: 600;
-            margin-top: 15px;
-        }
-
-        /* ===== ÍNDICE ===== */
-        .toc {
-            background: #f5f8fb;
-            padding: 25px 30px;
-            border-radius: 10px;
-            margin: 30px 0;
-        }
-
-        .toc h2 {
-            margin-top: 0;
-            border-left: none;
-            padding-left: 0;
-            text-align: center;
-            font-size: 1.6rem;
-        }
-
-        .toc ul {
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .toc li {
-            padding: 6px 0;
-            border-bottom: 1px dotted #c0d0e0;
-            font-size: 1.05rem;
-        }
-
-        .toc li a {
-            color: #1e6f9f;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .toc li a:hover {
-            text-decoration: underline;
-        }
-
-        .toc .sub-item {
-            padding-left: 25px;
-            font-size: 0.95rem;
-        }
-
-        /* ===== SECCIONES ===== */
-        .section {
-            margin-bottom: 40px;
-        }
-
-        .section-break {
-            page-break-before: always;
-        }
-
-        .highlight-box {
-            background: #e8f2fa;
-            border-left: 5px solid #1e6f9f;
-            padding: 15px 20px;
-            border-radius: 0 8px 8px 0;
-            margin: 15px 0;
-        }
-
-        .note-box {
-            background: #fff8e1;
-            border-left: 5px solid #f0a500;
-            padding: 15px 20px;
-            border-radius: 0 8px 8px 0;
-            margin: 15px 0;
-        }
-
-        .step-list {
-            counter-reset: step;
-            list-style: none;
-            margin-left: 0;
-        }
-
-        .step-list li {
-            counter-increment: step;
-            padding-left: 35px;
-            position: relative;
-            margin-bottom: 12px;
-        }
-
+        .btn-print:hover { background-color: #0b2b4a; }
+        .cover { text-align: center; padding: 40px 0 30px; }
+        .cover h1 { font-size: 3rem; border-bottom: none; margin-bottom: 10px; color: #0b2b4a; }
+        .cover .subtitle { font-size: 1.4rem; color: #1e6f9f; font-weight: 400; margin-bottom: 30px; }
+        .cover .meta { font-size: 1rem; color: #4a607a; margin-top: 40px; }
+        .cover .version { display: inline-block; background: #e8eef4; padding: 6px 18px; border-radius: 20px; font-size: 0.9rem; color: #1e6f9f; font-weight: 600; margin-top: 15px; }
+        .toc { background: #f5f8fb; padding: 25px 30px; border-radius: 10px; margin: 30px 0; }
+        .toc h2 { margin-top: 0; border-left: none; padding-left: 0; text-align: center; font-size: 1.6rem; }
+        .toc ul { list-style: none; margin-left: 0; }
+        .toc li { padding: 6px 0; border-bottom: 1px dotted #c0d0e0; font-size: 1.05rem; }
+        .toc li a { color: #1e6f9f; text-decoration: none; font-weight: 500; }
+        .toc li a:hover { text-decoration: underline; }
+        .toc .sub-item { padding-left: 25px; font-size: 0.95rem; }
+        .section { margin-bottom: 40px; }
+        .section-break { page-break-before: always; }
+        .highlight-box { background: #e8f2fa; border-left: 5px solid #1e6f9f; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+        .note-box { background: #fff8e1; border-left: 5px solid #f0a500; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+        .success-box { background: #e8f5e9; border-left: 5px solid #43a047; padding: 15px 20px; border-radius: 0 8px 8px 0; margin: 15px 0; }
+        .step-list { counter-reset: step; list-style: none; margin-left: 0; }
+        .step-list li { counter-increment: step; padding-left: 35px; position: relative; margin-bottom: 12px; }
         .step-list li::before {
-            content: counter(step);
-            background: #1e6f9f;
-            color: #fff;
-            font-weight: 700;
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 0.85rem;
+            content: counter(step); background: #1e6f9f; color: #fff;
+            font-weight: 700; width: 26px; height: 26px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            position: absolute; left: 0; top: 0; font-size: 0.85rem;
         }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 700px) {
-            .manual-container {
-                padding: 20px 18px;
-            }
-            h1 { font-size: 1.8rem; }
-            h2 { font-size: 1.4rem; }
-            .cover h1 { font-size: 2rem; }
-            .cover .subtitle { font-size: 1.1rem; }
-            table { font-size: 0.8rem; }
-            th, td { padding: 6px 8px; }
+            .manual-container { padding: 20px 18px; }
+            h1 { font-size: 1.8rem; } h2 { font-size: 1.4rem; }
+            .cover h1 { font-size: 2rem; } .cover .subtitle { font-size: 1.1rem; }
+            table { font-size: 0.8rem; } th, td { padding: 6px 8px; }
         }
-
-        /* ===== IMPRESIÓN ===== */
         @media print {
-            body {
-                background: #ffffff;
-                padding: 0;
-                font-size: 11pt;
-            }
-            .manual-container {
-                box-shadow: none;
-                border-radius: 0;
-                padding: 0;
-                max-width: 100%;
-            }
-            .btn-print {
-                display: none !important;
-            }
-            .section-break {
-                page-break-before: always;
-            }
-            .toc a {
-                color: #000;
-                text-decoration: none;
-            }
-            .toc {
-                background: #f5f8fb !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            th {
-                background-color: #1e6f9f !important;
-                color: #fff !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            tr:nth-child(even) {
-                background-color: #f5f8fb !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            .highlight-box, .note-box {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-            h1, h2, h3, h4 {
-                page-break-after: avoid;
-            }
-            table, figure {
-                page-break-inside: avoid;
-            }
+            body { background: #ffffff; padding: 0; font-size: 11pt; }
+            .manual-container { box-shadow: none; border-radius: 0; padding: 0; max-width: 100%; }
+            .btn-print { display: none !important; }
+            .section-break { page-break-before: always; }
+            .toc a { color: #000; text-decoration: none; }
+            .toc { background: #f5f8fb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            th { background-color: #1e6f9f !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            tr:nth-child(even) { background-color: #f5f8fb !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .highlight-box, .note-box, .success-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            h1, h2, h3, h4 { page-break-after: avoid; }
+            table, figure { page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -332,7 +94,7 @@
         <h1>Manual de Usuario</h1>
         <div class="subtitle">Sitio Web Corporativo &amp; Panel de Administración CRM</div>
         <p style="font-size:1.2rem; color:#2a4d6e; font-weight:300;">JGC BAS SAC · Building Automation Supplies</p>
-        <div class="version">Versión 1.0 · Noviembre 2026</div>
+        <div class="version">Versión 1.1 · Noviembre 2026</div>
         <div class="meta">
             <p><strong>Cliente:</strong> JGC BAS SAC</p>
             <p><strong>Dominio:</strong> jgcbas.com</p>
@@ -340,7 +102,6 @@
         </div>
     </div>
 
-    <!-- BOTÓN IMPRIMIR -->
     <div style="text-align:center;">
         <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Guardar como PDF</button>
     </div>
@@ -354,8 +115,10 @@
             <li class="sub-item"><a href="#navegacion">2.1 Navegación principal</a></li>
             <li class="sub-item"><a href="#productos">2.2 Sección de productos</a></li>
             <li class="sub-item"><a href="#marcas">2.3 Marcas representadas</a></li>
-            <li class="sub-item"><a href="#contacto-publico">2.4 Contacto y WhatsApp</a></li>
-            <li class="sub-item"><a href="#catalogo">2.5 Catálogo PDF</a></li>
+            <li class="sub-item"><a href="#carrito">2.4 Carrito de compras y solicitud de cotización</a></li>
+            <li class="sub-item"><a href="#contacto-publico">2.5 Contacto y WhatsApp</a></li>
+            <li class="sub-item"><a href="#redes">2.6 Redes sociales</a></li>
+            <li class="sub-item"><a href="#catalogo">2.7 Catálogo PDF</a></li>
             <li><a href="#panel-admin">3. Panel de Administración CRM (jgcbas.com/admin)</a></li>
             <li class="sub-item"><a href="#acceso">3.1 Acceso al panel</a></li>
             <li class="sub-item"><a href="#dashboard">3.2 Dashboard</a></li>
@@ -374,7 +137,7 @@
         <p>Bienvenido al manual de usuario de <strong>JGC BAS SAC</strong>. Este documento describe las funcionalidades del sitio web corporativo y del panel de administración CRM, y proporciona instrucciones básicas para que el equipo de JGC BAS pueda operar ambas herramientas de forma autónoma.</p>
         <p>El sistema está compuesto por dos grandes bloques:</p>
         <ul>
-            <li><strong>Sitio web público (<code>jgcbas.com</code>):</strong> Vitrina digital para clientes y prospectos, donde se presentan los productos, las marcas representadas, la información corporativa y los canales de contacto.</li>
+            <li><strong>Sitio web público (<code>jgcbas.com</code>):</strong> Vitrina digital con carrito de compras, solicitud de cotizaciones y canales de contacto, donde se presentan los productos, las marcas representadas y la información corporativa.</li>
             <li><strong>Panel de administración CRM (<code>jgcbas.com/admin</code>):</strong> Herramienta interna para gestionar clientes, oportunidades de venta, inventario y recibir sugerencias de un agente de inteligencia artificial llamado <strong>Jota</strong>.</li>
         </ul>
         <div class="highlight-box">
@@ -385,7 +148,7 @@
     <!-- ================= 2. SITIO WEB PÚBLICO ================= -->
     <div class="section section-break" id="sitio-publico">
         <h2>2. Sitio Web Público (jgcbas.com)</h2>
-        <p>El sitio web público es la cara visible de JGC BAS SAC. Está diseñado para que los visitantes conozcan la empresa, exploren los productos y se pongan en contacto fácilmente.</p>
+        <p>El sitio web público es la cara visible de JGC BAS SAC. Está diseñado para que los visitantes conozcan la empresa, exploren los productos, armen su carrito de compras y soliciten cotizaciones fácilmente.</p>
 
         <!-- 2.1 Navegación -->
         <h3 id="navegacion">2.1 Navegación principal</h3>
@@ -399,6 +162,7 @@
                 <tr><td><strong>Nosotros</strong></td><td>Información corporativa: misión, visión, marcas representadas y datos de la empresa.</td></tr>
                 <tr><td><strong>Catálogo</strong></td><td>Enlace para visualizar o descargar el catálogo en PDF.</td></tr>
                 <tr><td><strong>Contacto</strong></td><td>Formulario y datos de contacto directo (teléfonos, WhatsApp, dirección).</td></tr>
+                <tr><td><strong>🛒 Carrito</strong></td><td>Ícono visible en la parte superior derecha. Muestra la cantidad de productos agregados y permite solicitar cotización.</td></tr>
             </tbody>
         </table>
 
@@ -415,6 +179,7 @@
         <ul>
             <li>Explorar visualmente las categorías de productos.</li>
             <li>Identificar rápidamente si JGC BAS ofrece la solución que necesita.</li>
+            <li><strong>Agregar productos al carrito</strong> con un solo clic.</li>
             <li>Solicitar más información a través de los canales de contacto.</li>
         </ul>
 
@@ -435,21 +200,131 @@
         </table>
         <p>Esta sección refuerza la confianza del visitante al mostrar alianzas con fabricantes de prestigio internacional.</p>
 
-        <!-- 2.4 Contacto -->
-        <h3 id="contacto-publico">2.4 Contacto y WhatsApp</h3>
-        <p>El sitio ofrece múltiples vías de contacto para facilitar la comunicación con los clientes:</p>
+        <!-- 2.4 CARRITO Y COTIZACIÓN -->
+        <h3 id="carrito">2.4 🛒 Carrito de compras y solicitud de cotización</h3>
+        <p>El sitio cuenta con un <strong>carrito de compras</strong> que funciona como una <strong>lista de solicitud de cotización</strong> (no es una pasarela de pago en línea). Permite al visitante seleccionar los productos que le interesan y luego solicitar una cotización formal por <strong>WhatsApp o correo electrónico</strong>.</p>
+
+        <h4>¿Cómo agregar productos al carrito?</h4>
+        <ol class="step-list">
+            <li>Navegue por la sección de <strong>Productos</strong> y seleccione la categoría de su interés.</li>
+            <li>En la ficha de cada producto, haga clic en el botón <strong>“Agregar al carrito”</strong> (🛒).</li>
+            <li>El producto se sumará automáticamente al carrito. El ícono del carrito en la parte superior mostrará la cantidad de ítems añadidos.</li>
+            <li>Puede seguir agregando más productos o hacer clic en el ícono del carrito para revisar la lista.</li>
+        </ol>
+
+        <h4>¿Cómo revisar y gestionar el carrito?</h4>
+        <ul>
+            <li><strong>Ver el carrito:</strong> Haga clic en el ícono 🛒 ubicado en la barra superior.</li>
+            <li><strong>Ajustar cantidades:</strong> En la vista del carrito puede aumentar o disminuir la cantidad de cada producto.</li>
+            <li><strong>Eliminar productos:</strong> Use el botón “Eliminar” (🗑️) junto a cada ítem para quitarlo de la lista.</li>
+            <li><strong>Vaciar carrito:</strong> Use la opción “Vaciar carrito” si desea empezar de nuevo.</li>
+        </ul>
+
+        <h4>¿Cómo solicitar una cotización?</h4>
+        <p>Una vez que tenga los productos seleccionados en el carrito, tiene <strong>dos formas</strong> de solicitar su cotización:</p>
+
+        <table>
+            <thead>
+                <tr><th>Opción</th><th>Cómo se usa</th><th>Resultado</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>📱 Cotizar por WhatsApp</strong></td>
+                    <td>Haga clic en el botón <strong>“Solicitar cotización por WhatsApp”</strong> dentro del carrito.</td>
+                    <td>Se abre la aplicación de WhatsApp (o WhatsApp Web) con un mensaje prellenado que incluye el listado de productos seleccionados, listo para enviar.</td>
+                </tr>
+                <tr>
+                    <td><strong>✉️ Cotizar por Email</strong></td>
+                    <td>Haga clic en el botón <strong>“Solicitar cotización por Email”</strong> dentro del carrito.</td>
+                    <td>Se abre su cliente de correo (Outlook, Gmail, etc.) con un mensaje prellenado que incluye el listado de productos. Solo debe revisar y presionar “Enviar”.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box">
+            <strong>✅ Ventaja del carrito:</strong> El cliente no necesita escribir el listado de productos manualmente. El sistema genera el mensaje automáticamente con todos los ítems seleccionados, lo que <strong>ahorra tiempo</strong> y <strong>evita errores</strong> en la solicitud.
+        </div>
+
+        <div class="note-box">
+            <strong>📌 Importante:</strong> El carrito <strong>no procesa pagos en línea</strong>. Su función es exclusivamente armar la lista de productos para solicitar la cotización formal. El pago y la facturación se coordinan directamente con el equipo de JGC BAS.
+        </div>
+
+        <h4>Flujo completo recomendado para el cliente</h4>
+        <ol class="step-list">
+            <li>Explorar los productos por categoría.</li>
+            <li>Agregar al carrito todos los productos que le interesen.</li>
+            <li>Revisar el carrito (cantidades y productos).</li>
+            <li>Elegir el canal: <strong>WhatsApp</strong> o <strong>Email</strong>.</li>
+            <li>Enviar la solicitud con el mensaje prellenado.</li>
+            <li>Esperar la respuesta del equipo comercial con la cotización formal.</li>
+        </ol>
+
+        <!-- 2.5 CONTACTO -->
+        <h3 id="contacto-publico">2.5 Contacto y WhatsApp</h3>
+        <p>Además del carrito, el sitio ofrece múltiples vías de contacto directo:</p>
         <ul>
             <li><strong>Teléfonos:</strong> +51 953 299 953 y +51 961 866 051.</li>
             <li><strong>WhatsApp:</strong> Botones directos que abren una conversación en WhatsApp con los números de contacto.</li>
             <li><strong>Dirección:</strong> San Miguel – Lima, Perú (Jr. Pedro Garezon 189, piso 3).</li>
             <li><strong>Formulario de contacto:</strong> Disponible para enviar consultas directamente desde la web.</li>
+            <li><strong>Correo:</strong> adm@jgcbas.com</li>
         </ul>
         <div class="highlight-box">
             <strong>📱 Instrucción básica:</strong> Para contactar por WhatsApp, haga clic en el botón flotante o en los enlaces de teléfono. Se abrirá la aplicación de WhatsApp (en móvil) o WhatsApp Web (en escritorio) con el mensaje listo para enviar.
         </div>
 
-        <!-- 2.5 Catálogo -->
-        <h3 id="catalogo">2.5 Catálogo PDF</h3>
+        <!-- 2.6 REDES SOCIALES -->
+        <h3 id="redes">2.6 🌐 Redes sociales</h3>
+        <p>El sitio incluye enlaces a las <strong>redes sociales oficiales de JGC BAS</strong>, ubicados generalmente en el <strong>pie de página (footer)</strong> y en la sección de <strong>contacto</strong>. Desde ahí el visitante puede seguir, contactar o conocer más sobre la empresa en cada plataforma.</p>
+
+        <table>
+            <thead>
+                <tr><th>Red social</th><th>Ícono / Ubicación</th><th>Para qué sirve</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Facebook</strong></td>
+                    <td>Ícono <strong>f</strong> en el footer</td>
+                    <td>Ver publicaciones, novedades de productos, eventos y contenido corporativo.</td>
+                </tr>
+                <tr>
+                    <td><strong>Instagram</strong></td>
+                    <td>Ícono de cámara en el footer</td>
+                    <td>Explorar imágenes de productos, proyectos y contenido visual de la marca.</td>
+                </tr>
+                <tr>
+                    <td><strong>LinkedIn</strong></td>
+                    <td>Ícono <strong>in</strong> en el footer</td>
+                    <td>Conectar a nivel profesional, ver la trayectoria de la empresa y novedades B2B.</td>
+                </tr>
+                <tr>
+                    <td><strong>TikTok</strong> <em>(si aplica)</em></td>
+                    <td>Ícono de nota musical en el footer</td>
+                    <td>Ver videos cortos de productos, demostraciones y contenido dinámico.</td>
+                </tr>
+                <tr>
+                    <td><strong>YouTube</strong> <em>(si aplica)</em></td>
+                    <td>Ícono de play en el footer</td>
+                    <td>Ver videos técnicos, tutoriales de productos y presentaciones.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>¿Cómo acceder a las redes sociales?</h4>
+        <ol class="step-list">
+            <li>Desplácese hasta el <strong>pie de página</strong> del sitio web (o a la sección de <strong>Contacto</strong>).</li>
+            <li>Ubique los <strong>íconos de redes sociales</strong>.</li>
+            <li>Haga clic en el ícono de la red que le interese (Facebook, Instagram, LinkedIn, etc.).</li>
+            <li>Se abrirá una nueva pestaña con el perfil oficial de JGC BAS en esa red social.</li>
+            <li>Desde ahí puede <strong>seguir la página</strong>, <strong>enviar mensajes</strong> o <strong>compartir contenido</strong> con su red.</li>
+        </ol>
+
+        <div class="success-box">
+            <strong>✅ Beneficio:</strong> Las redes sociales permiten al cliente mantenerse informado sobre nuevos productos, promociones, proyectos y novedades de JGC BAS, además de interactuar directamente con la marca.
+        </div>
+
+        <!-- 2.7 CATÁLOGO -->
+        <h3 id="catalogo">2.7 Catálogo PDF</h3>
         <p>El sitio permite visualizar o descargar el catálogo de productos en formato PDF. Este catálogo incluye información detallada de los productos disponibles.</p>
         <p><strong>¿Cómo acceder al catálogo?</strong></p>
         <ol class="step-list">
@@ -464,7 +339,6 @@
         <h2>3. Panel de Administración CRM (jgcbas.com/admin)</h2>
         <p>El panel de administración es el centro de operaciones interno de JGC BAS. Permite gestionar clientes, oportunidades de venta, inventario y recibir asistencia de inteligencia artificial.</p>
 
-        <!-- 3.1 Acceso -->
         <h3 id="acceso">3.1 Acceso al panel</h3>
         <ol class="step-list">
             <li>Ingrese a <strong>jgcbas.com/admin</strong> desde su navegador.</li>
@@ -476,7 +350,6 @@
             <strong>🔐 Seguridad:</strong> No comparta sus credenciales. Si olvida su contraseña, contacte al administrador para restablecerla.
         </div>
 
-        <!-- 3.2 Dashboard -->
         <h3 id="dashboard">3.2 Dashboard</h3>
         <p>El Dashboard es la pantalla de inicio y ofrece una visión general del estado del negocio. Incluye indicadores clave como:</p>
         <ul>
@@ -487,7 +360,6 @@
         </ul>
         <p><strong>¿Qué puede hacer aquí?</strong> Revisar métricas rápidas, identificar áreas de atención y navegar a los módulos específicos.</p>
 
-        <!-- 3.3 Clientes -->
         <h3 id="clientes">3.3 Clientes</h3>
         <p>Este módulo centraliza la información de los clientes de JGC BAS. Cada cliente tiene una ficha con datos como:</p>
         <ul>
@@ -505,7 +377,6 @@
             <li><strong>Editar información:</strong> Desde la ficha del cliente, seleccione “Editar” para actualizar datos.</li>
         </ul>
 
-        <!-- 3.4 Oportunidades -->
         <h3 id="oportunidades">3.4 Oportunidades</h3>
         <p>El módulo de oportunidades gestiona el <strong>pipeline de ventas</strong>. Cada oportunidad representa una posible venta y avanza por las siguientes etapas:</p>
         <table>
@@ -527,7 +398,6 @@
             <li><strong>Generar cotización:</strong> Desde la oportunidad, use la opción “Generar Cotización” para crear un PDF o Excel (según disponibilidad).</li>
         </ul>
 
-        <!-- 3.5 Jota -->
         <h3 id="jota">3.5 Gerente IA (Jota)</h3>
         <p><strong>Jota</strong> es el agente de inteligencia artificial integrado en el CRM. Su función es ayudar al equipo comercial a priorizar acciones y dar los siguientes pasos lógicos en cada oportunidad.</p>
         <p><strong>¿Qué hace Jota?</strong></p>
@@ -549,7 +419,6 @@
         </div>
         <p><strong>Nota:</strong> Jota utiliza conocimiento de mejores prácticas comerciales (Microsoft Dynamics 365, Salesforce) y reglas específicas del negocio JGC BAS para generar sus recomendaciones.</p>
 
-        <!-- 3.6 Logística -->
         <h3 id="logistica">3.6 Logística e Inventario</h3>
         <p>Este módulo permite gestionar el inventario de productos y la logística asociada a las ventas. Incluye:</p>
         <ul>
@@ -570,6 +439,15 @@
     <div class="section section-break" id="faq">
         <h2>4. Preguntas Frecuentes</h2>
 
+        <h4>¿El carrito de compras procesa pagos?</h4>
+        <p>No. El carrito funciona como una <strong>lista de solicitud de cotización</strong>. Los pagos y la facturación se coordinan directamente con el equipo comercial de JGC BAS.</p>
+
+        <h4>¿Puedo solicitar la cotización por WhatsApp y por email a la vez?</h4>
+        <p>Sí. Puede generar la solicitud por cualquiera de los dos canales. Recomendamos elegir el canal que le resulte más cómodo o el que prefiera el cliente.</p>
+
+        <h4>¿Qué pasa si quiero agregar más productos después de enviar la solicitud?</h4>
+        <p>Puede volver al carrito, agregar los nuevos productos y enviar una nueva solicitud. También puede indicarlo directamente en la conversación de WhatsApp o en el correo.</p>
+
         <h4>¿Cómo recupero mi contraseña del panel de administración?</h4>
         <p>Contacte al administrador del sistema para que restablezca su contraseña. Por seguridad, no hay un enlace de autorrecuperación en la interfaz.</p>
 
@@ -583,7 +461,10 @@
         <p>No. Jota es un asistente que sugiere próximos pasos basados en datos y mejores prácticas. La decisión final y la relación con el cliente siguen siendo responsabilidad del equipo comercial.</p>
 
         <h4>¿El sitio público muestra precios?</h4>
-        <p>No. El sitio público es una vitrina de productos y marcas. Para obtener precios o cotizaciones, el visitante debe contactar a través de los canales de contacto (WhatsApp, teléfono o formulario).</p>
+        <p>No. El sitio público es una vitrina de productos y marcas. Para obtener precios o cotizaciones, el visitante debe armar su carrito y solicitar la cotización por WhatsApp o email.</p>
+
+        <h4>¿Dónde encuentro las redes sociales de JGC BAS?</h4>
+        <p>En el <strong>pie de página</strong> del sitio web y en la sección de <strong>Contacto</strong>. También puede buscar “JGC BAS” directamente en cada red social.</p>
 
         <h4>¿Cómo actualizo el catálogo PDF?</h4>
         <p>El catálogo PDF se actualiza desde el repositorio del proyecto. Si necesita una versión actualizada, contacte al equipo de desarrollo o al administrador del sitio.</p>
@@ -609,10 +490,9 @@
         </div>
     </div>
 
-    <!-- PIE DE PÁGINA -->
     <div style="text-align:center; margin-top:50px; padding-top:20px; border-top:1px solid #d0dbe5; font-size:0.9rem; color:#6a809a;">
-        <p>JGC BAS SAC · Manual de Usuario · Versión 1.0 · Noviembre 2026</p>
-        <p>Documento introductorio sobre pagina y modulo CRM, sera personalizado en funcion a feedback JGC.</p>
+        <p>JGC BAS SAC · Manual de Usuario · Versión 1.1 · Noviembre 2026</p>
+        <p>Documento generado en primera versión, será personalizado en función a feedback JGC.</p>
     </div>
 
 </div>
